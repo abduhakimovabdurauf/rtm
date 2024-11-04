@@ -20,11 +20,11 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 export default {
   setup() {
     const slides = ref([
-      { image: new URL('../assets/images/slider/rtm1.png', import.meta.url).href },
-      { image: new URL('../assets/images/slider/rtm2.png', import.meta.url).href },
-      { image: new URL('../assets/images/slider/rtm3.png', import.meta.url).href },
-      { image: new URL('../assets/images/slider/rtm4.png', import.meta.url).href },
-      { image: new URL('../assets/images/slider/rtm5.png', import.meta.url).href },
+      { image: new URL('../../assets/images/slider/rtm1.png', import.meta.url).href },
+      { image: new URL('../../assets/images/slider/rtm2.png', import.meta.url).href },
+      { image: new URL('../../assets/images/slider/rtm3.png', import.meta.url).href },
+      { image: new URL('../../assets/images/slider/rtm4.png', import.meta.url).href },
+      { image: new URL('../../assets/images/slider/rtm5.png', import.meta.url).href },
     ]);
 
     const currentSlide = ref(0);
