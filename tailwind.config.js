@@ -1,0 +1,23 @@
+export default {
+  content: [
+    './public/index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {
+      widths: {
+        w600: "600px",
+        w68vw: "68vw"
+      },
+      screens: {
+        mini: "320px",
+        xs: "435px",
+        sm: "550px",
+        md: "768px",
+        lg: "850px",
+        xl: "1024px",
+      },
+    },
+  },
+  plugins: [],
+}

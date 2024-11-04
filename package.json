@@ -1,0 +1,29 @@
+{
+  "name": "rtm",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "axios": "^1.7.7",
+    "sweetalert2": "^11.14.1",
+    "swiper": "^11.1.14",
+    "vee-validate": "^4.14.6",
+    "vue": "^3.4.29",
+    "vue-router": "^4.4.5",
+    "vuex": "^4.0.2",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "vite": "^5.4.8"
+  }
+}

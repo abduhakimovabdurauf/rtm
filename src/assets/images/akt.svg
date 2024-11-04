@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 320 240">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-width: 2px;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3 {
+        fill: url(#linear-gradient);
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #fbb03b;
+        stroke: #fff;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="155.1" y1="85.8" x2="153.4" y2="161.9" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#27ad2e"/>
+      <stop offset=".8" stop-color="#056205"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <g>
+      <path class="cls-3" d="M73.3,140.9l22.3-52.1h12.3l22.2,52.1h-15.5l-2.8-7.5h-20.4l-2.8,7.5h-15.2ZM101.7,105.9l-6.9,18.3h13.7l-6.8-18.3Z"/>
+      <path class="cls-3" d="M183.5,140.9h-16.7l-13.7-22h-5.4v22h-14v-52.1h14v26.4l18.6-26.4h15.5l-18.2,24,19.9,28.1Z"/>
+      <path class="cls-3" d="M235.3,88.9v12.1h-18.2v40h-14v-40h-18.2v-12.1h50.4Z"/>
+    </g>
+    <polyline class="cls-1" points="167.6 151 239.9 151 115.8 159.1 260.7 155.1"/>
+  </g>
+  <circle class="cls-2" cx="-67.1" cy="255.1" r="13.7"/>
+  <image width="512" height="512" transform="translate(-76.3 246.8) scale(0)" xlink:href="C:\Users\Jasurbek\Downloads\ux-design.png"/>
+</svg>
