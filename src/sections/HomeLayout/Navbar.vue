@@ -14,7 +14,6 @@
       </div>
 
       <button @click="toggleMenu" class="hamburger__menyu">
-        <!-- <i class="bx" :class="'bx-x' ? isActive : 'bx-menu'"></i> -->
         <i v-if="isActive" class='bx bx-x'></i>
         <i v-else class='bx bx-menu'></i>
       </button>
@@ -45,6 +44,16 @@
             Bo'glanish
           </a>
         </li>
+        <router-link to="/login">
+          <button
+              class="relative group overflow-hidden text-white font-medium translate-y-1 py-2 px-6 rounded-md shadow-md bg-gradient-to-r from-green-400 to-green-600 transition-all duration-500 ease-out hover:scale-105 hover:shadow-lg focus:ring-2 focus:ring-green-300 active:scale-95"
+          >
+            <span
+                class="absolute inset-0 w-full h-full bg-gradient-to-r from-white/20 via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-in-out"
+            ></span>
+            <span class="relative z-10">Kirish</span>
+          </button>
+        </router-link>
       </ul>
     </div>
   </nav>

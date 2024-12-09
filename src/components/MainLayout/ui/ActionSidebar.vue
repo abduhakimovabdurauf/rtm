@@ -1,42 +1,41 @@
 <template>
-  <div :class="['w-[70vh]', 'overflow-auto', 'h-[100vh]', 'shadow-lg', 'fixed', 'bg-white', 'right-0', isSidebarOpen ? 'translate-x-0' : 'translate-x-full', 'transition-transform', 'duration-300']">
+  <div :class="['w-[70vh]', 'overflow-auto', 'h-[100vh]', 'shadow-lg', 'fixed', 'bg-white', 'right-0', isSidebarOpen ? 'translate-x-0' : 'translate-x-full', 'transition-transform', 'duration-300']" style="z-index: 1050">
     <div class="flex justify-between items-center p-4">
+      <p class="font-semibold text-2xl">{{ title }}</p>
       <button @click="toggleSidebar" class="text-2xl">&times;</button>
+    </div>
+
+    <div class="p-4">
+      <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 export default {
-  setup() {
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+  emits: ['closeSidebar'],
+  setup(_, { emit }) {
     const store = useStore();
     const isSidebarOpen = computed(() => store.state.isSidebarOpen);
 
     const toggleSidebar = () => {
-      store.dispatch('toggleSidebar');
-    };
-
-    const form = ref({
-      name: '',
-      duration: '',
-      price: '',
-      description: ''
-    });
-
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      console.log(form.value);
+      store.commit("closeSidebar");
+      emit('closeSidebar');
     };
 
     return {
       isSidebarOpen,
       toggleSidebar,
-      form,
-      handleSubmit
     };
-  }
+  },
 };
 </script>

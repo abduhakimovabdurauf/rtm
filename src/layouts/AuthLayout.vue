@@ -4,8 +4,10 @@
 
 <script>
 export default {
-  setup() {
+  components:{
 
+  },
+  setup() {
 
     return {}
   }

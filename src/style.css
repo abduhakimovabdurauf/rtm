@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.alert {
+    @apply p-4 rounded-lg text-white shadow-md max-w-sm mx-auto my-4;
+}
+
+.primary {
+    @apply bg-green-500;
+}
+
+.danger {
+    @apply bg-red-500;
+}
+
+.warning {
+    @apply bg-yellow-500;
+}
+
+.alert-close:hover {
+    @apply text-white;
+}

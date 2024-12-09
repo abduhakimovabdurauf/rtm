@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import Loader from '@/components/Loader.vue';
+import Loader from '@/components/HomeLayout/Loader.vue';
 import ViewHome from "@/views/HomeLayout/ViewHome.vue";
-import { onBeforeMount, onMounted, ref,computed} from 'vue'
-import ScrollButton from "@/components/ScrollButton.vue";
+import { onBeforeMount, ref} from 'vue'
+import ScrollButton from "@/components/HomeLayout/ScrollButton.vue";
 export default {
   components: {
     ScrollButton,

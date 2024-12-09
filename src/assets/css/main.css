@@ -67,24 +67,20 @@ body {
 
 
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 5px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   ::-webkit-scrollbar-thumb {
-    background-color: #046b00;
+    background-color: rgba(156, 156, 156, 0.97);
     border-radius: 10px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #034801;
+    background-color: rgba(132, 131, 131, 0.79);
   }
-  
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: #046b00 transparent;
-  }
+
   

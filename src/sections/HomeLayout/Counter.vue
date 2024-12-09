@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { startCounter } from '../../counter.js';
+import { startCounter } from '@/counter.js'
 
 export default {
   data() {

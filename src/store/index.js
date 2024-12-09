@@ -1,5 +1,9 @@
-import { createStore } from 'vuex';
-
+import { createStore, createLogger } from 'vuex';
+import auth from "./modules/auth.module.js";
+import course from "./modules/course.module.js";
+import role from "./modules/role.module.js";
+import room from "./modules/room.module.js";
+import user from "./modules/user.module.js";
 import aktImg from '../assets/images/akt.svg';
 import foundationImg from '../assets/images/found.svg';
 import robotImg from '../assets/images/ROBOT.svg';
@@ -13,10 +17,17 @@ import flutterImg from '../assets/images/FLUT.svg';
 import englishImg from '../assets/images/INGLIZ TILI.svg';
 import russianImg from '../assets/images/RUS.svg';
 
+const plugins = []
+if(process.env.NODE_ENV==='development'){
+  plugins.push(createLogger())
+}
 
 const store = createStore({
+  plugins,
   state: {
     selectedCategory: 'all',
+    isSidebarOpen: false,
+    sidebarValues: null,
     courses: [
       {
         id: 1,
@@ -345,8 +356,11 @@ const store = createStore({
         description: 'Rus tili kursi o\'quvchilarga rus tilini o\'rganishga va amaliy muloqotda foydalanishga yordam beradi.',
       },
     ],
+    message: null,
+    loading: false
   },
   getters: {
+    isLoading: (state) => state.loading,
     getCourses: (state) => {
       if (state.selectedCategory === 'all') {
         return state.courses;
@@ -354,12 +368,38 @@ const store = createStore({
       return state.courses.filter(course => course.category === state.selectedCategory);
     },
     getCourseById: (state) => (id) => state.courses.find(course => course.id === id),
+    isSidebarOpen: (state) => state.isSidebarOpen,
   },
   mutations: {
     setCategory(state, category) {
       state.selectedCategory = category;
     },
+    setSidebar(state, payload) {
+      state.isSidebarOpen = payload;
+    },
+    SET_LOADING(state, status) {
+      state.loading = status;
+    },
   },
+  actions: {
+    setMessage({commit}, message){
+      commit('setMessage',message)
+      setTimeout(() => {
+        commit('removeMessage')
+
+      }, 5000);
+    },
+    toggleSidebar({ commit },isOpen) {
+      commit('setSidebar',isOpen);
+    },
+  },
+  modules: {
+    auth,
+    course,
+    role,
+    room,
+    user
+  }
 });
 
 export default store;

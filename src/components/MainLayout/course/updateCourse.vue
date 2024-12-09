@@ -12,21 +12,21 @@
       </div>
 
       <div>
-        <label for="quantity" class="block text-sm font-medium text-gray-700">Miqdori</label>
+        <label for="duration" class="block text-sm font-medium text-gray-700">Davomiyligi</label>
         <input
             type="number"
-            id="quantity"
-            v-model="form.quantity"
+            id="duration"
+            v-model="form.duration"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
 
       <div>
-        <label for="number" class="block text-sm font-medium text-gray-700">Narxi</label>
+        <label for="price" class="block text-sm font-medium text-gray-700">Narxi</label>
         <input
             type="number"
-            id="number"
-            v-model="form.number"
+            id="price"
+            v-model="form.price"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
@@ -53,6 +53,20 @@
         ></textarea>
       </div>
 
+      <div>
+        <label for="image" class="block text-sm font-medium text-gray-700">Upload Image</label>
+        <input
+            type="file"
+            id="image"
+            @change="handleImageChange"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            accept="image/*"
+        />
+        <div v-if="imagePreview" class="mt-2">
+          <img :src="imagePreview" alt="Image Preview" class="w-full h-auto rounded-md" />
+        </div>
+      </div>
+
       <div class="flex justify-between items-center">
         <button
             type="submit"
@@ -73,7 +87,7 @@ import { useStore } from 'vuex';
 
 export default {
   props: {
-    roomId: {
+    courseId: {
       type: Number,
       required: true,
     },
@@ -82,50 +96,68 @@ export default {
   setup(props,{ emit }) {
     const store = useStore();
 
-    const selectedRoom = computed(() =>
-        store.state.room.rooms.find((room) => room.id === props.roomId)
+    const selectedCourse = computed(() =>
+        store.state.course.courses.find((course) => course.id === props.courseId)
     );
 
     const form = ref({
       name: '',
-      quantity: '',
-      number: '',
+      duration: '',
+      price: '',
       description: '',
-      id: props.roomId,
+      id: props.courseId,
       status: '',
+      image: null,
     });
 
     const initialForm = ref({});
 
+    const imagePreview = ref(null);
+
     watch(
-        selectedRoom,
-        (room) => {
-          if (room) {
-            form.value = { ...room };
-            initialForm.value = { ...room };
+        selectedCourse,
+        (course) => {
+          if (course) {
+            form.value = { ...course };
+            initialForm.value = { ...course };
+            imagePreview.value =
+                course.image && `http://192.168.11.71:8000/storage/${course.image}`;
           }
         },
         { immediate: true }
     );
 
+    const handleImageChange = (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        form.value.image = file;
+        const reader = new FileReader();
+        reader.onload = () => {
+          imagePreview.value = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
     const isFormChanged = computed(() => {
-      const { name, quantity, number, description } = form.value;
-      const { name: initName, quantity: initQuantity, number: initNumber, description: initDescription } = initialForm.value;
+      const { name, duration, price, description } = form.value;
+      const { name: initName, duration: initDuration, price: initPrice, description: initDescription } = initialForm.value;
 
       return (
           name !== initName ||
-          quantity !== initQuantity ||
-          number !== initNumber ||
-          description !== initDescription
+          duration !== initDuration ||
+          price !== initPrice ||
+          description !== initDescription ||
+          form.value.image !== initialForm.value.image
       );
     });
 
     const handleSubmit = () => {
-      const updatedRoom = {
+      const updatedCourse = {
         ...form.value,
-        id: props.roomId,
+        id: props.courseId,
       };
-      store.dispatch('room/updateRoom', updatedRoom);
+      store.dispatch('course/updateCourse', updatedCourse);
       closeModal();
     };
 
@@ -135,7 +167,9 @@ export default {
 
     return {
       form,
+      imagePreview,
       handleSubmit,
+      handleImageChange,
       isFormChanged,
     };
   },

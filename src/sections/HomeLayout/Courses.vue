@@ -37,7 +37,7 @@
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { computed, ref } from 'vue';
-import Modal from '../../components/Modal.vue';
+import Modal from '../../components/HomeLayout/Modal.vue';
 
 export default {
   components: {

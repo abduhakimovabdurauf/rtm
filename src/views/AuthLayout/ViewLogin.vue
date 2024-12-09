@@ -12,7 +12,7 @@
         <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-slate-500" for="email">Email</label>
           <input
-              type="email"
+              type="text"
               v-model="email"
               class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Emailingizni kiriting"

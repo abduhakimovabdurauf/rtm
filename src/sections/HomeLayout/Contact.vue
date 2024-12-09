@@ -93,7 +93,7 @@ export default {
         try {
           await sendToTelegram(message);
           resetForm();
-          Swal.fire({
+          await Swal.fire({
             title: 'Muvaffaqiyatli yuborildi!',
             text: 'Biz siz bilan tez orada bog`lanamiz',
             icon: 'success',
@@ -102,7 +102,7 @@ export default {
         } 
         catch (error) {
           console.error('Telegramga yuborishda xato:', error);
-          Swal.fire({
+          await Swal.fire({
             title: 'Xato!',
             text: 'Xato yuz berdi, qayta urinib ko\'ring.',
             icon: 'error',
