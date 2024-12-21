@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-x-auto bg-white shadow-md sm:rounded-lg p-4 mt-6">
+  <div class="relative w-1/2 mx-auto overflow-x-auto bg-white shadow-md sm:rounded-lg p-4 mt-6">
     <div v-if="data" class="space-y-4">
       <div class="flex justify-between items-center border-b p-2 duration-300 hover:bg-gray-200">
         <span class="text-sm text-gray-500">Nomi:</span>
