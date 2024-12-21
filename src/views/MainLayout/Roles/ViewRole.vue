@@ -16,47 +16,55 @@
     />
 
   </actionSidebar>
-
-  <div class="relative overflow-x-auto bg-white shadow-md sm:rounded-lg mt-6" v-if="roles && roles.length > 0">
-    <table class="min-w-full bg-white rounded-lg overflow-hidden">
-      <thead class="bg-gray-800 text-white dark:bg-gray-700 dark:text-gray-300">
-      <tr>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Nomi</th>
-        <th scope="col" class="px-6 py-4 text-right">
-          <button
-              @click="openCreateModal"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold transition duration-200"
-          >
-            Qo'shish
-          </button>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-          v-for="role in roles"
-          :key="role.id"
-          class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200 cursor-pointer"
+  <div class="p-6 min-h-screen dark:bg-gray-900">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Rollar ro'yxati</h1>
+      <button
+          @click="openCreateModal"
+          class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
       >
-        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ role.name }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium" colspan="1">
-          <a
-              @click="deleteById(role.id)"
-              class="mr-1 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
-          >
-            <i class="bx bxs-trash-alt"></i>
-          </a>
-          <a
-              @click.prevent="openUpdateModal(role.id)"
-              href="#"
-              class="mr-1 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
-          >
-            <i class="bx bxs-edit-alt"></i>
-          </a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        <i class="bx bx-plus-circle text-xl"></i> <span>Rol qo'shish</span>
+      </button>
+    </div>
+
+    <div class="overflow-x-auto shadow-xl rounded-lg" v-if="roles && roles.length > 0">
+      <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
+        <thead>
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Nomi</th>
+          <th class="px-6 py-4 text-right ">
+            Amallar
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            v-for="(role,index) in roles"
+            :key="role.id"
+            class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200 cursor-pointer"
+        >
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ index+1 }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ role.name }}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <a
+                @click="deleteById(role.id)"
+                class="mr-1 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-trash-alt"></i>
+            </a>
+            <a
+                @click.prevent="openUpdateModal(role.id)"
+                href="#"
+                class="mr-1 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-edit-alt"></i>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 

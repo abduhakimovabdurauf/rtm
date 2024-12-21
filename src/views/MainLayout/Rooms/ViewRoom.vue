@@ -21,47 +21,76 @@
     />
   </actionSidebar>
 
-  <div class="relative overflow-x-auto bg-white shadow-md sm:rounded-lg mt-6" v-if="rooms && rooms.length > 0">
-    <table class="min-w-full bg-white rounded-lg overflow-hidden">
-      <thead class="bg-gray-800 text-white dark:bg-gray-700 dark:text-gray-300">
-      <tr>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Xona Nomi</th>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Raqami</th>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Tafsif</th>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Status</th>
-        <th scope="col" class="px-6 py-4 text-right">
-          <button
-              @click="openCreateModal"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold transition duration-200"
-          >
-            Qo'shish
-          </button>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-          v-if="rooms && rooms.length > 0"
-          v-for="room in rooms"
-          :key="room.id"
-          class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200 cursor-pointer"
+  <div class="p-6 min-h-screen dark:bg-gray-900">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Xonalar ro'yxati</h1>
+      <button
+          @click="openCreateModal"
+          class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
       >
-        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ room.name }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ room.quantity }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ room.description }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ room.status }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium" colspan="1">
-          <router-link :to="{ name: 'WatchRoom', params: { id: room.id } }">
-            <a class="mr-1 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200">Korish</a>
-          </router-link>
-          <a @click="deleteById(room.id)" class="mr-1 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"><i class="bx bxs-trash-alt"></i></a>
-          <a @click.prevent="openUpdateModal(room.id)" href="#" class="mr-1 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"><i class="bx bxs-edit-alt"></i></a>
-        </td>
-      </tr>
-      </tbody>
+        <i class="bx bx-plus-circle text-xl"></i> <span>Xona qo'shish</span>
+      </button>
+    </div>
 
-    </table>
+    <div class="overflow-x-auto shadow-xl rounded-lg" v-if="rooms && rooms.length > 0">
+      <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
+        <thead>
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Xona Nomi</th>
+          <th class="px-6 py-4 text-left">Raqami</th>
+          <th class="px-6 py-4 text-left">Tafsif</th>
+          <th class="px-6 py-4 text-left">Status</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            v-for="(room,index) in rooms"
+            :key="room.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index+1 }}</td>
+          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ room.name }}</td>
+          <td class="px-6 py-4 font-semibold">{{ room.quantity }}</td>
+          <td class="px-6 py-4 font-semibold">{{ room.description }}</td>
+          <td class="px-6 py-4">
+              <span
+                  :class="{
+                  'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
+                  'bg-green-200 text-green-800': room.status === 'Active',
+                  'bg-red-200 text-red-800': room.status === 'Inactive',
+                }"
+              >
+                {{ room.status }}
+              </span>
+          </td>
+          <td class="px-6 py-4 space-x-3 text-right">
+            <router-link
+                :to="{ name: 'WatchRoom', params: { id: room.id } }"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+            <button
+                @click="deleteById(room.id)"
+                class="mr-0.5 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-trash-alt"></i>
+            </button>
+            <button
+                @click.prevent="openUpdateModal(room.id)"
+                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-edit-alt"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+
 </template>
 
 <script>

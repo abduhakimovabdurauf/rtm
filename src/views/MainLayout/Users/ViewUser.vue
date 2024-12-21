@@ -15,13 +15,15 @@
     />
   </actionSidebar>
 
-  <div class="flex justify-end mt-4">
+  <div class="flex justify-between mt-4">
+    <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Xodimlar ro'yxati</h1>
+
     <button
         @click="openCreateModal"
-        class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
+        class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
         v-if="users && users.length >0"
     >
-      Qo'shish
+      <i class="bx bx-plus-circle text-xl"></i> <span>Xodim qo'shish</span>
     </button>
   </div>
 

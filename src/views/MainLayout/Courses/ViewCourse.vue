@@ -63,19 +63,19 @@
           <td class="px-6 py-4 space-x-3 text-right">
             <router-link
                 :to="{ name: 'WatchCourse', params: { id: course.id } }"
-                class="text-gray-300 text-2xl rounded-full hover:text-gray-500 transition"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
             >
               <i class="bx bxs-show"></i>
             </router-link>
             <button
                 @click="deleteById(course.id)"
-                class="text-gray-300 text-xl rounded-full hover:text-gray-500 transition"
+                class="mr-0.5 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
             >
               <i class="bx bxs-trash-alt"></i>
             </button>
             <button
                 @click.prevent="openUpdateModal(course.id)"
-                class="text-gray-300 text-xl rounded-full hover:text-gray-500 transition"
+                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
             >
               <i class="bx bxs-edit-alt"></i>
             </button>
@@ -83,34 +83,34 @@
         </tr>
         </tbody>
       </table>
-    </div>
-    <div class="flex justify-center items-center mt-6 space-x-2">
-      <button
-          @click="changePage(currentPage - 1)"
-          :disabled="currentPage === 1"
-          class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
-      >
-        <i class="bx bx-chevron-left"></i>
-      </button>
-      <button
-          v-for="page in totalPages"
-          :key="page"
-          @click="changePage(page)"
-          :class="{
+      <div class="flex justify-center items-center mt-6 space-x-2">
+        <button
+            @click="changePage(currentPage - 1)"
+            :disabled="currentPage === 1"
+            class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
+        >
+          <i class="bx bx-chevron-left"></i>
+        </button>
+        <button
+            v-for="page in totalPages"
+            :key="page"
+            @click="changePage(page)"
+            :class="{
             'bg-blue-600 text-white': currentPage === page,
             'bg-gray-300': currentPage !== page,
           }"
-          class="px-3 py-1 rounded-md font-medium transition duration-150"
-      >
-        {{ page }}
-      </button>
-      <button
-          @click="changePage(currentPage + 1)"
-          :disabled="currentPage === totalPages"
-          class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
-      >
-        <i class="bx bx-chevron-right"></i>
-      </button>
+            class="px-3 py-1 rounded-md font-medium transition duration-150"
+        >
+          {{ page }}
+        </button>
+        <button
+            @click="changePage(currentPage + 1)"
+            :disabled="currentPage === totalPages"
+            class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
+        >
+          <i class="bx bx-chevron-right"></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
