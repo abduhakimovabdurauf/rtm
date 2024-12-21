@@ -45,6 +45,7 @@ export default {
                 });
                 console.log('rooms : ',response)
                 commit("SET_ROOMS", response.data.rooms.data);
+                return response.data.rooms
             } catch (e) {
                 console.error(e)
                 toast.error(e.response?.data?.message || "Xonalarni olishda xatolik!");
@@ -126,4 +127,9 @@ export default {
             }
         },
     },
+    getters: {
+        rooms(state) {
+            return state.rooms
+        }
+    }
 };

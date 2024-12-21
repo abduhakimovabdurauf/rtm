@@ -68,6 +68,24 @@ const routes = [
     }
   },
   {
+    path: '/students',
+    name: 'Students',
+    component: ()=> import('@/views/MainLayout/Students/ViewStudents.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
+    path: '/groups',
+    name: 'Groups',
+    component: ()=> import('../views/MainLayout/Groups/ViewGroup.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
     path: '/watchcourse/:id?',
     name: 'WatchCourse',
     component: ()=> import('../views/MainLayout/Courses/ViewRequestCourse.vue'),
@@ -95,6 +113,24 @@ const routes = [
     }
   },
   {
+    path: '/watchStudent/:id?',
+    name: 'WatchStudent',
+    component: () => import('../views/MainLayout/Students/ViewRequestStudent.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
+     path: '/watchGroup/:id?',
+     name: 'WatchGroup',
+     component: ()=> import('../views/MainLayout/Groups/ViewRequestGroup.vue'),
+     meta: {
+       layout: 'main',
+       auth: true
+     }
+  },
+  {
     path: '/profile',
     name: 'Profile',
     component: ()=> import('../views/MainLayout/Profile/ViewProfile.vue'),
@@ -108,7 +144,9 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  linkActiveClass:'bg-gray-700',
+  linkExactActiveClass:'bg-gray-700',
 });
 
 router.beforeEach((to, from, next) => {

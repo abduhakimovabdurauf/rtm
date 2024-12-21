@@ -42,9 +42,9 @@ export default {
                 });
                 commit("SET_USERS", response.data.data);
                 console.log(response)
-                return response.data.total;
+                return response.data;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Foydalanuvchilarni olishda xatolik!");
+                toast.error(e.response?.data?.message || "Xodim malumotlarni olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
@@ -78,7 +78,7 @@ export default {
                 toast.success(response.data.message);
             } catch (e) {
                 console.log(e)
-                toast.error(e.response?.data?.message || "Foydalanuvchini qo'shishda xatolik!");
+                toast.error(e.response?.data?.message || "Xodim qo'shishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
@@ -96,7 +96,7 @@ export default {
                 toast.success(response.data.message);
             } catch (e) {
                 console.error(e)
-                toast.error(e.response?.data?.message || "Foydalanuvchini yangilashda xatolik!");
+                toast.error(e.response?.data?.message || "Xodim yangilashda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
@@ -110,10 +110,15 @@ export default {
                 commit("DELETE_USER", userId);
                 toast.success(response.data.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Foydalanuvchini o'chirishda xatolik!");
+                toast.error(e.response?.data?.message || "Xodim o'chirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
     },
+    getters: {
+        users(state) {
+            return state.users
+        }
+    }
 };

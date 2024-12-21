@@ -79,7 +79,7 @@ export default {
     const isUpdating = ref(false);
     const isReading = ref(false);
     const selectedRoleId = ref(null);
-    const roles = computed(() => store.state.role.roles);
+    const roles = computed(() => store.getters['role/roles']);
     const isSidebarOpen = computed(() => store.getters.isSidebarOpen);
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Role qo'shish";

@@ -16,77 +16,79 @@
     />
   </actionSidebar>
 
-  <div class="relative overflow-x-auto bg-white shadow-md sm:rounded-lg mt-6">
-    <table class="min-w-full bg-white rounded-lg overflow-hidden">
-      <thead class="bg-gray-800 text-white dark:bg-gray-700 dark:text-gray-300">
-      <tr>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Kurs Nomi</th>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Davomiyligi</th>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Narxi</th>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Tafsif</th>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Status</th>
-        <th scope="col" class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Rasm</th>
-        <th scope="col" class="px-6 py-4 text-right">
-          <button
-              @click="openCreateModal"
-              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold transition duration-200"
-          >
-            Qo'shish
-          </button>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-          v-for="course in courses"
-          :key="course.id"
-          class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200 cursor-pointer"
+  <div class="p-6 min-h-screen dark:bg-gray-900">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Kurslar ro'yxati</h1>
+      <button
+          @click="openCreateModal"
+          class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
       >
-        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ course.name }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ course.duration }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ course.price }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ course.description }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ course.status }}</td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm">
-          <img
-              class="w-28"
-              :src="course.image ? `https://api.mrtm.uz/storage/` + course.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFrS3DfXBwOlJdjx8cnKEiSIxaPPnoMOgOvGbhNGz_7rY0DiQUcAcMkiCf_5kkpkH7E18&usqp=CAU'"
-              alt="Course Image"
-          />
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium" colspan="1">
-          <router-link
-              :to="{ name: 'WatchCourse', params: { id: course.id } }"
-              class="mr-1 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
-          >
-            Ko'rish
-          </router-link>
-          <a
-              @click="deleteById(course.id)"
-              class="mr-1 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
-          >
-            <i class="bx bxs-trash-alt"></i>
-          </a>
-          <a
-              @click.prevent="openUpdateModal(course.id)"
-              href="#"
-              class="mr-1 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
-          >
-            <i class="bx bxs-edit-alt"></i>
-          </a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        <i class="bx bx-plus-circle text-xl"></i> <span>Kurs qo'shish</span>
+      </button>
+    </div>
 
-
-
-  <!--  Pagination  -->
-    <div class="flex justify-between items-center mt-4 w-[300px] mx-auto">
+    <div class="overflow-x-auto shadow-xl rounded-lg">
+      <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
+        <thead>
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Kurs nomi</th>
+          <th class="px-6 py-4 text-left">Davomiyligi</th>
+          <th class="px-6 py-4 text-left">Narxi</th>
+          <th class="px-6 py-4 text-left">Holat</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            v-for="(course, index) in courses"
+            :key="course.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
+          <td class="px-6 py-4 font-semibold">{{ course.name }}</td>
+          <td class="px-6 py-4 font-semibold">{{ course.duration }} oy</td>
+          <td class="px-6 py-4 font-semibold">{{ course.price }} UZS</td>
+          <td class="px-6 py-4">
+              <span
+                  :class="{
+                  'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
+                  'bg-green-200 text-green-800': course.status === 'Active',
+                  'bg-red-200 text-red-800': course.status === 'Inactive',
+                }"
+              >
+                {{ course.status }}
+              </span>
+          </td>
+          <td class="px-6 py-4 space-x-3 text-right">
+            <router-link
+                :to="{ name: 'WatchCourse', params: { id: course.id } }"
+                class="text-gray-300 text-2xl rounded-full hover:text-gray-500 transition"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+            <button
+                @click="deleteById(course.id)"
+                class="text-gray-300 text-xl rounded-full hover:text-gray-500 transition"
+            >
+              <i class="bx bxs-trash-alt"></i>
+            </button>
+            <button
+                @click.prevent="openUpdateModal(course.id)"
+                class="text-gray-300 text-xl rounded-full hover:text-gray-500 transition"
+            >
+              <i class="bx bxs-edit-alt"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flex justify-center items-center mt-6 space-x-2">
       <button
           @click="changePage(currentPage - 1)"
           :disabled="currentPage === 1"
-          class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+          class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
       >
         <i class="bx bx-chevron-left"></i>
       </button>
@@ -94,15 +96,18 @@
           v-for="page in totalPages"
           :key="page"
           @click="changePage(page)"
-          :class="{'bg-blue-500 text-white': currentPage === page, 'bg-gray-300': currentPage !== page}"
-          class="px-4 py-2 rounded-md font-semibold"
+          :class="{
+            'bg-blue-600 text-white': currentPage === page,
+            'bg-gray-300': currentPage !== page,
+          }"
+          class="px-3 py-1 rounded-md font-medium transition duration-150"
       >
         {{ page }}
       </button>
       <button
           @click="changePage(currentPage + 1)"
-          class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
           :disabled="currentPage === totalPages"
+          class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
       >
         <i class="bx bx-chevron-right"></i>
       </button>
@@ -131,7 +136,7 @@ export default {
     const isUpdating = ref(false);
     const isReading = ref(false);
     const selectedCourseId = ref(null);
-    const courses = computed(() => store.state.course.courses);
+    const courses = computed(() => store.getters['course/courses']);
     const sortBy = ref('id');
     const orderBy = ref('desc');
     const totalPages = ref(null)
@@ -204,7 +209,7 @@ export default {
           orderBy: orderBy.value,
         });
         console.log('api.mrtm.uz/storage/'+courses.value[4].image);
-        totalPages.value = Math.ceil(total / perPage.value);
+        totalPages.value = Math.ceil(total.total / perPage.value);
       } catch (e) {
         console.error("Error fetching courses:", e.message);
       }

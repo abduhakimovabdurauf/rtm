@@ -3,129 +3,132 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast();
 
-const API_URL = `${import.meta.env.VITE_API_URL}/roles`;
+const API_URL = `${import.meta.env.VITE_API_URL}/groups`;
 
 export default {
     namespaced: true,
     state() {
         return {
-            roles: [],
-            role: [],
+            groups: [],
+            token: localStorage.getItem("jwt-token"),
         };
     },
     mutations: {
-        SET_ROLES(state, role) {
-            state.roles = role;
+        SET_GROUPS(state, groups) {
+            state.groups = groups;
         },
-        ADD_ROLE(state, course) {
-            state.roles.push(course);
+        ADD_GROUP(state, group) {
+            state.groups.push(group);
         },
-        UPDATE_ROLE(state, updatedRole) {
-            const index = state.roles.findIndex((c) => c.id === updatedRole.id);
-            if (index !== -1) state.roles.splice(index, 1, updatedRole);
+        UPDATE_GROUP(state, updatedgroup) {
+            const index = state.groups.findIndex((c) => c.id === updatedgroup.id);
+            if (index !== -1) state.groups.splice(index, 1, updatedgroup);
         },
-        DELETE_ROLE(state, roleId) {
-            state.courses = state.roles.filter((course) => course.id !== roleId);
+        DELETE_GROUP(state, Id) {
+            state.groups = state.groups.filter((group) => group.id !== Id);
         },
     },
     actions: {
-        async getAllRoles({ commit }) {
+        async getAllGroups({ commit }, payload) {
             commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
+                    params: {
+                        page: payload.page,
+                        per_page: payload.perPage,
+                        sortBy: payload.sortBy,
+                        orderBy: payload.orderBy,
+                    },
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-
-                commit("SET_ROLES", response.data.data);
+                console.log('group',response)
+                commit("SET_GROUPS", response.data.data);
                 return response.data.total;
             } catch (e) {
-                console.log(e)
-                toast.error(e.response?.data?.message || "Rollarni olishda xatolik!");
+                toast.error(e.response?.data?.message || "Guruhlar malumotlarini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async getRoleById({ commit }, roleId) {
+        async getGroupById({ commit }, Id) {
             commit("SET_LOADING", true, { root: true });
+            console.log('Id',Id)
             try {
-                const response = await axios.get(`${API_URL}/${roleId}`, {
+                const response = await axios.get(`${API_URL}/${Id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
+                // console.log('response: ',response)
                 return response.data;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Failed to fetch course!");
+                toast.error(e.response?.data?.message || "Failed to fetch group!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async addRole({ commit }, role) {
+        async addGroup({ commit }, group) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(API_URL, role, {
+                const response = await axios.post(API_URL, group, {
                     headers: {
-                        "Content-Type": "application/json",
+                        "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log(response)
-                commit("ADD_ROLE", response.data.data);
+                commit("ADD_GROUP", response.data.group);
                 toast.success(response.data.message);
             } catch (e) {
-                console.error(e)
-                toast.error(e.response?.data?.message || "Role qoshishda xatolik!");
+                toast.error(e.response?.data?.message || "Kurs qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async updateRole({ commit }, updatedRole) {
+        async updateGroup({ commit }, payload) {
             commit("SET_LOADING", true, { root: true });
             try {
-                updatedRole._method = "PUT";
-                const response = await axios.post(`${API_URL}/${updatedRole.id}`, updatedRole, {
+                const response = await axios.post(`${API_URL}/${payload.id}`, payload, {
                     headers: {
-                        "Content-Type": "application/json",
+                        "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("UPDATE_ROLE", response.data.data);
+                commit("UPDATE_GROUP", response.data.group);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Role ozgartirishda xatolik!");
-                console.error(e)
+                toast.error(e.response?.data?.message || "Kursni o`zgartirishda xatolik!");
+                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async deleteRole({ commit }, roleId) {
-            if (!confirm("Siz rostdanxam bu rolni o'chirib yubormoqchimisiz?")) {
+        async deleteGroup({ commit }, Id) {
+            if (!confirm("Siz rostdanxam bu kursni o'chirib yubormoqchimisiz??")) {
                 return;
             }
-
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.delete(`${API_URL}/${roleId}`, {
+                const response = await axios.delete(`${API_URL}/${Id}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
                 });
-                commit("DELETE_COURSE", roleId);
+                commit("DELETE_GROUP", Id);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "role ni ochirishda xatolik!");
+                toast.error(e.response?.data?.message || "Failed to delete group!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
     },
     getters: {
-        roles(state) {
-            return state.roles
+        groups(state) {
+            return state.groups
         }
     }
 };

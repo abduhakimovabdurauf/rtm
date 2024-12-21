@@ -4,6 +4,8 @@ import course from "./modules/course.module.js";
 import role from "./modules/role.module.js";
 import room from "./modules/room.module.js";
 import user from "./modules/user.module.js";
+import student from "./modules/student.module.js";
+import group from "./modules/group.module.js";
 import aktImg from '../assets/images/akt.svg';
 import foundationImg from '../assets/images/found.svg';
 import robotImg from '../assets/images/ROBOT.svg';
@@ -398,7 +400,9 @@ const store = createStore({
     course,
     role,
     room,
-    user
+    user,
+    student,
+    group,
   }
 });
 

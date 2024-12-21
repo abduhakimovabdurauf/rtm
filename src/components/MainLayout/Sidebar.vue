@@ -51,16 +51,24 @@
             class="flex items-center p-2 rounded-md hover:bg-gray-700"
         >
           <i class="bx bx-grid-alt text-lg"></i>
-          <span v-if="isOpen" class="ml-3">Foydalanuvchilar</span>
+          <span v-if="isOpen" class="ml-3">Xodimlar</span>
         </router-link>
 
-        <li
+        <router-link
+            to="/students"
             class="flex items-center p-2 rounded-md hover:bg-gray-700"
         >
           <i class="bx bx-grid-alt text-lg"></i>
-          <span v-if="isOpen" class="ml-3">Projects</span>
-        </li>
+          <span v-if="isOpen" class="ml-3">Oquvchilar</span>
+        </router-link>
 
+        <router-link
+            to="/groups"
+            class="flex items-center p-2 rounded-md hover:bg-gray-700"
+        >
+          <i class="bx bx-grid-alt text-lg"></i>
+          <span v-if="isOpen" class="ml-3">Guruhlar</span>
+        </router-link>
       </ul>
     </div>
   </aside>

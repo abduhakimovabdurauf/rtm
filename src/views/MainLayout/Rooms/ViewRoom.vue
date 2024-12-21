@@ -83,7 +83,7 @@ export default {
     const isUpdating = ref(false);
     const isReading = ref(false);
     const selectedRoomId = ref(null);
-    const rooms = computed(() => store.state.room.rooms);
+    const rooms = computed(() => store.getters['room/rooms']);
     const isSidebarOpen = computed(() => store.getters.isSidebarOpen);
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Xona qo'shish";

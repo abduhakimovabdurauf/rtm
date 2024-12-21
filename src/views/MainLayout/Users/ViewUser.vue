@@ -34,7 +34,7 @@
       <div class="flex items-center space-x-4">
         <img
             class="w-16 h-16 rounded-full"
-            :src="user.images ? `https://api.mrtm.uz/storage/${user.images[0]}` : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
+            :src="user.image ? `http://192.168.11.71:8000/storage/${user.images[0]}` : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
             alt="User Avatar"
         />
         <div>
@@ -108,16 +108,16 @@ export default {
   setup() {
     const store = useStore();
     const currentPage = ref(1);
-    const users = computed(() => store.state.user.users);
+    const users = computed(() => store.getters['user/users']);
     const totalPages = ref(null);
     const isCreating = ref(false);
     const isUpdating = ref(false);
     const selectedUserId = ref(null);
-    const perPage = ref(5);
+    const perPage = ref(6);
 
     const sidebarTitle = computed(() => {
-      if (isCreating.value) return "Foydalanuvchi qo'shish";
-      if (isUpdating.value) return "Foydalanuvchini o'zgartirish";
+      if (isCreating.value) return "Xodim qo'shish";
+      if (isUpdating.value) return "Xodim malumotlarini o'zgartirish";
       return "";
     });
 
@@ -175,7 +175,7 @@ export default {
           page: currentPage.value,
           perPage: perPage.value,
         });
-        totalPages.value = Math.ceil(total / perPage.value);
+        totalPages.value = Math.ceil(total.total / perPage.value);
       } catch (e) {
         console.error("Error fetching users:", e.message);
       }

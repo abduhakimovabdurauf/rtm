@@ -149,7 +149,7 @@ import isEqual from 'lodash/isEqual';
 
 export default {
   props: {
-    userId: {
+    studentId: {
       type: Number,
       required: true,
     },
@@ -158,24 +158,27 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
 
-    const selectedUser = computed(() =>
-        store.state.user.users.find((user) => user.id === props.userId)
+    const selectedStudent = computed(() =>
+        store.state.student.students.find((student) => student.id === props.studentId)
     );
 
     const form = ref({
       full_name: '',
       login: '',
+      password: '',
       email: '',
       phone: '',
       address: '',
       links: '',
       birthday: '',
+      gender: '',
+      from: '',
       work_start: '',
       work_end: '',
-      id: props.userId,
-      description: '',
+      id: props.studentId,
       status: '',
-      image: null,
+      description: '',
+      images: null,
     });
 
     const initialForm = ref({});
@@ -183,13 +186,13 @@ export default {
     const imagePreview = ref(null);
 
     watch(
-        selectedUser,
-        (user) => {
-          if (user) {
-            Object.assign(form.value, user);
-            Object.assign(initialForm.value, user);
-            imagePreview.value = user.image
-                ? `https://api.mrtm.uz/storage/${user.image}`
+        selectedStudent,
+        (student) => {
+          if (student) {
+            Object.assign(form.value, student);
+            Object.assign(initialForm.value, student);
+            imagePreview.value = student.image
+                ? `https://api.mrtm.uz/storage/${student.image}`
                 : null;
           }
         },
@@ -214,8 +217,8 @@ export default {
 
 
     const handleSubmit = () => {
-      const updatedUser = { ...form.value };
-      store.dispatch('user/updateUser', updatedUser);
+      const updatedStudent = { ...form.value };
+      store.dispatch('student/updateStudent', updatedStudent);
       initialForm.value = { ...form.value };
       closeModal();
     };

@@ -17,15 +17,13 @@
       HomeLayout,
       AuthLayout,
     },
-
+    
     setup() {
       const route = useRoute()
-
       return {
         layout: computed(() => route.meta.layout ),
       }
     }
-
   }
 </script>
 

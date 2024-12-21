@@ -15,7 +15,7 @@
       <router-link to="/profile">
         <div class="flex items-center gap-2 p-2 bg-gray-100 hover:bg-blue-100 rounded-md cursor-pointer transition-all duration-300">
           <img
-              :src="user.images ? 'https:/api.mrtm.uz/storage/'+user.images[0] : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
+              :src="user.image ? 'https:/api.mrtm.uz/storage/'+user.images[0] : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
               alt="User Avatar"
               class="w-8 h-8 rounded-full border border-gray-300"
           />
