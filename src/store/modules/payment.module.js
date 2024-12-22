@@ -3,34 +3,33 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast();
 
-const API_URL = `${import.meta.env.VITE_API_URL}/courses`;
+const API_URL = `${import.meta.env.VITE_API_URL}/payments`;
 
 export default {
     namespaced: true,
     state() {
         return {
-            courses: [],
-            course: [],
+            payments: [],
             token: localStorage.getItem("jwt-token"),
         };
     },
     mutations: {
-        SET_COURSES(state, courses) {
-            state.courses = courses;
+        SET_PAYMENTS(state, payments) {
+            state.payments = payments;
         },
-        ADD_COURSE(state, course) {
-            state.courses.push(course);
+        ADD_PAYMENT(state, group) {
+            state.payments.push(group);
         },
-        UPDATE_COURSE(state, updatedCourse) {
-            const index = state.courses.findIndex((c) => c.id === updatedCourse.id);
-            if (index !== -1) state.courses.splice(index, 1, updatedCourse);
+        UPDATE_PAYMENT(state, updatedPayment) {
+            const index = state.payments.findIndex((c) => c.id === updatedPayment.id);
+            if (index !== -1) state.payments.splice(index, 1, updatedPayment);
         },
-        DELETE_COURSE(state, courseId) {
-            state.courses = state.courses.filter((course) => course.id !== courseId);
+        DELETE_PAYMENT(state, Id) {
+            state.payments = state.payments.filter((group) => group.id !== Id);
         },
     },
     actions: {
-        async getAllCourses({ commit }, payload) {
+        async getAllPayments({ commit }, payload) {
             commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
@@ -44,21 +43,21 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log(response)
-                commit("SET_COURSES", response.data.data);
+                console.log('group',response)
+                commit("SET_PAYMENTS", response.data.data);
                 return response.data.total;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Kurslarni olishda xatolik!");
+                toast.error(e.response?.data?.message || "Tolov malumotlarini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async getCourseById({ commit }, courseId) {
+        async getPaymentById({ commit }, Id) {
             commit("SET_LOADING", true, { root: true });
-            console.log('courseId',courseId)
+            console.log('Id',Id)
             try {
-                const response = await axios.get(`${API_URL}/${courseId}`, {
+                const response = await axios.get(`${API_URL}/${Id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
@@ -66,22 +65,22 @@ export default {
                 // console.log('response: ',response)
                 return response.data;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Failed to fetch course!");
+                toast.error(e.response?.data?.message || "Failed to fetch group!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async addCourse({ commit }, course) {
+        async addPayment({ commit }, payload) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(API_URL, course, {
+                const response = await axios.post(API_URL, payload, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("ADD_COURSE", response.data.course);
+                commit("ADD_PAYMENT", response.data.group);
                 toast.success(response.data.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kurs qoshishda xatolik!");
@@ -90,7 +89,7 @@ export default {
             }
         },
 
-        async updateCourse({ commit }, payload) {
+        async updatePayment({ commit }, payload) {
             commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.post(`${API_URL}/${payload.id}`, payload, {
@@ -99,7 +98,7 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("UPDATE_COURSE", response.data.course);
+                commit("UPDATE_PAYMENT", response.data.group);
                 toast.success(response?.data?.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kursni o`zgartirishda xatolik!");
@@ -109,27 +108,27 @@ export default {
             }
         },
 
-        async deleteCourse({ commit }, courseId) {
-            if (!confirm("Siz rostdanxam bu kursni o'chirib yubormoqchimisiz??")) {
+        async deletePayment({ commit }, Id) {
+            if (!confirm("Siz rostdanxam bu tolov malumotlarni o'chirib yubormoqchimisiz o'chirib yubormoqchimisiz??")) {
                 return;
             }
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.delete(`${API_URL}/${courseId}`, {
+                const response = await axios.delete(`${API_URL}/${Id}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
                 });
-                commit("DELETE_COURSE", courseId);
+                commit("DELETE_PAYMENT", Id);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Failed to delete course!");
+                toast.error(e.response?.data?.message || "Failed to delete group!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
     },
     getters: {
-        courses(state) {
-            return state.courses
+        payments(state) {
+            return state.payments
         }
     }
 };

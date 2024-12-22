@@ -165,7 +165,6 @@ export default {
     });
 
     const openCreateModal = () => {
-      console.log(groups.value);
       isCreating.value = true;
       isUpdating.value = false;
       isReading.value = false
@@ -229,9 +228,7 @@ export default {
           sortBy: sortBy.value,
           orderBy: orderBy.value,
         });
-        console.info('guruhlar malumotlari',groups.value)
         totalPages.value = Math.ceil(total / perPage.value);
-        console.log(groups.value)
       } catch (e) {
         console.error("Error fetching groups:", e.message);
       }

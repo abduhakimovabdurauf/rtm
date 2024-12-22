@@ -43,7 +43,6 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('group',response)
                 commit("SET_GROUPS", response.data.data);
                 return response.data.total;
             } catch (e) {

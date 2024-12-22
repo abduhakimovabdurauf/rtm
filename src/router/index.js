@@ -86,6 +86,15 @@ const routes = [
     }
   },
   {
+    path: '/payments',
+    name: 'Payments',
+    component: ()=> import('../views/MainLayout/Payments/ViewPayments.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
     path: '/watchcourse/:id?',
     name: 'WatchCourse',
     component: ()=> import('../views/MainLayout/Courses/ViewRequestCourse.vue'),
@@ -129,6 +138,15 @@ const routes = [
        layout: 'main',
        auth: true
      }
+  },
+  {
+    path: '/watchPayment/:id?',
+    name: 'WatchPayment',
+    component: ()=> import('../views/MainLayout/Payments/ViewRequestPayments.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
   },
   {
     path: '/profile',

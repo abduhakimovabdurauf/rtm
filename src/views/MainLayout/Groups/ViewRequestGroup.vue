@@ -1,6 +1,7 @@
 <template>
-  <div class="flex justify-between">
-    <div v-if="data" class="space-y-6 w-1/2 mx-auto p-6 bg-white rounded-xl mt-6">
+  <div class="flex justify-evenly flex-wrap">
+    <div v-if="data" class="space-y-6 w-1/3 p-6 bg-white rounded-xl mt-6">
+      <h1>Guruh malumotlari</h1>
       <div class="flex justify-between items-center border-b p-2 duration-300 hover:bg-gray-200">
         <span class="text-sm text-gray-500">Nomi:</span>
         <span class="text-lg font-semibold text-gray-900">{{ data.name }}</span>
@@ -8,7 +9,7 @@
 
       <div class="flex justify-between items-start border-b p-2 duration-300 hover:bg-gray-200">
         <span class="text-sm text-gray-500">Kurs:</span>
-        <span class="text-lg font-medium text-gray-700 max-w-md leading-relaxed">{{ data.course.name }}</span>
+        <span class="text-lg font-medium text-gray-700 max-w-md leading-relaxed">{{ data.students.name }}</span>
       </div>
 
       <div class="flex justify-between items-center border-b p-2 duration-300 hover:bg-gray-200" v-if="data.number">
@@ -31,47 +32,122 @@
       </div>
 
     </div>
-    <!--    <div class="overflow-x-auto bg-white rounded-lg">-->
-    <!--      <table class="w-1/3 bg-white dark:bg-gray-800 text-sm rounded-lg text-gray-700 dark:text-gray-300">-->
-    <!--        <thead>-->
-    <!--        <tr class="bg-gray-700 text-white">-->
-    <!--          <th class="px-6 py-4 text-left">№</th>-->
-    <!--          <th class="px-6 py-4 text-left">Kurs nomi</th>-->
-    <!--          <th class="px-6 py-4 text-left">Holat</th>-->
-    <!--          <th class="px-6 py-4 text-right">Amallar</th>-->
-    <!--        </tr>-->
-    <!--        </thead>-->
-    <!--        <tbody>-->
-    <!--        <tr-->
-    <!--            v-for="(course, index) in data.courses"-->
-    <!--            :key="course.id"-->
-    <!--            class="hover:bg-gray-100 dark:hover:bg-gray-700 transition"-->
-    <!--        >-->
-    <!--          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>-->
-    <!--          <td class="px-6 py-4 font-semibold">{{ course.name }}</td>-->
-    <!--          <td class="px-6 py-4">-->
-    <!--                <span-->
-    <!--                    :class="{-->
-    <!--                    'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,-->
-    <!--                    'bg-green-200 text-green-800': course.status === 'Active',-->
-    <!--                    'bg-red-200 text-red-800': course.status === 'Inactive',-->
-    <!--                  }"-->
-    <!--                >-->
-    <!--                  {{ course.status }}-->
-    <!--                </span>-->
-    <!--          </td>-->
-    <!--          <td class="px-6 py-4 space-x-3 text-right">-->
-    <!--            <router-link-->
-    <!--                :to="{ name: 'WatchCourse', params: { id: course.id } }"-->
-    <!--                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"-->
-    <!--            >-->
-    <!--              <i class="bx bxs-show"></i>-->
-    <!--            </router-link>-->
-    <!--          </td>-->
-    <!--        </tr>-->
-    <!--        </tbody>-->
-    <!--      </table>-->
-    <!--    </div>-->
+    <div class="w-2/4 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <table class="w-full text-sm">
+        <thead class="h-10">
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Oquvchi ismi</th>
+          <th class="px-6 py-4 text-left">Email</th>
+          <th class="px-6 py-4 text-left">Holat</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody v-if="data && data.students && data.students.length">
+        <tr
+            v-for="(students, index) in data.students"
+            :key="students.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-4 font-semibold">{{ students.full_name }}</td>
+          <td class="px-6 py-4 font-semibold">{{ students.email }}</td>
+          <td class="px-6 py-4 font-semibold">{{ students.status }}</td>
+          <td class="px-6 py-4 font-semibold">
+            <router-link
+                :to="{ name: 'WatchStudent', params: { id: students.id } }"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+          </td>
+        </tr>
+        </tbody>
+        <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center py-4 text-gray-500">Kurs ma'lumotlari mavjud emas.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="w-1/3 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <table class="w-full text-sm">
+        <thead class="h-10">
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Tolov</th>
+          <th class="px-6 py-4 text-left">Holat</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody v-if="data && data.payments && data.payments.length">
+        <tr
+            v-for="(payment, index) in data.payments"
+            :key="payment.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-4 font-semibold">{{ payment.summa }}</td>
+          <td class="px-6 py-4 font-semibold">{{ payment.status }}</td>
+          <td class="px-6 py-4 font-semibold">
+            <router-link
+                :to="{ name: 'WatchPayment', params: { id: payment.id } }"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+          </td>
+        </tr>
+        </tbody>
+        <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center py-4 text-gray-500">To'lov ma'lumotlari mavjud emas.</td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+    <div class="w-2/4 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <table class="w-full text-sm">
+        <thead class="h-10">
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Xona</th>
+          <th class="px-6 py-4 text-left">Raqami</th>
+          <th class="px-6 py-4 text-left">Holat</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody v-if="data && data.room && data.room.length">
+        <tr
+            v-for="(room, index) in data.room"
+            :key="room.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-4 font-semibold">{{ room.name }}</td>
+          <td class="px-6 py-4 font-semibold">{{ room.number }}</td>
+          <td class="px-6 py-4 font-semibold">{{ room.status }}</td>
+          <td class="px-6 py-4 font-semibold">
+            <router-link
+                :to="{ name: 'Watchroom', params: { id: room.id } }"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+          </td>
+        </tr>
+        </tbody>
+        <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center py-4 text-gray-500">Xona ma'lumotlari mavjud emas.</td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
   </div>
 </template>
 

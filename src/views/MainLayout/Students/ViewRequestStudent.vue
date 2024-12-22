@@ -1,11 +1,12 @@
 <template>
-  <div class="flex justify-between">
-    <div v-if="data" class="space-y-6 w-1/2 mx-auto p-6 bg-white rounded-xl mt-6">
-      <div class="flex justify-center py-6">
+  <div class="flex justify-evenly">
+    <div v-if="data" class="w-1/3 p-6 bg-white rounded-xl mt-6">
+      <h1>O'quvchi malumotlari</h1>
+      <div class="flex py-2">
         <img
             :src="data.image ? `https://api.mrtm.uz/storage/` + data.image : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
             alt="User Image"
-            class="w-32 h-32 object-cover rounded-full border-2 border-gray-300"
+            class="w-20 h-20 mx-auto object-cover rounded-full border-2 border-gray-300"
         />
       </div>
 
@@ -37,49 +38,47 @@
           {{ data.status === 'active' ? 'Faol' : 'Faol emas' }}
         </span>
       </div>
-
     </div>
-    <!--    <div class="overflow-x-auto bg-white rounded-lg">-->
-    <!--      <table class="w-1/3 bg-white dark:bg-gray-800 text-sm rounded-lg text-gray-700 dark:text-gray-300">-->
-    <!--        <thead>-->
-    <!--        <tr class="bg-gray-700 text-white">-->
-    <!--          <th class="px-6 py-4 text-left">№</th>-->
-    <!--          <th class="px-6 py-4 text-left">Kurs nomi</th>-->
-    <!--          <th class="px-6 py-4 text-left">Holat</th>-->
-    <!--          <th class="px-6 py-4 text-right">Amallar</th>-->
-    <!--        </tr>-->
-    <!--        </thead>-->
-    <!--        <tbody>-->
-    <!--        <tr-->
-    <!--            v-for="(course, index) in data.courses"-->
-    <!--            :key="course.id"-->
-    <!--            class="hover:bg-gray-100 dark:hover:bg-gray-700 transition"-->
-    <!--        >-->
-    <!--          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>-->
-    <!--          <td class="px-6 py-4 font-semibold">{{ course.name }}</td>-->
-    <!--          <td class="px-6 py-4">-->
-    <!--                <span-->
-    <!--                    :class="{-->
-    <!--                    'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,-->
-    <!--                    'bg-green-200 text-green-800': course.status === 'Active',-->
-    <!--                    'bg-red-200 text-red-800': course.status === 'Inactive',-->
-    <!--                  }"-->
-    <!--                >-->
-    <!--                  {{ course.status }}-->
-    <!--                </span>-->
-    <!--          </td>-->
-    <!--          <td class="px-6 py-4 space-x-3 text-right">-->
-    <!--            <router-link-->
-    <!--                :to="{ name: 'WatchCourse', params: { id: course.id } }"-->
-    <!--                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"-->
-    <!--            >-->
-    <!--              <i class="bx bxs-show"></i>-->
-    <!--            </router-link>-->
-    <!--          </td>-->
-    <!--        </tr>-->
-    <!--        </tbody>-->
-    <!--      </table>-->
-    <!--    </div>-->
+
+    <div class="w-2/4 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <table class="w-full text-sm">
+        <thead class="h-10">
+          <tr class="bg-gray-700 text-white">
+            <th class="px-6 py-4 text-left">№</th>
+            <th class="px-6 py-4 text-left">Tolov summasi</th>
+            <th class="px-6 py-4 text-left">To'lov sanasi</th>
+            <th class="px-6 py-4 text-left">Holat</th>
+            <th class="px-6 py-4 text-right">Amallar</th>
+          </tr>
+        </thead>
+        <tbody v-if="data && data.payments && data.payments.length">
+          <tr
+              v-for="(payment, index) in data.payments"
+              :key="payment.id"
+              class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+          >
+            <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
+            <td class="px-6 py-4 font-semibold">{{ payment.summa }}</td>
+            <td class="px-6 py-4 font-semibold">{{ payment.payment_date }}</td>
+            <td class="px-6 py-4 font-semibold">{{ payment.status }}</td>
+            <td class="px-6 py-4 font-semibold">
+              <router-link
+                  :to="{ name: 'WatchPayment', params: { id: payment.id } }"
+                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+              >
+                <i class="bx bxs-show"></i>
+              </router-link>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr>
+            <td colspan="5" class="text-center py-4 text-gray-500">To'lov ma'lumotlari mavjud emas.</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
   </div>
 </template>
 

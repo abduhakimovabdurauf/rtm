@@ -52,6 +52,11 @@
           <i class='bx bx-group'></i>
           <span v-if="isOpen" class="ml-3">Guruhlar</span>
         </router-link>
+
+        <router-link to="/payments" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bxs-credit-card'></i>
+          <span v-if="isOpen" class="ml-3">To'lovlar</span>
+        </router-link>
       </ul>
     </div>
 
