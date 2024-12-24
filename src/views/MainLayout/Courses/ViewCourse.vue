@@ -207,7 +207,7 @@ export default {
           sortBy: sortBy.value,
           orderBy: orderBy.value,
         });
-        totalPages.value = Math.ceil(total / perPage.value);
+        totalPages.value = Math.ceil(total.total / perPage.value);
       } catch (e) {
         console.error("Error fetching courses:", e.message);
       }

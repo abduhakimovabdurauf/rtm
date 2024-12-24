@@ -16,7 +16,7 @@
     />
   </actionSidebar>
 
-  <div class="p-6 min-h-screen dark:bg-gray-900">
+  <div class="p-6 min-h-screen dark:bg-gray-900" v-if="groups">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Guruhlar ro'yxati</h1>
       <button
@@ -37,12 +37,7 @@
           <th class="px-6 py-4 text-left">Status</th>
           <th class="px-6 py-4 text-left">Rasm</th>
           <th class="px-6 py-4 text-right">
-            <button
-                @click="openCreateModal"
-                class="bg-gradient-to-r from-blue-600 to-blue-400 text-white px-4 py-2 rounded-md font-semibold transition duration-200"
-            >
-              Qo'shish
-            </button>
+            Amallar
           </th>
         </tr>
         </thead>

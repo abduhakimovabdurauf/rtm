@@ -32,13 +32,10 @@
 </template>
 
 <script>
-  import {onMounted} from "vue";
 
   export default {
     setup(){
-      onMounted(()=> {
-        console.log('userData: ', JSON.parse(localStorage.getItem("user")));
-      })
+
     }
   }
 </script>

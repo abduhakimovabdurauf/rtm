@@ -37,6 +37,7 @@
       <select
           id="user_id"
           required
+          v-if="users && users.data && users.data.length>0"
           v-model="newGroup.user_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
@@ -54,6 +55,7 @@
       <select
           id="course_id"
           required
+          v-if="courses && courses.data && courses.data.length>0"
           v-model="newGroup.course_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
@@ -71,6 +73,7 @@
       <select
           id="room_id"
           required
+          v-if="rooms && rooms.data && rooms.data.length >0"
           v-model="newGroup.room_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
@@ -100,7 +103,7 @@
 </template>
 
 <script>
-import { reactive, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -108,7 +111,7 @@ export default {
   setup(_, { emit }) {
     const store = useStore();
 
-    const newGroup = reactive({
+    const newGroup = ref({
       user_id: "",
       course_id: "",
       room_id: "",
@@ -117,15 +120,33 @@ export default {
       description: "",
     });
 
-    const courses = reactive({ data: [] });
-    const rooms = reactive({ data: [] });
-    const users = reactive({ data: [] });
+    const courses = ref(null);
+    const rooms = ref(null);
+    const users = ref(null);
 
     const fetchData = async () => {
       try {
-        courses.data = await store.dispatch('course/getAllCourses');
-        rooms.data = await store.dispatch('room/getAllRooms');
-        users.data = await store.dispatch('user/getAllUsers');
+        courses.value = await store.dispatch("course/getAllCourses", {
+          page: 1,
+          perPage: 5,
+          sortBy: "id",
+          orderBy: "desc",
+        });
+        rooms.value = await store.dispatch("room/getAllRooms", {
+          page: 1,
+          perPage: 5,
+          sortBy: "id",
+          orderBy: "desc",
+        });
+        users.value = await store.dispatch("user/getAllUsers", {
+          page: 1,
+          perPage: 5,
+          sortBy: "id",
+          orderBy: "desc",
+        });
+        console.log("Users:", users.value);
+        console.log("Rooms:", rooms.value);
+        console.log("Courses:", courses.value);
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -135,18 +156,19 @@ export default {
 
     const isFormValid = computed(() => {
       return (
-          newGroup.name.trim() &&
-          newGroup.description.trim() &&
-          newGroup.status.trim() &&
-          newGroup.user_id &&
-          newGroup.course_id &&
-          newGroup.room_id
+          newGroup.value.name.trim() &&
+          newGroup.value.description.trim() &&
+          newGroup.value.status.trim() &&
+          newGroup.value.user_id &&
+          newGroup.value.course_id &&
+          newGroup.value.room_id
       );
     });
 
     const handleSubmit = async () => {
       try {
-        await store.dispatch("group/addGroup", {...newGroup});
+        console.log("Yuborilayotgan ma'lumot:", newGroup.value);
+        await store.dispatch("group/addGroup", {...newGroup.value});
         resetForm();
         emit("close");
       } catch (error) {
@@ -156,14 +178,14 @@ export default {
     };
 
     const resetForm = () => {
-      Object.assign(newGroup, {
+      newGroup.value = {
         user_id: "",
         course_id: "",
         room_id: "",
         name: "",
         status: "active",
         description: "",
-      });
+      };
     };
 
     return {

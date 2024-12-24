@@ -38,6 +38,7 @@
           id="payment_id"
           required
           v-model="newPayment.payment_id"
+          v-if="groups && groups.data && groups.data.length>0"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option
@@ -51,14 +52,18 @@
     </div>
     <div class="mb-4">
       <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Oquvchi ID</label>
+      <input
+          type="text"
+      >
       <select
           id="student_id"
           required
+          v-if="students && students.data && students.data.length>0"
           v-model="newPayment.student_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option
-            v-for="student in students.data.data.students.data"
+            v-for="student in students.data.students.data"
             :key="student.id"
             :value="student.id"
         >
@@ -83,7 +88,7 @@
 </template>
 
 <script>
-import { reactive, computed, onMounted } from "vue";
+import { reactive,ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -100,24 +105,25 @@ export default {
       description: "",
     });
 
-    const groups = reactive({ data: [] });
-    const students = reactive({ data: {data:{students:{data:[]}}} });
+    const groups = ref(null);
+    const students = ref(null);
 
     const fetchData = async () => {
       try {
-        groups.data = await store.dispatch('payment/getAllGroups', {
-          page: 1,
-          perPage: 5,
-          sortBy: 'id',
-          orderBy: 'desk',
-        });
-        students.data = await store.dispatch('student/getAllStudents', {
+        groups.value = await store.dispatch('group/getAllGroups', {
           page: 1,
           perPage: 5,
           sortBy: 'id',
           orderBy: 'desc',
         });
-        console.log('oquvchilar',students.data)
+        students.value = await store.dispatch('student/getAllStudents', {
+          page: 1,
+          perPage: 5,
+          sortBy: 'id',
+          orderBy: 'desc',
+        });
+        console.log('oquvchilar',students.value)
+        console.log('ggrrrr',groups.value)
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }

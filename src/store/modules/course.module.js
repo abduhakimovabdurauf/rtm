@@ -46,7 +46,7 @@ export default {
                 });
                 console.log(response)
                 commit("SET_COURSES", response.data.data);
-                return response.data.total;
+                return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kurslarni olishda xatolik!");
             } finally {
