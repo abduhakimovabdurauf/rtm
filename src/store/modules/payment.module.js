@@ -43,7 +43,7 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('group',response)
+                console.log('payments',response)
                 commit("SET_PAYMENTS", response.data.data);
                 return response.data.total;
             } catch (e) {
@@ -54,7 +54,6 @@ export default {
         },
 
         async getPaymentById({ commit }, Id) {
-            commit("SET_LOADING", true, { root: true });
             console.log('Id',Id)
             try {
                 const response = await axios.get(`${API_URL}/${Id}`, {
@@ -66,8 +65,6 @@ export default {
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Failed to fetch group!");
-            } finally {
-                commit("SET_LOADING", false, { root: true });
             }
         },
 

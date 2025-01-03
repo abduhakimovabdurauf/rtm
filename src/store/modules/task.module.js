@@ -3,33 +3,39 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast();
 
-const API_URL = `${import.meta.env.VITE_API_URL}/roles`;
+const API_URL = `${import.meta.env.VITE_API_URL}/tasks`;
 
 export default {
     namespaced: true,
     state() {
         return {
-            roles: [],
-            role: [],
+            tasks: [],
+            task: [],
         };
     },
     mutations: {
-        SET_ROLES(state, role) {
-            state.roles = role;
+        SET_TASK(state, task) {
+            state.task = task;
         },
-        ADD_ROLE(state, course) {
-            state.roles.push(course);
+        SET_TASKS(state, tasks) {
+            state.tasks = tasks;
         },
-        UPDATE_ROLE(state, updatedRole) {
-            const index = state.roles.findIndex((c) => c.id === updatedRole.id);
-            if (index !== -1) state.roles.splice(index, 1, updatedRole);
+        ADD_TASK(state, task) {
+            if (!Array.isArray(state.tasks)) {
+                state.tasks = [];
+            }
+            state.tasks.push(task);
         },
-        DELETE_ROLE(state, roleId) {
-            state.courses = state.roles.filter((course) => course.id !== roleId);
+        UPDATE_TASK(state, updatedtask) {
+            const index = state.tasks.findIndex((c) => c.id === updatedtask.id);
+            if (index !== -1) state.tasks.splice(index, 1, updatedtask);
+        },
+        DELETE_TASK(state, taskId) {
+            state.tasks = state.tasks.filter((task) => task.id !== taskId);
         },
     },
     actions: {
-        async getAllRoles({ commit }) {
+        async getAllTasks({ commit }) {
             commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
@@ -37,95 +43,93 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-
-                commit("SET_ROLES", response.data.data);
-                return response.data.total;
+                console.log('tasks : ',response)
+                commit("SET_TASKS", response.data.data);
+                return response.data
             } catch (e) {
-                console.log(e)
-                toast.error(e.response?.data?.message || "Lavozimlar royhatini olishda xatolik!");
+                console.error(e)
+                toast.error(e.response?.data?.message || "Topshiriqlar royhatini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async getRoleById({ commit }, roleId) {
+        async getTaskById({ commit }, taskId) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.get(`${API_URL}/${roleId}`, {
+                const response = await axios.get(`${API_URL}/${taskId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                return response.data;
+
+                return response.data
             } catch (e) {
-                toast.error(e.response?.data?.message || "Lavozimlar royhatini olishda xatolik!");
+                toast.error(e.response?.data?.message || "Xonalarni olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async addRole({ commit }, role) {
+        async addTask({ commit }, task) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(API_URL, role, {
+                const response = await axios.post(API_URL, task, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log(response)
-                commit("ADD_ROLE", response.data.data);
+                console.log("added",response)
+                commit("ADD_TASK", response.data.task);
                 toast.success(response.data.message);
             } catch (e) {
                 console.error(e)
-                toast.error(e.response?.data?.message || "Lavozim qoshishda xatolik!");
+                toast.error(e.response?.data?.message || "Xona qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async updateRole({ commit }, updatedRole) {
+        async updateTask({ commit }, updatedTask) {
             commit("SET_LOADING", true, { root: true });
             try {
-                updatedRole._method = "PUT";
-                const response = await axios.post(`${API_URL}/${updatedRole.id}`, updatedRole, {
+                const response = await axios.post(`${API_URL}/${updatedTask.id}`, updatedtask, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("UPDATE_ROLE", response.data.data);
+                commit("UPDATE_TASK", response.data);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Lavozim ozgartirishda xatolik!");
-                console.error(e)
+                toast.error(e.response?.data?.message || "Topshiriq malumotlarini ozgartirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async deleteRole({ commit }, roleId) {
-            if (!confirm("Siz rostdanxam bu rolni o'chirib yubormoqchimisiz?")) {
+        async deleteTask({ commit }, taskId) {
+            if (!confirm("Siz rostdanxam bu topshiriqni o'chirib yubormoqchimisiz??")) {
                 return;
             }
-
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.delete(`${API_URL}/${roleId}`, {
+                const response = await axios.delete(`${API_URL}/${taskId}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
                 });
-                commit("DELETE_COURSE", roleId);
+                commit("DELETE_TASK", taskId);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "lavozim ni ochirishda xatolik!");
+                toast.error(e.response?.data?.message || "Topshiriqni ochirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
     },
     getters: {
-        roles(state) {
-            return state.roles
+        tasks(state) {
+            return state.tasks
         }
     }
 };

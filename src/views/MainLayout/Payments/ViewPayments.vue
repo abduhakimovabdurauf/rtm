@@ -61,12 +61,12 @@
               </span>
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
-            <router-link
-                :to="{ name: 'WatchPayment', params: { id: payment.id } }"
+            <button
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+                @click="openModal(payment.id)"
             >
               <i class="bx bxs-show"></i>
-            </router-link>
+            </button>
             <button
                 @click="deleteById(payment.id)"
                 class="mr-0.5 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
@@ -113,19 +113,27 @@
       </div>
     </div>
   </div>
+
+  <Modal :isVisible="isModalVisible" @update:isVisible="isModalVisible = $event">
+    <ViewRequestPayments :id="Id"/>
+  </Modal>
 </template>
 
 <script>
-import { computed, ref, onMounted } from "vue";
-import { useStore } from "vuex";
+import {computed, ref, onMounted} from "vue";
+import {useStore} from "vuex";
 import CreateForm from "@/components/MainLayout/payment/CreateForm.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
+import Modal from '@/components/MainLayout/Modal.vue'
 import updatePayment from "@/components/MainLayout/payment/updatePayment.vue";
+import ViewRequestPayments from "@/views/MainLayout/Payments/ViewRequestPayments.vue";
 export default {
   components: {
+    ViewRequestPayments,
     updatePayment,
     actionSidebar,
     CreateForm,
+    Modal
   },
   setup() {
     const store = useStore();
@@ -144,9 +152,16 @@ export default {
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "To'lo'v qo'shish";
       if (isUpdating.value) return "To'lo'vni o'zgartirish";
-      if(isReading.value) return "Ko'rish";
+      if (isReading.value) return "Ko'rish";
       return "";
     });
+
+    const isModalVisible = ref(false);
+    const Id = ref(null);
+    const openModal = (id) => {
+      isModalVisible.value = true;
+      Id.value = id;
+    };
 
     const openCreateModal = () => {
       console.log(payments.value);
@@ -237,6 +252,9 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedPaymentId,
+      isModalVisible,
+      openModal,
+      Id,
     };
   },
 };

@@ -5,7 +5,7 @@
       <Navbar />
       <div class="flex-1 px-6 overflow-auto">
         <Loader v-if="isLoading" />
-        <router-view />
+        <router-view/>
       </div>
     </div>
   </div>
@@ -26,7 +26,6 @@ export default {
   setup(){
     const store = useStore();
     const isLoading = computed(() =>store.getters.isLoading);
-    // const isSidebarOpen = computed(() => store.state.isSidebarOpen);
 
     return {
       isLoading
@@ -52,12 +51,5 @@ export default {
   100% {
     transform: translateY(0);
   }
-}
-
-.bounce-enter-active {
-  animation: bounce-in-left 0.6s ease forwards;
-}
-.bounce-leave-active {
-  animation: bounce-in-left 0.6s ease reverse forwards;
 }
 </style>

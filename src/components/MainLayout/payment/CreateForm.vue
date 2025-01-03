@@ -1,9 +1,9 @@
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form @submit.prevent="handleSubmit" v-if="!isLoading">
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tolov summasi</label>
       <input
-          v-model="newPayment.summa"
+          v-model.trim="newPayment.summa"
           type="text"
           id="name"
           required
@@ -11,9 +11,48 @@
       />
     </div>
     <div class="mb-4">
+      <label for="payment_method" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        To'lov usuli
+      </label>
+      <select
+          v-model.trim="newPayment.payment_method"
+          id="payment_method"
+          required
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option value="cash">Naqd</option>
+        <option value="card">Karta</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label for="contract_n" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Shartnoma raqami
+      </label>
+      <input
+          v-model.trim="newPayment.contract_n"
+          type="text"
+          id="contract_n"
+          required
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="payment_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        To'lov sanasi
+      </label>
+      <input
+          v-model.trim="newPayment.payment_date"
+          type="date"
+          id="payment_date"
+          required
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      />
+    </div>
+    <div class="mb-4">
       <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
       <textarea
-          v-model="newPayment.description"
+          v-model.trim="newPayment.description"
           id="description"
           required
           rows="3"
@@ -21,24 +60,12 @@
       ></textarea>
     </div>
     <div class="mb-4">
-      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+      <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh ID</label>
       <select
-          v-model="newPayment.status"
-          id="status"
+          id="group_id"
           required
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option value="active">Faol</option>
-        <option value="inactive">Faol emas</option>
-      </select>
-    </div>
-    <div class="mb-4">
-      <label for="payment_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh ID</label>
-      <select
-          id="payment_id"
-          required
-          v-model="newPayment.payment_id"
-          v-if="groups && groups.data && groups.data.length>0"
+          v-model.trim="newPayment.group_id"
+          v-if="groups && groups.data && groups.data.length > 0"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option
@@ -49,37 +76,44 @@
           {{ payment.name }}
         </option>
       </select>
+      <p v-else class="text-gray-500">No groups available</p>
     </div>
     <div class="mb-4">
       <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Oquvchi ID</label>
-      <input
-          type="text"
-      >
       <select
           id="student_id"
           required
-          v-if="students && students.data && students.data.length>0"
-          v-model="newPayment.student_id"
+          v-if="students && students.data && students.data.length > 0"
+          v-model.trim="newPayment.student_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option
-            v-for="student in students.data.students.data"
+            v-for="student in students.data"
             :key="student.id"
             :value="student.id"
         >
-          {{ student.name }}
+          {{ student.full_name }}
         </option>
+      </select>
+      <p v-else class="text-gray-500">No students available</p>
+    </div>
+    <div class="mb-4">
+      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+      <select
+          v-model.trim="newPayment.status"
+          id="status"
+          required
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option value="completed">Tasdiqlandi</option>
+        <option value="failed">Tasdiqlanmadi</option>
+        <option value="pending">Ko'rib chiqilmoqda</option>
       </select>
     </div>
     <div class="flex justify-end">
       <button
           type="submit"
-          :disabled="!isFormValid"
-          class="w-full px-4 py-2 rounded-lg"
-          :class="{
-            'bg-blue-600 text-white': isFormValid,
-            'bg-gray-400 text-gray-700 cursor-not-allowed': !isFormValid
-          }"
+          class="w-full px-4 py-2 rounded-lg mb-12"
       >
         Qo'shish
       </button>
@@ -88,23 +122,24 @@
 </template>
 
 <script>
-import { reactive,ref, computed, onMounted } from "vue";
+import { reactive, ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
   emits: ["close"],
   setup(_, { emit }) {
     const store = useStore();
-
+    const isLoading = computed(() => store.getters.isLoading);
     const newPayment = reactive({
-      user_id: "",
-      payment_id: "",
+      group_id: "",
       student_id: "",
       summa: "",
+      payment_method: "cash",
+      payment_date: "",
       status: "active",
       description: "",
+      contract_n: "",
     });
-
     const groups = ref(null);
     const students = ref(null);
 
@@ -122,8 +157,6 @@ export default {
           sortBy: 'id',
           orderBy: 'desc',
         });
-        console.log('oquvchilar',students.value)
-        console.log('ggrrrr',groups.value)
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -133,17 +166,20 @@ export default {
 
     const isFormValid = computed(() => {
       return (
-          newPayment.summa.trim() &&
-          newPayment.description.trim() &&
-          newPayment.status.trim() &&
+          newPayment.summa &&
+          newPayment.description &&
+          newPayment.status !== "" &&
           newPayment.group_id &&
-          newPayment.student_id
+          newPayment.student_id &&
+          newPayment.payment_method &&
+          newPayment.payment_date &&
+          newPayment.contract_n
       );
     });
 
     const handleSubmit = async () => {
       try {
-        await store.dispatch("payment/addPayment", {...newPayment});
+        await store.dispatch("payment/addPayment", { ...newPayment });
         resetForm();
         emit("close");
       } catch (error) {
@@ -156,9 +192,12 @@ export default {
       Object.assign(newPayment, {
         group_id: "",
         student_id: "",
-        name: "",
+        summa: "",
+        payment_method: "cash",
+        payment_date: "",
         status: "active",
         description: "",
+        contract_n: "",
       });
     };
 
@@ -168,6 +207,7 @@ export default {
       isFormValid,
       groups,
       students,
+      isLoading
     };
   },
 };

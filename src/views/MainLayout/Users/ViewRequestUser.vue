@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-evenly flex-wrap">
-    <div v-if="data" class="w-1/3 p-6 bg-white rounded-xl mt-6">
+    <div v-if="data" class="w-1/3 border-2 p-6 bg-white rounded-xl mt-6">
       <div class="flex justify-center py-6">
         <img
             :src="data.image ? `https://api.mrtm.uz/storage/` + data.image : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
@@ -90,7 +90,7 @@
         <thead class="h-10">
         <tr class="bg-gray-700 text-white">
           <th class="px-6 py-4 text-left">№</th>
-          <th class="px-6 py-4 text-left">Vazifalar</th>
+          <th class="px-6 py-4 text-left">Lavozim</th>
         </tr>
         </thead>
         <tbody v-if="data && data.roles && data.roles.length">

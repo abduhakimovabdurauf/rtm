@@ -44,7 +44,7 @@ export default {
                     },
                 });
                 commit("SET_GROUPS", response.data.data);
-                return response.data.total;
+                return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Guruhlar malumotlarini olishda xatolik!");
             } finally {

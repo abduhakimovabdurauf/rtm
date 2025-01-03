@@ -33,9 +33,8 @@
         <tr class="bg-gray-700 text-white">
           <th class="px-6 py-4 text-left">№</th>
           <th class="px-6 py-4 text-left">Kurs nomi</th>
-          <th class="px-6 py-4 text-left">Vaqti</th>
+          <th class="px-6 py-4 text-left">Boshlanish Vaqti</th>
           <th class="px-6 py-4 text-left">Status</th>
-          <th class="px-6 py-4 text-left">Rasm</th>
           <th class="px-6 py-4 text-right">
             Amallar
           </th>
@@ -60,13 +59,6 @@
                         >
                             {{ group.status }}
                         </span>
-          </td>
-          <td class="px-6 py-4">
-            <img
-                class="w-28"
-                :src="group.image ? `https://api.mrtm.uz/storage/` + group.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFrS3DfXBwOlJdjx8cnKEiSIxaPPnoMOgOvGbhNGz_7rY0DiQUcAcMkiCf_5kkpkH7E18&usqp=CAU'"
-                alt="group Image"
-            />
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
             <router-link
@@ -223,7 +215,7 @@ export default {
           sortBy: sortBy.value,
           orderBy: orderBy.value,
         });
-        totalPages.value = Math.ceil(total / perPage.value);
+        totalPages.value = Math.ceil(total.total / perPage.value);
       } catch (e) {
         console.error("Error fetching groups:", e.message);
       }

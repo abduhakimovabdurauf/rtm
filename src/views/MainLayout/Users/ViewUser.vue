@@ -116,13 +116,12 @@ export default {
     const isUpdating = ref(false);
     const selectedUserId = ref(null);
     const perPage = ref(6);
-
+    const loading = computed(store.getters.isLoading)
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Xodim qo'shish";
       if (isUpdating.value) return "Xodim malumotlarini o'zgartirish";
       return "";
     });
-
     const openCreateModal = () => {
       isCreating.value = true;
       isUpdating.value = false;

@@ -41,7 +41,7 @@ export default {
                 });
                 commit("SET_STUDENTS", response.data.students.data);
                 console.log("o'quvchilar",response)
-                return response.data.students.total;
+                return response.data.students;
             } catch (e) {
                 console.log('oquvchilar',e)
                 toast.error(e.response?.data?.message || "Oquvchi malumotlarni olishda xatolik!");

@@ -95,6 +95,15 @@ const routes = [
     }
   },
   {
+    path: '/tasks',
+    name: 'Tasks',
+    component: ()=> import('../views/MainLayout/Tasks/ViewTasks.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
     path: '/watchcourse/:id?',
     name: 'WatchCourse',
     component: ()=> import('../views/MainLayout/Courses/ViewRequestCourse.vue'),
@@ -149,6 +158,25 @@ const routes = [
     }
   },
   {
+    path: '/watchTask/:id?',
+    name: 'WatchTask',
+    component: ()=> import('../views/MainLayout/Tasks/ViewRequestTask.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/views/NotFound.vue'),
+    meta:{
+      layout: 'main',
+      auth: true
+    }
+  },
+
+  {
     path: '/profile',
     name: 'Profile',
     component: ()=> import('../views/MainLayout/Profile/ViewProfile.vue'),
@@ -169,25 +197,17 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requireAuth = to.meta.auth;
-
-  if (store.getters['auth/isAuthenticated'] && to.name === 'login') {
-    next(false);
+  if (store.getters['auth/isAuthenticated'] && to.path == '/login') {
+    next('/dashboard');
   }
   else if (requireAuth && store.getters['auth/isAuthenticated']) {
     next();
   }
   else if (requireAuth && !store.getters['auth/isAuthenticated']) {
-    next('/login?message=auth');
+    next('/login');
   }
   else {
     next();
-  }
-
-  const routeExists = router.getRoutes().some(route => route.name === to.name);
-
-  if (!routeExists) {
-    console.warn(`Sahifa mavjud emas: ${to.name}`);
-    next(false);
   }
 });
 

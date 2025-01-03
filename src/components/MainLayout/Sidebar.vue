@@ -25,7 +25,7 @@
 
         <router-link to="/roles" class="flex items-center p-2 rounded-md hover:bg-gray-700">
           <i class='bx bx-user-circle'></i>
-          <span v-if="isOpen" class="ml-3">Rollar</span>
+          <span v-if="isOpen" class="ml-3">Lavozimlar</span>
         </router-link>
 
         <router-link to="/rooms" class="flex items-center p-2 rounded-md hover:bg-gray-700">
@@ -56,6 +56,13 @@
         <router-link to="/payments" class="flex items-center p-2 rounded-md hover:bg-gray-700">
           <i class='bx bxs-credit-card'></i>
           <span v-if="isOpen" class="ml-3">To'lovlar</span>
+        </router-link>
+
+
+
+        <router-link to="/tasks" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bx-task'></i>
+          <span v-if="isOpen" class="ml-3">Topshiriqlar</span>
         </router-link>
       </ul>
     </div>

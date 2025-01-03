@@ -7,6 +7,7 @@ import user from "./modules/user.module.js";
 import student from "./modules/student.module.js";
 import group from "./modules/group.module.js";
 import payment from "./modules/payment.module.js";
+import task from "./modules/task.module.js";
 import aktImg from '../assets/images/akt.svg';
 import foundationImg from '../assets/images/found.svg';
 import robotImg from '../assets/images/ROBOT.svg';
@@ -405,6 +406,7 @@ const store = createStore({
     student,
     group,
     payment,
+    task,
   }
 });
 

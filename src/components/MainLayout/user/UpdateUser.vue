@@ -149,7 +149,7 @@ import isEqual from 'lodash/isEqual';
 
 export default {
   props: {
-    studentId: {
+    userId: {
       type: Number,
       required: true,
     },
@@ -158,8 +158,8 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
 
-    const selectedStudent = computed(() =>
-        store.state.student.students.find((student) => student.id === props.studentId)
+    const selectedUser = computed(() =>
+        store.state.user.users.find((user) => user.id === props.userId)
     );
 
     const form = ref({
@@ -175,7 +175,7 @@ export default {
       from: '',
       work_start: '',
       work_end: '',
-      id: props.studentId,
+      id: props.userId,
       status: '',
       description: '',
       images: null,
@@ -186,13 +186,13 @@ export default {
     const imagePreview = ref(null);
 
     watch(
-        selectedStudent,
-        (student) => {
-          if (student) {
-            Object.assign(form.value, student);
-            Object.assign(initialForm.value, student);
-            imagePreview.value = student.image
-                ? `https://api.mrtm.uz/storage/${student.image}`
+        selectedUser,
+        (user) => {
+          if (user) {
+            Object.assign(form.value, user);
+            Object.assign(initialForm.value, user);
+            imagePreview.value = user.image
+                ? `https://api.mrtm.uz/storage/${user.image}`
                 : null;
           }
         },
@@ -217,8 +217,8 @@ export default {
 
 
     const handleSubmit = () => {
-      const updatedStudent = { ...form.value };
-      store.dispatch('student/updateStudent', updatedStudent);
+      const updatedUser = { ...form.value };
+      store.dispatch('user/updateUser', updatedUser);
       initialForm.value = { ...form.value };
       closeModal();
     };
