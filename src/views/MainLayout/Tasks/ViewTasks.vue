@@ -97,9 +97,9 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import CreateTask from "@/components/MainLayout/Task/CreateTask.vue";
+import CreateTask from "@/components/MainLayout/task/CreateTask.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
-import updateTask from "@/components/MainLayout/Task/UpdateTask.vue";
+import updateTask from "@/components/MainLayout/task/UpdateTask.vue";
 export default {
   components: {
     updateTask,
