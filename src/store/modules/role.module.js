@@ -30,7 +30,7 @@ export default {
     },
     actions: {
         async getAllRoles({ commit }) {
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
                     headers: {

@@ -8,6 +8,7 @@ import student from "./modules/student.module.js";
 import group from "./modules/group.module.js";
 import payment from "./modules/payment.module.js";
 import task from "./modules/task.module.js";
+import discount from "./modules/discount.module.js";
 import aktImg from '../assets/images/akt.svg';
 import foundationImg from '../assets/images/found.svg';
 import robotImg from '../assets/images/ROBOT.svg';
@@ -384,6 +385,9 @@ const store = createStore({
     SET_LOADING(state, status) {
       state.loading = status;
     },
+    closeSidebar(state) {
+      state.isSidebarOpen = false;
+    }
   },
   actions: {
     setMessage({commit}, message){
@@ -407,6 +411,7 @@ const store = createStore({
     group,
     payment,
     task,
+    discount,
   }
 });
 

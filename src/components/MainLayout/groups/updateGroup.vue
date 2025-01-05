@@ -226,6 +226,7 @@ export default {
       user_id: "",
       course_id: "",
       room_id: "",
+      id: props.groupId,
       name: "",
       start_time: "",
       end_time: "",
@@ -261,7 +262,7 @@ export default {
         initialForm.value = {...form.value};
         closeModal();
       } catch (error) {
-        console.error("Yuborishda xatolik yuz berdi:", error);
+        console.error("O'zgartirishda xatolik yuz berdi:", error);
       }
     };
 

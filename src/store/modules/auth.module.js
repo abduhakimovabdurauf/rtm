@@ -43,12 +43,12 @@ export default {
         },
         async logout({ commit, state }) {
             try {
-                const url = `${import.meta.env.VITE_API_URL}/logout`;
-                const response = await axios.post(url, {}, {
-                    headers: { Authorization: `Bearer ${state.token}` },
-                });
+                // const url = `${import.meta.env.VITE_API_URL}/logout`;
+                // const response = await axios.post(url, {}, {
+                //     headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
+                // });
                 commit("LOGOUT");
-                toast.success(response.data.message);
+                // toast.success(response.data.message);
             } catch (e) {
                 console.error(e.message);
                 toast.error(e.response?.data?.message || "Logout failed!");

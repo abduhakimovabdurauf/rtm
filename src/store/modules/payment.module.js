@@ -30,7 +30,7 @@ export default {
     },
     actions: {
         async getAllPayments({ commit }, payload) {
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
                     params: {
@@ -91,14 +91,14 @@ export default {
             try {
                 const response = await axios.post(`${API_URL}/${payload.id}`, payload, {
                     headers: {
-                        "Content-Type": "multipart/form-data",
+                        "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("UPDATE_PAYMENT", response.data.group);
+                commit("UPDATE_PAYMENT", response.data.payment);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Kursni o`zgartirishda xatolik!");
+                toast.error(e.response?.data?.message || "Tolov malumotlarini o`zgartirishda xatolik!");
                 console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });

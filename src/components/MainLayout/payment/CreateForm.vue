@@ -50,16 +50,6 @@
       />
     </div>
     <div class="mb-4">
-      <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
-      <textarea
-          v-model.trim="newPayment.description"
-          id="description"
-          required
-          rows="3"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      ></textarea>
-    </div>
-    <div class="mb-4">
       <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh ID</label>
       <select
           id="group_id"
@@ -95,7 +85,7 @@
           {{ student.full_name }}
         </option>
       </select>
-      <p v-else class="text-gray-500">No students available</p>
+      <p v-else class="text-gray-500">O'quvchilar yo'q</p>
     </div>
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
@@ -110,10 +100,20 @@
         <option value="pending">Ko'rib chiqilmoqda</option>
       </select>
     </div>
+    <div class="mb-4">
+      <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
+      <textarea
+          v-model.trim="newPayment.description"
+          id="description"
+          required
+          rows="3"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      ></textarea>
+    </div>
     <div class="flex justify-end">
       <button
           type="submit"
-          class="w-full px-4 py-2 rounded-lg mb-12"
+          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg mb-12"
       >
         Qo'shish
       </button>
@@ -133,6 +133,7 @@ export default {
     const newPayment = reactive({
       group_id: "",
       student_id: "",
+      discount_id: "",
       summa: "",
       payment_method: "cash",
       payment_date: "",
@@ -142,6 +143,7 @@ export default {
     });
     const groups = ref(null);
     const students = ref(null);
+    const discounts = ref(null);
 
     const fetchData = async () => {
       try {
@@ -152,6 +154,12 @@ export default {
           orderBy: 'desc',
         });
         students.value = await store.dispatch('student/getAllStudents', {
+          page: 1,
+          perPage: 5,
+          sortBy: 'id',
+          orderBy: 'desc',
+        });
+        discounts.value = await store.dispatch('discount/getAllDiscounts', {
           page: 1,
           perPage: 5,
           sortBy: 'id',

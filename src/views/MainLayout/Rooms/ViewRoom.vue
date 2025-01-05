@@ -176,6 +176,7 @@ export default {
 
     const fetchRooms = async () => {
       try {
+        store.commit("SET_LOADING", true, { root: true });
         const result = await store.dispatch("room/getAllRooms");
         console.log("Fetched rooms:", result);
       } catch (e) {

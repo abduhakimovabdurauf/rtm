@@ -27,7 +27,7 @@ export default {
     },
     actions: {
         async getAllUsers({ commit },payload) {
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
                     params: {

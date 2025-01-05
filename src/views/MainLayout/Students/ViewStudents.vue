@@ -185,6 +185,7 @@ export default {
 
     const fetchStudents = async () => {
       try {
+        store.commit("SET_LOADING", true, { root: true });
         const total = await store.dispatch("student/getAllStudents", {
           page: currentPage.value,
           perPage: perPage.value,

@@ -26,9 +26,9 @@ export default {
             }
             state.tasks.push(task);
         },
-        UPDATE_TASK(state, updatedtask) {
-            const index = state.tasks.findIndex((c) => c.id === updatedtask.id);
-            if (index !== -1) state.tasks.splice(index, 1, updatedtask);
+        UPDATE_TASK(state, updatedTask) {
+            const index = state.tasks.findIndex((c) => c.id === updatedTask.id);
+            if (index !== -1) state.tasks.splice(index, 1, updatedTask);
         },
         DELETE_TASK(state, taskId) {
             state.tasks = state.tasks.filter((task) => task.id !== taskId);
@@ -36,7 +36,7 @@ export default {
     },
     actions: {
         async getAllTasks({ commit }) {
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
                     headers: {
@@ -65,7 +65,7 @@ export default {
 
                 return response.data
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xonalarni olishda xatolik!");
+                toast.error(e.response?.data?.message || "Topshiriqlar malumotlarini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
@@ -82,10 +82,11 @@ export default {
                 });
                 console.log("added",response)
                 commit("ADD_TASK", response.data.task);
+                commit("closeSidebar");
                 toast.success(response.data.message);
             } catch (e) {
                 console.error(e)
-                toast.error(e.response?.data?.message || "Xona qoshishda xatolik!");
+                toast.error(e.response?.data?.message || "Topshiriq malumotlarini qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
@@ -94,7 +95,7 @@ export default {
         async updateTask({ commit }, updatedTask) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(`${API_URL}/${updatedTask.id}`, updatedtask, {
+                const response = await axios.post(`${API_URL}/${updatedTask.id}`, updatedTask, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
@@ -121,7 +122,7 @@ export default {
                 commit("DELETE_TASK", taskId);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Topshiriqni ochirishda xatolik!");
+                toast.error(e.response?.data?.message || "Topshiriq malumotlarini ochirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }

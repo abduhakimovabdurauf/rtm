@@ -158,7 +158,7 @@ export default {
 }
 .border-test{
   width: 250px;
-  padding: 20px;
+  padding: 14px;
 }
 .border-test .body div{
   display: flex;

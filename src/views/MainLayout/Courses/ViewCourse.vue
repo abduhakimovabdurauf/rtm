@@ -53,8 +53,8 @@
               <span
                   :class="{
                   'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                  'bg-green-200 text-green-800': course.status === 'Active',
-                  'bg-red-200 text-red-800': course.status === 'Inactive',
+                  'bg-green-200 text-green-800': course.status === 'active',
+                  'bg-red-200 text-red-800': course.status === 'inactive',
                 }"
               >
                 {{ course.status }}
@@ -201,6 +201,7 @@ export default {
 
     const fetchCourses = async () => {
       try {
+        store.commit("SET_LOADING", true, { root: true });
         const total = await store.dispatch("course/getAllCourses", {
           page: currentPage.value,
           perPage: perPage.value,

@@ -104,6 +104,15 @@ const routes = [
     }
   },
   {
+    path: '/discounts',
+    name: 'Discounts',
+    component: ()=> import('../views/MainLayout/Discounts/ViewDiscounts.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
     path: '/watchcourse/:id?',
     name: 'WatchCourse',
     component: ()=> import('../views/MainLayout/Courses/ViewRequestCourse.vue'),
@@ -166,6 +175,18 @@ const routes = [
       auth: true
     }
   },
+  {
+    path: '/watchDiscount/:id?',
+    name: 'WatchDiscount',
+    component: ()=> import('../views/MainLayout/Discounts/ViewRequestDiscount.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+
+
+
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',

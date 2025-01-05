@@ -53,8 +53,9 @@
               <span
                   :class="{
                   'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                  'bg-green-200 text-green-800': payment.status === 'Active',
-                  'bg-red-200 text-red-800': payment.status === 'Inactive',
+                  'bg-green-200 text-green-800': payment.status === 'completed',
+                  'bg-orange-200 text-orange-800': payment.status === 'pending',
+                  'bg-red-200 text-red-800': payment.status === 'failed',
                 }"
               >
                 {{ payment.status }}
@@ -216,6 +217,7 @@ export default {
     };
 
     const fetchPayments = async () => {
+      store.commit("SET_LOADING", true, { root: true });
       try {
         const total = await store.dispatch("payment/getAllPayments", {
           page: currentPage.value,

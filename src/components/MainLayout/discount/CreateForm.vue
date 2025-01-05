@@ -1,48 +1,35 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
-      <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Chegirma Nomi</label>
+      <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Chegirma Nomi</label>
       <input
-          v-model="newTask.title"
+          v-model="newDiscount.name"
           type="text"
-          id="title"
-          @input="validateField('title')"
+          id="name"
+          @input="validateField('name')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.title }"
+          :class="{ 'border-red-500': errors.name }"
       />
-      <p v-if="errors.title" class="text-red-500 text-sm mt-1">{{ errors.title }}</p>
+      <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
     </div>
 
     <div class="mb-4">
-      <label for="text" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Matn</label>
+      <label for="percent" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Foiz</label>
       <input
-          v-model="newTask.text"
+          v-model="newDiscount.percent"
           type="text"
-          id="text"
-          @input="validateField('text')"
+          id="percent"
+          @input="validateField('percent')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.text }"
+          :class="{ 'border-red-500': errors.percent }"
       />
-      <p v-if="errors.text" class="text-red-500 text-sm mt-1">{{ errors.text }}</p>
-    </div>
-    
-    <div class="mb-4">
-      <label for="deadline" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Muhlat</label>
-      <input
-          v-model="newTask.deadline"
-          type="date"
-          id="deadline"
-          @input="validateField('deadline')"
-          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.deadline }"
-      />
-      <p v-if="errors.text" class="text-red-500 text-sm mt-1">{{ errors.deadline }}</p>
+      <p v-if="errors.percent" class="text-red-500 text-sm mt-1">{{ errors.percent }}</p>
     </div>
 
     <div class="mb-4">
       <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
       <textarea
-          v-model="newTask.description"
+          v-model="newDiscount.description"
           id="description"
           @input="validateField('description')"
           rows="3"
@@ -55,14 +42,13 @@
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
       <select
-          v-model="newTask.status"
+          v-model="newDiscount.status"
           id="status"
           @change="validateField('status')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
           :class="{ 'border-red-500': errors.status }"
       >
-        <option value="completed">Bajarildi</option>
-        <option value="pending">Bajarilmoqda</option>
+        <option value="active">Faol</option>
         <option value="inactive">Faol emas</option>
       </select>
       <p v-if="errors.status" class="text-red-500 text-sm mt-1">{{ errors.status }}</p>
@@ -88,29 +74,27 @@ import { useStore } from 'vuex';
 export default {
   setup() {
     const store = useStore();
-    const newTask = reactive({
-      title: '',
-      text: '',
-      deadline: '',
+    const newDiscount = reactive({
+      name: '',
+      percent: '',
       description: '',
-      status: 'completed',
+      status: 'active',
     });
 
     const errors = reactive({
-      title: '',
-      text: '',
-      deadline: '',
+      name: '',
+      percent: '',
       description: '',
       status: '',
     });
 
     const isFormValid = computed(() => {
       return Object.values(errors).every((error) => !error) &&
-          Object.values(newTask).every((field) => field.trim?.() || field > 0);
+          Object.values(newDiscount).every((field) => field.trim?.() || field > 0);
     });
 
     const validateField = (field) => {
-      if (!newTask[field]?.trim()) {
+      if (!newDiscount[field]?.trim()) {
         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} bo'sh bo'lmasligi kerak.`;
       } else {
         errors[field] = '';
@@ -121,12 +105,12 @@ export default {
       try {
         if (!isFormValid.value) return;
         const formData = new FormData();
-        Object.entries(newTask).forEach(([key, value]) => {
+        Object.entries(newDiscount).forEach(([key, value]) => {
           formData.append(key, value);
         });
-        await store.dispatch('task/addTask', formData);
-        Object.keys(newTask).forEach((key) => {
-          newTask[key] = key === 'status' ? 'active' : '';
+        await store.dispatch('discount/addDiscount', formData);
+        Object.keys(newDiscount).forEach((key) => {
+          newDiscount[key] = key === 'status' ? 'active' : '';
         });
       } catch (e) {
         console.error(e);
@@ -134,7 +118,7 @@ export default {
     };
 
     return {
-      newTask,
+      newDiscount,
       errors,
       validateField,
       handleSubmit,

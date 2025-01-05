@@ -19,7 +19,7 @@
 
   <div class="p-6 min-h-screen dark:bg-gray-900">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Topshiriq ro'yxati</h1>
+      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Topshiriqlar ro'yxati</h1>
       <button
           @click="openCreateModal"
           class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
@@ -35,15 +35,15 @@
           <th class="px-6 py-4 text-left">№</th>
           <th class="px-6 py-4 text-left">Sarlavha</th>
           <th class="px-6 py-4 text-left">Text</th>
-          <th class="px-6 py-4 text-left">Tafsif</th>
+          <th class="px-6 py-4 text-left">Muhlat</th>
           <th class="px-6 py-4 text-left">Status</th>
           <th class="px-6 py-4 text-right">Muhlat</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody v-if="Tasks && Tasks.length > 0">
         <tr
             v-for="(Task,index) in Tasks"
-            :key="Task.id"
+            :key="index"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index+1 }}</td>
@@ -52,7 +52,7 @@
             {{ Task.text.length > 20 ? Task.text.slice(0, 20) + '...' : Task.text }}
           </td>
           <td class="px-6 py-4 font-semibold">
-            {{ Task.description.length > 20 ? Task.description.slice(0, 20) + '...' : Task.description }}
+            {{ Task.deadline }}
           </td>
           <td class="px-6 py-4">
               <span
@@ -60,7 +60,7 @@
                   'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
                   'bg-green-200 text-green-800': Task.status === 'completed',
                   'bg-red-200 text-red-800': Task.status === 'unread',
-                  'bg-red-200 text-orange-800': Task.status === 'pending',
+                  'bg-orange-200 text-blue-800': Task.status === 'pending',
                 }"
               >
                 {{ Task.status }}
@@ -89,6 +89,34 @@
         </tr>
         </tbody>
       </table>
+      <div class="flex justify-center items-center mt-6 space-x-2">
+        <button
+            @click="changePage(currentPage - 1)"
+            :disabled="currentPage === 1"
+            class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
+        >
+          <i class="bx bx-chevron-left"></i>
+        </button>
+        <button
+            v-for="page in totalPages"
+            :key="page"
+            @click="changePage(page)"
+            :class="{
+            'bg-blue-600 text-white': currentPage === page,
+            'bg-gray-300': currentPage !== page,
+          }"
+            class="px-3 py-1 rounded-md font-medium transition duration-150"
+        >
+          {{ page }}
+        </button>
+        <button
+            @click="changePage(currentPage + 1)"
+            :disabled="currentPage === totalPages"
+            class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
+        >
+          <i class="bx bx-chevron-right"></i>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -115,6 +143,11 @@ export default {
     const selectedTaskId = ref(null);
     const Tasks = computed(() => store.getters['task/tasks']);
     const isSidebarOpen = computed(() => store.getters.isSidebarOpen);
+    const sortBy = ref('id');
+    const orderBy = ref('desc');
+    const totalPages = ref(null)
+    const currentPage = ref(1);
+    const perPage = ref(5);
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Topshiriq qo'shish";
       if (isUpdating.value) return "Topshiriq o'zgartirish";
@@ -158,15 +191,33 @@ export default {
     };
 
     const deleteById = (id) => {
-      store.dispatch("Task/deleteTask", id);
+      store.dispatch("task/deleteTask", id);
+    };
+    const paginatedDiscounts = computed(() => {
+      const startIndex = (currentPage.value - 1) * perPage.value;
+      const endIndex = startIndex + perPage.value;
+      return Tasks.value.slice(startIndex, endIndex);
+    });
+
+    const changePage = (page) => {
+      if (page > 0 && page <= totalPages.value) {
+        currentPage.value = page;
+      }
+      fetchTasks()
     };
 
     const fetchTasks = async () => {
       try {
-        const result = await store.dispatch("task/getAllTasks");
-        console.log("Fetched Tasks:", result);
+        store.commit("SET_LOADING", true, { root: true });
+        const total = await store.dispatch("task/getAllTasks", {
+          page: currentPage.value,
+          perPage: perPage.value,
+          sortBy: sortBy.value,
+          orderBy: orderBy.value,
+        });
+        totalPages.value = Math.ceil(total.total / perPage.value);
       } catch (e) {
-        console.error("Error fetching Tasks:", e.message);
+        console.error("Error fetching discounts:", e.message);
       }
     };
 
@@ -191,6 +242,10 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedTaskId,
+      currentPage,
+      totalPages,
+      paginatedDiscounts,
+      changePage,
     };
   },
 };

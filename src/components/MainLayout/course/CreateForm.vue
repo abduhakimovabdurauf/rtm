@@ -6,62 +6,67 @@
           v-model="newCourse.name"
           type="text"
           id="name"
-          required
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          @input="validateField('name')"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          :class="{ 'border-red-500': errors.name }"
       />
+      <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
     </div>
+
     <div class="mb-4">
       <label for="duration" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Davomiyligi</label>
       <input
           v-model="newCourse.duration"
           type="text"
           id="duration"
-          required
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          @input="validateField('duration')"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          :class="{ 'border-red-500': errors.duration }"
       />
+      <p v-if="errors.duration" class="text-red-500 text-sm mt-1">{{ errors.duration }}</p>
     </div>
+
     <div class="mb-4">
       <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Narxi</label>
       <input
           v-model="newCourse.price"
           type="number"
           id="price"
-          required
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          @input="validateField('price')"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          :class="{ 'border-red-500': errors.price }"
       />
+      <p v-if="errors.price" class="text-red-500 text-sm mt-1">{{ errors.price }}</p>
     </div>
+
     <div class="mb-4">
       <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
       <textarea
           v-model="newCourse.description"
           id="description"
-          required
+          @input="validateField('description')"
           rows="3"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          :class="{ 'border-red-500': errors.description }"
       ></textarea>
+      <p v-if="errors.description" class="text-red-500 text-sm mt-1">{{ errors.description }}</p>
     </div>
+
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
       <select
           v-model="newCourse.status"
           id="status"
-          required
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          @change="validateField('status')"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          :class="{ 'border-red-500': errors.status }"
       >
         <option value="active">Faol</option>
         <option value="inactive">Faol emas</option>
       </select>
+      <p v-if="errors.status" class="text-red-500 text-sm mt-1">{{ errors.status }}</p>
     </div>
-    <div class="mb-4">
-      <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rasm Yuklash</label>
-      <input
-          type="file"
-          id="image"
-          ref="image"
-          @change="handleImageUpload"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
+
     <div class="flex justify-end">
       <button
           type="submit"
@@ -80,14 +85,7 @@ import { reactive, computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
-  props: {
-    isOpen: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  emits: ['close'],
-  setup(props, { emit }) {
+  setup() {
     const store = useStore();
     const newCourse = reactive({
       name: '',
@@ -95,56 +93,50 @@ export default {
       price: '',
       description: '',
       status: 'active',
-      image: null,
+    });
+
+    const errors = reactive({
+      name: '',
+      duration: '',
+      price: '',
+      description: '',
+      status: '',
     });
 
     const isFormValid = computed(() => {
-      return (
-          newCourse.name.trim() &&
-          newCourse.duration.trim() &&
-          newCourse.price > 0 &&
-          newCourse.description.trim() &&
-          newCourse.status.trim()
-      );
+      return Object.values(errors).every((error) => !error) &&
+          Object.values(newCourse).every((field) => field.trim?.() || field > 0);
     });
+
+    const validateField = (field) => {
+      if (!newCourse[field]?.trim()) {
+        errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} bo'sh bo'lmasligi kerak.`;
+      } else {
+        errors[field] = '';
+      }
+    };
 
     const handleSubmit = async () => {
       try {
+        if (!isFormValid.value) return;
         const formData = new FormData();
-        formData.append('name', newCourse.name);
-        formData.append('duration', newCourse.duration);
-        formData.append('price', newCourse.price);
-        formData.append('description', newCourse.description);
-        formData.append('status', newCourse.status);
-        if (newCourse.image) formData.append('image', newCourse.image);
-
+        Object.entries(newCourse).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
         await store.dispatch('course/addCourse', formData);
-        closeModal();
-
-        newCourse.name = '';
-        newCourse.duration = '';
-        newCourse.price = '';
-        newCourse.description = '';
-        newCourse.status = 'active';
-        newCourse.image = null;
+        Object.keys(newCourse).forEach((key) => {
+          newCourse[key] = key === 'status' ? 'active' : '';
+        });
       } catch (e) {
         console.error(e);
       }
     };
 
-    const handleImageUpload = (event) => {
-      newCourse.image = event.target.files[0];
-    };
-
-    function closeModal() {
-      emit('close');
-    }
-
     return {
       newCourse,
+      errors,
+      validateField,
       handleSubmit,
-      closeModal,
-      handleImageUpload,
       isFormValid,
     };
   },

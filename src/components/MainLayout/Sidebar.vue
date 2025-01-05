@@ -64,6 +64,11 @@
           <i class='bx bx-task'></i>
           <span v-if="isOpen" class="ml-3">Topshiriqlar</span>
         </router-link>
+
+        <router-link to="/discounts" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bxs-discount'></i>
+          <span v-if="isOpen" class="ml-3">Chegirmalar</span>
+        </router-link>
       </ul>
     </div>
 

@@ -172,6 +172,7 @@ export default {
 
     const fetchUsers = async () => {
       try {
+        store.commit("SET_LOADING", true, { root: true });
         const total = await store.dispatch("user/getAllUsers", {
           page: currentPage.value,
           perPage: perPage.value,

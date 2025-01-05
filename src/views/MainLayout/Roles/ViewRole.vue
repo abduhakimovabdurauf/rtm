@@ -150,6 +150,7 @@ export default {
 
     const fetchRoles = async () => {
       try {
+        store.commit("SET_LOADING", true, { root: true });
         await store.dispatch("role/getAllRoles");
 
       } catch (e) {

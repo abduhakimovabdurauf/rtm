@@ -20,9 +20,9 @@ export default {
         ADD_GROUP(state, group) {
             state.groups.push(group);
         },
-        UPDATE_GROUP(state, updatedgroup) {
-            const index = state.groups.findIndex((c) => c.id === updatedgroup.id);
-            if (index !== -1) state.groups.splice(index, 1, updatedgroup);
+        UPDATE_GROUP(state, updatedGroup) {
+            const index = state.groups.findIndex((c) => c.id === updatedGroup.id);
+            if (index !== -1) state.groups.splice(index, 1, updatedGroup);
         },
         DELETE_GROUP(state, Id) {
             state.groups = state.groups.filter((group) => group.id !== Id);
@@ -30,7 +30,7 @@ export default {
     },
     actions: {
         async getAllGroups({ commit }, payload) {
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
                     params: {
@@ -53,7 +53,7 @@ export default {
         },
 
         async getGroupById({ commit }, Id) {
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
             console.log('Id',Id)
             try {
                 const response = await axios.get(`${API_URL}/${Id}`, {
@@ -71,7 +71,7 @@ export default {
         },
 
         async addGroup({ commit }, group) {
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.post(API_URL, group, {
                     headers: {
@@ -89,7 +89,8 @@ export default {
         },
 
         async updateGroup({ commit }, payload) {
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
+            console.log('id: ',payload.id)
             try {
                 const response = await axios.post(`${API_URL}/${payload.id}`, payload, {
                     headers: {
@@ -111,7 +112,7 @@ export default {
             if (!confirm("Siz rostdanxam bu kursni o'chirib yubormoqchimisiz??")) {
                 return;
             }
-            commit("SET_LOADING", true, { root: true });
+            // commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.delete(`${API_URL}/${Id}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },

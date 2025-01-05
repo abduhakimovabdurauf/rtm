@@ -3,61 +3,60 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast();
 
-const API_URL = `${import.meta.env.VITE_API_URL}/rooms`;
+const API_URL = `${import.meta.env.VITE_API_URL}/discounts`;
 
 export default {
     namespaced: true,
     state() {
         return {
-            rooms: [],
-            room: [],
+            discounts: [],
+            discount: [],
         };
     },
     mutations: {
-        SET_ROOM(state, room) {
-            state.room = room;
+        SET_DISCOUNT(state, discount) {
+            state.discount = discount;
         },
-        SET_ROOMS(state, rooms) {
-            state.rooms = rooms;
+        SET_DISCOUNTS(state, discounts) {
+            state.discounts = discounts;
         },
-        ADD_ROOM(state, room) {
-            if (!Array.isArray(state.rooms)) {
-                state.rooms = [];
+        ADD_DISCOUNT(state, discount) {
+            if (!Array.isArray(state.discounts)) {
+                state.discounts = [];
             }
-            state.rooms.push(room);
+            state.discounts.push(discount);
         },
-        UPDATE_ROOM(state, updatedRoom) {
-            const index = state.rooms.findIndex((c) => c.id === updatedRoom.id);
-            if (index !== -1) state.rooms.splice(index, 1, updatedRoom);
+        UPDATE_DISCOUNT(state, updatedDiscount) {
+            const index = state.discounts.findIndex((c) => c.id === updatedDiscount.id);
+            if (index !== -1) state.discounts.splice(index, 1, updatedDiscount);
         },
-        DELETE_ROOM(state, roomId) {
-            state.rooms = state.rooms.filter((room) => room.id !== roomId);
+        DELETE_discount(state, discountId) {
+            state.discounts = state.discounts.filter((discount) => discount.id !== discountId);
         },
     },
     actions: {
-        async getAllRooms({ commit }) {
-            // commit("SET_LOADING", true, { root: true });
+        async getAllDiscounts({ commit }) {
             try {
                 const response = await axios.get(API_URL, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('rooms : ',response)
-                commit("SET_ROOMS", response.data.rooms.data);
-                return response.data.rooms
+                console.log('discounts : ',response)
+                commit("SET_DISCOUNTS", response.data.data);
+                return response.data
             } catch (e) {
                 console.error(e)
-                toast.error(e.response?.data?.message || "Xonalarni olishda xatolik!");
+                toast.error(e.response?.data?.message || "Chegirmalar malumotlarini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async getRoomById({ commit }, roomId) {
+        async getDiscountById({ commit }, discountId) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.get(`${API_URL}/${roomId}`, {
+                const response = await axios.get(`${API_URL}/${discountId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
@@ -65,71 +64,71 @@ export default {
 
                 return response.data
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xonalarni olishda xatolik!");
+                toast.error(e.response?.data?.message || "Chegirmalar malumotini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async addRoom({ commit }, room) {
+        async addDiscount({ commit }, discount) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(API_URL, room, {
+                const response = await axios.post(API_URL, discount, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
                 console.log("added",response)
-                commit("ADD_ROOM", response.data.room);
+                commit("ADD_DISCOUNT", response.data.discount);
                 toast.success(response.data.message);
             } catch (e) {
                 console.error(e)
-                toast.error(e.response?.data?.message || "Xona qoshishda xatolik!");
+                toast.error(e.response?.data?.message || "Chegirma malumotlarini qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async updateRoom({ commit }, updatedRoom) {
+        async updateDiscount({ commit }, updatedDiscount) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(`${API_URL}/${updatedRoom.id}`, updatedRoom, {
+                const response = await axios.post(`${API_URL}/${updatedDiscount.id}`, updatedDiscount, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("UPDATE_ROOM", response.data);
+                commit("UPDATE_DISCOUNT", response.data);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xonani ozgartirishda xatolik!");
+                toast.error(e.response?.data?.message || "Chegirma malumotlarini ozgartirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async deleteRoom({ commit }, roomId) {
-            if (!confirm("Siz rostdanxam bu xonani o'chirib yubormoqchimisiz??")) {
+        async deleteDiscount({ commit }, discountId) {
+            if (!confirm("Siz rostdanxam bu chegirmani o'chirib yubormoqchimisiz??")) {
                 return;
             }
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.delete(`${API_URL}/${roomId}`, {
+                const response = await axios.delete(`${API_URL}/${discountId}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
                 });
-                commit("DELETE_ROOM", roomId);
+                commit("DELETE_DISCOUNT", discountId);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xonani ochirishda xatolik!");
+                toast.error(e.response?.data?.message || "Chegirma malumotlarini ochirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
     },
     getters: {
-        rooms(state) {
-            return state.rooms
+        discounts(state) {
+            return state.discounts
         }
     }
 };
