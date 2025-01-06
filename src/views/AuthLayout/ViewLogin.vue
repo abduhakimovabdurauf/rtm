@@ -10,12 +10,12 @@
 
       <form class="w-9/12 max-w-xs sm:max-w-sm" @submit.prevent="submit">
         <div class="mb-4">
-          <label class="block mb-2 text-sm font-medium text-slate-500" for="email">Email</label>
+          <label class="block mb-2 text-sm font-medium text-slate-500" for="email">Login</label>
           <input
               type="text"
               v-model="email"
               class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-              placeholder="Emailingizni kiriting"
+              placeholder="Loginingizni kiriting"
               id="email"
               autocomplete="off"
               :class="{ 'border-red-500': emailError }"

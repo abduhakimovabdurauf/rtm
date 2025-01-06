@@ -4,7 +4,7 @@
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tolov summasi</label>
       <input
           v-model.trim="newPayment.summa"
-          type="text"
+          type="number"
           id="name"
           required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"

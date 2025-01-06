@@ -362,10 +362,12 @@ const store = createStore({
       },
     ],
     message: null,
-    loading: false
+    loading: false,
+    sortLoading: false,
   },
   getters: {
     isLoading: (state) => state.loading,
+    isSortLoading: (state) => state.sortLoading,
     getCourses: (state) => {
       if (state.selectedCategory === 'all') {
         return state.courses;
@@ -384,6 +386,10 @@ const store = createStore({
     },
     SET_LOADING(state, status) {
       state.loading = status;
+    },
+    SET_SORTLOADING(state, status) {
+      state.sortLoading = status;
+      console.log('sortloading:'+ status)
     },
     closeSidebar(state) {
       state.isSidebarOpen = false;

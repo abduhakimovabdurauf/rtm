@@ -31,7 +31,6 @@
       <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
         <thead>
         <tr class="bg-gray-700 text-white">
-          <th class="px-6 py-4 text-left">№</th>
           <th class="px-6 py-4 text-left">Nomi</th>
           <th class="px-6 py-4 text-right ">
             Amallar
@@ -40,11 +39,10 @@
         </thead>
         <tbody>
         <tr
-            v-for="(role,index) in roles"
+            v-for="role in roles"
             :key="role.id"
             class="hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200 cursor-pointer"
         >
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ index+1 }}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ role.name }}</td>
           <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
             <a
@@ -90,8 +88,8 @@ export default {
     const roles = computed(() => store.getters['role/roles']);
     const isSidebarOpen = computed(() => store.getters.isSidebarOpen);
     const sidebarTitle = computed(() => {
-      if (isCreating.value) return "Role qo'shish";
-      if (isUpdating.value) return "Roleni o'zgartirish";
+      if (isCreating.value) return "Lavozim qo'shish";
+      if (isUpdating.value) return "Lavozimni o'zgartirish";
       if(isReading.value) return "Ko'rish";
       return "";
     });
@@ -154,7 +152,7 @@ export default {
         await store.dispatch("role/getAllRoles");
 
       } catch (e) {
-        console.error("Rollarni olishda xatolik:", e.message);
+        console.error("Lavozimlarni olishda xatolik:", e.message);
       }
     };
 

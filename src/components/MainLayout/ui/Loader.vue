@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full flex justify-center items-center">
-    <div class="loader"></div>
+    <div class="loader mx-auto"></div>
   </div>
 </template>
 

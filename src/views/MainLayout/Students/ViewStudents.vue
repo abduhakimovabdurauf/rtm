@@ -17,17 +17,23 @@
     <div class="p-6 min-h-screen dark:bg-gray-900">
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">O'quvchilar ro'yxati</h1>
+        <div class="mb-6">
+          <input type="text" :readonly="isDisabled"  v-model="keyWord" @input="fetchStudents" placeholder="Saralash" class="translate-y-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        </div>
         <button
             @click="openCreateModal"
             class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
         >
           <i class="bx bx-plus-circle text-xl"></i> <span>Oquvchi qo'shish</span>
         </button>
+
       </div>
-      <div class="overflow-x-auto shadow-xl rounded-lg">
+      <loader v-if="isSortLoading" ></loader>
+      <div v-else class="overflow-x-auto shadow-xl rounded-lg">
+
         <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300" v-if="students && students.length > 0">
           <thead>
-          <tr class="bg-gray-700 text-white">
+          <tr class="bg-gray-700 text-white w-full">
             <th class="px-6 py-4 text-left">№</th>
             <th class="px-6 py-4 text-left">Ism</th>
             <th class="px-6 py-4 text-left">Telefon</th>
@@ -50,7 +56,17 @@
             <td class="px-6 py-4 font-semibold">{{ student.phone }}</td>
             <td class="px-6 py-4 font-semibold">{{ student.address }}</td>
             <td class="px-6 py-4 font-semibold">{{ student.description }}</td>
-            <td class="px-6 py-4 font-semibold">{{ student.status }}</td>
+            <td class="px-6 py-4">
+              <span :class="{
+                  'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
+                  'bg-green-200 text-green-800': student.status === 'active',
+                  'bg-orange-200 text-orange-800': student.status === 'pending',
+                  'bg-red-200 text-red-800': student.status === 'inactive',
+                }"
+              >
+                {{ student.status }}
+              </span>
+            </td>
             <td class="px-6 py-4 space-x-3 text-right">
               <router-link
                   :to="{ name: 'WatchStudent', params: { id: student.id } }"
@@ -112,12 +128,13 @@ import { useStore } from "vuex";
 import CreateStudentForm from "@/components/MainLayout/students/CreateStudent.vue";
 import UpdateStudentForm from "@/components/MainLayout/students/UpdateStudent.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
-
+import loader from '@/components/MainLayout/ui/Loader.vue'
 export default {
   components: {
     CreateStudentForm,
     UpdateStudentForm,
     actionSidebar,
+    loader
   },
   setup() {
     const store = useStore();
@@ -128,12 +145,14 @@ export default {
     const isUpdating = ref(false);
     const selectedUserId = ref(null);
     const perPage = ref(6);
-
+    const isSortLoading = computed(()=> store.getters['isSortLoading'])
+    const keyWord = ref('')
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Oquvchi qo'shish";
       if (isUpdating.value) return "Oquvchi malumotlarini o'zgartirish";
       return "";
     });
+    const isDisabled = ref(false)
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -185,14 +204,17 @@ export default {
 
     const fetchStudents = async () => {
       try {
-        store.commit("SET_LOADING", true, { root: true });
+        isDisabled.value = true;
         const total = await store.dispatch("student/getAllStudents", {
           page: currentPage.value,
           perPage: perPage.value,
+          key: keyWord.value
         });
         totalPages.value = Math.ceil(total.total / perPage.value);
       } catch (e) {
         console.error("Error fetching Students:", e.message);
+      } finally {
+        isDisabled.value = false
       }
     };
 
@@ -213,6 +235,10 @@ export default {
       totalPages,
       changePage,
       toggleSidebar,
+      isSortLoading,
+      fetchStudents,
+      keyWord,
+      isDisabled,
     };
   },
 };

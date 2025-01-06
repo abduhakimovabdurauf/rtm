@@ -27,6 +27,7 @@ export default {
     actions: {
         async getAllStudents({ commit },payload) {
             // commit("SET_LOADING", true, { root: true });
+            commit("SET_SORTLOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
                     params: {
@@ -34,6 +35,7 @@ export default {
                         per_page: payload.perPage,
                         sortBy: payload.sortBy,
                         orderBy: payload.orderBy,
+                        key_word: payload.key
                     },
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
@@ -47,6 +49,7 @@ export default {
                 toast.error(e.response?.data?.message || "Oquvchi malumotlarni olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("SET_SORTLOADING", false, { root: true });
             }
         },
         async getStudentById({ commit }, Id) {

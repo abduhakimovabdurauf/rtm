@@ -55,11 +55,10 @@
           <td class="px-6 py-4 font-semibold">{{ room.quantity }}</td>
           <td class="px-6 py-4 font-semibold">{{ room.description }}</td>
           <td class="px-6 py-4">
-              <span
-                  :class="{
+              <span :class="{
                   'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                  'bg-green-200 text-green-800': room.status === 'Active',
-                  'bg-red-200 text-red-800': room.status === 'Inactive',
+                  'bg-green-200 text-green-800': room.status === 'active',
+                  'bg-red-200 text-red-800': room.status === 'inactive',
                 }"
               >
                 {{ room.status }}

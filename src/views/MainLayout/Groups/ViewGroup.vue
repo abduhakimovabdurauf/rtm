@@ -47,7 +47,11 @@
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold">{{ group.course.name }}</td>
+          <td class="px-6 py-4 font-semibold"
+            v-if="group && group.course"
+          >
+            {{ group.course.name }}
+          </td>
           <td class="px-6 py-4 font-semibold">{{ group.start_time }}</td>
           <td class="px-6 py-4">
             <span

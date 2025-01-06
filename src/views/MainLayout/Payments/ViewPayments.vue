@@ -46,7 +46,11 @@
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold">{{ payment.student.full_name }}</td>
+          <td class="px-6 py-4 font-semibold"
+            v-if="payment && payment.student"
+          >
+            {{ payment.student.full_name }}
+          </td>
           <td class="px-6 py-4 font-semibold">{{ payment.summa }} UZS</td>
           <td class="px-6 py-4 font-semibold">{{ payment.payment_date }}</td>
           <td class="px-6 py-4">
