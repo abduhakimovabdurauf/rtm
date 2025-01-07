@@ -43,7 +43,7 @@
       <div><span>O'quvchi:</span><span>{{ data.student.full_name }}</span></div>
       <div><span>Kurs nomi:</span><span>Frontend</span></div>
       <div><span>Summa:</span><span class="numb">{{ data.summa }}</span></div>
-      <div><span>Chegirma:</span><span class="numb">{{ data.discount ? data.discount : '0 %' }}</span></div>
+      <div><span>Chegirma:</span><span class="numb">{{ data.discount.percent ? data.discount.percent : '0' }} %</span></div>
       <div><span>O'qituvchi:</span><span>Asrorov Sanjarbek</span></div>
       <div><span>Sana:</span><span>{{ data.payment_date }}</span></div>
     </div>

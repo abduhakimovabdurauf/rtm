@@ -14,15 +14,12 @@ export default {
         setToken(state, token) {
             state.token = token;
             localStorage.setItem("jwt-token", token);
+            localStorage.setItem("jwt-token-expiry", Date.now() + 2 * 60 * 60 * 1000);
         },
         LOGOUT(state) {
             state.token = null;
             localStorage.removeItem("jwt-token");
             localStorage.removeItem("user");
-        },
-        SET_USER(payload) {
-            localStorage.setItem("user",JSON.stringify(payload));
-            console.log(payload)
         }
     },
     actions: {
@@ -41,7 +38,7 @@ export default {
                 toast.error(e.response?.data?.message || "Login failed!");
             }
         },
-        async logout({ commit, state }) {
+        async logout({ commit }) {
             try {
                 // const url = `${import.meta.env.VITE_API_URL}/logout`;
                 // const response = await axios.post(url, {}, {
@@ -54,6 +51,26 @@ export default {
                 toast.error(e.response?.data?.message || "Logout failed!");
             }
         },
+        checkToken({ commit }) {
+            const token = localStorage.getItem("jwt-token");
+            const expiry = localStorage.getItem("jwt-token-expiry");
+
+            if (token && expiry) {
+                if (Date.now() > expiry) {
+                    localStorage.removeItem("jwt-token");
+                    localStorage.removeItem("jwt-token-expiry");
+                    console.log("Token muddati tugagan!");
+                    commit('LOGOUT');
+                } else {
+                    commit('setToken', token);
+                    console.log('token amal qiladi')
+                }
+            } else {
+                console.log("Token mavjud emas!");
+                commit('LOGOUT');
+            }
+        }
+
     },
     getters: {
         token: (state) => state.token,

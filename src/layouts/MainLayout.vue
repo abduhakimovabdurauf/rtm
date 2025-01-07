@@ -16,7 +16,7 @@ import Sidebar from '@/components/MainLayout/Sidebar.vue';
 import Navbar from '@/components/MainLayout/Navbar.vue';
 import Loader from "@/components/MainLayout/ui/Loader.vue";
 import { useStore } from "vuex";
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
 export default {
   components: {
     Sidebar,
@@ -26,7 +26,9 @@ export default {
   setup(){
     const store = useStore();
     const isLoading = computed(() =>store.getters.isLoading);
-
+    onMounted(()=> {
+      store.dispatch('auth/checkToken');
+    })
     return {
       isLoading
     }
