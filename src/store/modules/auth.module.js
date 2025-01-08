@@ -14,7 +14,7 @@ export default {
         setToken(state, token) {
             state.token = token;
             localStorage.setItem("jwt-token", token);
-            localStorage.setItem("jwt-token-expiry", Date.now() + 2 * 60 * 60 * 1000);
+            localStorage.setItem("jwt-token-expiry", Date.now() + 10 * 60 * 60 * 1000);
         },
         LOGOUT(state) {
             state.token = null;

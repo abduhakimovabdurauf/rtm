@@ -57,7 +57,7 @@
                   'bg-red-200 text-red-800': course.status === 'inactive',
                 }"
               >
-                {{ course.status }}
+                {{ translateStatus( course.status ) }}
               </span>
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
@@ -118,6 +118,7 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
+import {getStatus} from "@/utils/stutus.js";
 import CreateForm from "@/components/MainLayout/course/CreateForm.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import updateCourse from "@/components/MainLayout/course/updateCourse.vue";
@@ -147,6 +148,10 @@ export default {
       if(isReading.value) return "Ko'rish";
       return "";
     });
+
+    const translateStatus = (status) => {
+      return getStatus(status)
+    }
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -237,6 +242,7 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedCourseId,
+      translateStatus,
     };
   },
 };

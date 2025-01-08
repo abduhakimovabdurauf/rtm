@@ -17,9 +17,7 @@
     <div class="p-6 min-h-screen dark:bg-gray-900">
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">O'quvchilar ro'yxati</h1>
-        <div class="mb-6">
-          <input type="text" :readonly="isDisabled"  v-model="keyWord" @input="fetchStudents" placeholder="Saralash" class="translate-y-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        </div>
+
         <button
             @click="openCreateModal"
             class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
@@ -28,10 +26,9 @@
         </button>
 
       </div>
-      <loader v-if="isSortLoading" ></loader>
-      <div v-else class="overflow-x-auto shadow-xl rounded-lg">
+      <div class="overflow-x-auto shadow-xl rounded-lg">
 
-        <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300" v-if="students && students.length > 0">
+        <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
           <thead>
           <tr class="bg-gray-700 text-white w-full">
             <th class="px-6 py-4 text-left">№</th>
@@ -44,8 +41,26 @@
               Amallar
             </th>
           </tr>
+          <tr class="text-white w-full">
+            <th class=""></th>
+            <th class="py-2">
+              <input
+                  type="text"
+                  v-model="keyWord"
+                  @input="updateKeyWord($event.target.value)"
+                  placeholder="Saralash"
+                  class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              />
+            </th>
+          </tr>
           </thead>
-          <tbody>
+          <tr v-if="isSortLoading">
+            <td colspan="7" class="text-center py-6">
+              <loader></loader>
+            </td>
+          </tr>
+          <tbody v-else>
+
           <tr
               v-for="(student,index) in students"
               :key="student.id"
@@ -64,7 +79,7 @@
                   'bg-red-200 text-red-800': student.status === 'inactive',
                 }"
               >
-                {{ student.status }}
+                {{ translateStatus( student.status ) }}
               </span>
             </td>
             <td class="px-6 py-4 space-x-3 text-right">
@@ -125,6 +140,9 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
+import { debounce } from "lodash";
+import { getStatus } from '@/utils/stutus.js';
+
 import CreateStudentForm from "@/components/MainLayout/students/CreateStudent.vue";
 import UpdateStudentForm from "@/components/MainLayout/students/UpdateStudent.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
@@ -152,7 +170,10 @@ export default {
       if (isUpdating.value) return "Oquvchi malumotlarini o'zgartirish";
       return "";
     });
-    const isDisabled = ref(false)
+
+    const translateStatus = (status) => {
+      return getStatus(status)
+    }
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -203,8 +224,8 @@ export default {
 
 
     const fetchStudents = async () => {
+      console.log('sorov')
       try {
-        isDisabled.value = true;
         const total = await store.dispatch("student/getAllStudents", {
           page: currentPage.value,
           perPage: perPage.value,
@@ -214,8 +235,16 @@ export default {
       } catch (e) {
         console.error("Error fetching Students:", e.message);
       } finally {
-        isDisabled.value = false
+        store.commit("SET_SORTLOADING", false, { root: true });
       }
+    };
+
+    const debouncedFetchStudents = debounce(fetchStudents, 1500);
+
+    const updateKeyWord = (value) => {
+      keyWord.value = value;
+      debouncedFetchStudents();
+      store.commit("SET_SORTLOADING", true, { root: true });
     };
 
     onMounted(fetchStudents);
@@ -238,7 +267,8 @@ export default {
       isSortLoading,
       fetchStudents,
       keyWord,
-      isDisabled,
+      updateKeyWord,
+      translateStatus,
     };
   },
 };

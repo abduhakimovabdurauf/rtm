@@ -389,7 +389,6 @@ const store = createStore({
     },
     SET_SORTLOADING(state, status) {
       state.sortLoading = status;
-      console.log('sortloading:'+ status)
     },
     closeSidebar(state) {
       state.isSidebarOpen = false;

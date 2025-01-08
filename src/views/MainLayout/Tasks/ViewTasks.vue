@@ -63,7 +63,7 @@
                   'bg-orange-200 text-blue-800': Task.status === 'pending',
                 }"
               >
-                {{ Task.status }}
+                {{ translateStatus( Task.status ) }}
               </span>
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
@@ -125,6 +125,9 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
+import { getStatus } from '@/utils/stutus.js';
+
+
 import CreateTask from "@/components/MainLayout/task/CreateTask.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import updateTask from "@/components/MainLayout/task/UpdateTask.vue";
@@ -154,6 +157,11 @@ export default {
       if(isReading.value) return "Ko'rish";
       return "";
     });
+
+
+    const translateStatus = (status) => {
+      return getStatus(status)
+    }
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -246,6 +254,7 @@ export default {
       totalPages,
       paginatedDiscounts,
       changePage,
+      translateStatus,
     };
   },
 };

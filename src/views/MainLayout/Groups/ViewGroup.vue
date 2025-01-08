@@ -61,7 +61,7 @@
                     'bg-red-200 text-red-800': group.status === 'inactive',
                 }"
             >
-              {{ group.status }}
+              {{ translateStatus( group.status ) }}
             </span>
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
@@ -125,6 +125,7 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
+import { getStatus } from '@/utils/stutus.js';
 import CreateGroup from "@/components/MainLayout/groups/createGroup.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import updateGroup from "@/components/MainLayout/groups/updateGroup.vue";
@@ -154,6 +155,12 @@ export default {
       if(isReading.value) return "Ko'rish";
       return "";
     });
+
+
+
+    const translateStatus = (status) => {
+      return getStatus(status)
+    }
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -250,6 +257,7 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedGroupId,
+      translateStatus,
     };
   },
 };

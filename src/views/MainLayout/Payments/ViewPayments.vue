@@ -62,7 +62,7 @@
                   'bg-red-200 text-red-800': payment.status === 'failed',
                 }"
               >
-                {{ payment.status }}
+                {{ translateStatus( payment.status ) }}
               </span>
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
@@ -132,6 +132,7 @@ import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import Modal from '@/components/MainLayout/Modal.vue'
 import updatePayment from "@/components/MainLayout/payment/updatePayment.vue";
 import ViewRequestPayments from "@/views/MainLayout/Payments/ViewRequestPayments.vue";
+import {getStatus} from "@/utils/stutus.js";
 export default {
   components: {
     ViewRequestPayments,
@@ -160,6 +161,11 @@ export default {
       if (isReading.value) return "Ko'rish";
       return "";
     });
+
+
+    const translateStatus = (status) => {
+      return getStatus(status)
+    }
 
     const isModalVisible = ref(false);
     const Id = ref(null);
@@ -261,6 +267,7 @@ export default {
       isModalVisible,
       openModal,
       Id,
+      translateStatus,
     };
   },
 };
