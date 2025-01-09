@@ -55,14 +55,7 @@
           <td class="px-6 py-4 font-semibold">{{ room.quantity }}</td>
           <td class="px-6 py-4 font-semibold">{{ room.description }}</td>
           <td class="px-6 py-4">
-              <span :class="{
-                  'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                  'bg-green-200 text-green-800': room.status === 'active',
-                  'bg-red-200 text-red-800': room.status === 'inactive',
-                }"
-              >
-                {{ translateStatus( room.status ) }}
-              </span>
+            <StatusBadge :status="room.status" />
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
             <router-link
@@ -95,15 +88,16 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import { getStatus } from '@/utils/stutus.js';
 import CreateRoom from "@/components/MainLayout/room/createRoom.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import updateRoom from "@/components/MainLayout/room/updateRoom.vue";
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 export default {
   components: {
     updateRoom,
     actionSidebar,
     CreateRoom,
+    StatusBadge,
   },
   setup() {
     const store = useStore();
@@ -120,11 +114,6 @@ export default {
       if(isReading.value) return "Ko'rish";
       return "";
     });
-
-
-    const translateStatus = (status) => {
-      return getStatus(status)
-    }
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -212,7 +201,6 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedRoomId,
-      translateStatus,
     };
   },
 };

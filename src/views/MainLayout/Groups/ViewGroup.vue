@@ -54,15 +54,7 @@
           </td>
           <td class="px-6 py-4 font-semibold">{{ group.start_time }}</td>
           <td class="px-6 py-4">
-            <span
-                :class="{
-                    'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                    'bg-green-200 text-green-800': group.status === 'active',
-                    'bg-red-200 text-red-800': group.status === 'inactive',
-                }"
-            >
-              {{ translateStatus( group.status ) }}
-            </span>
+            <StatusBadge :status="group.status" />
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
             <router-link
@@ -125,7 +117,7 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import { getStatus } from '@/utils/stutus.js';
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 import CreateGroup from "@/components/MainLayout/groups/createGroup.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import updateGroup from "@/components/MainLayout/groups/updateGroup.vue";
@@ -134,6 +126,7 @@ export default {
     updateGroup,
     actionSidebar,
     CreateGroup,
+    StatusBadge,
   },
   setup() {
     const store = useStore();
@@ -155,12 +148,6 @@ export default {
       if(isReading.value) return "Ko'rish";
       return "";
     });
-
-
-
-    const translateStatus = (status) => {
-      return getStatus(status)
-    }
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -257,7 +244,6 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedGroupId,
-      translateStatus,
     };
   },
 };

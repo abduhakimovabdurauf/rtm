@@ -24,11 +24,7 @@
 
       <div class="flex justify-between items-center border-b p-2 duration-300 hover:bg-gray-200">
         <span class="text-sm text-gray-500">Status:</span>
-        <span
-            :class="data.status === 'active' ? 'text-green-600' : 'text-red-600'"
-            class="text-lg font-semibold">
-          {{ data.status === 'active' ? 'Faol' : 'Faol emas' }}
-        </span>
+        <StatusBadge :status="data.status" />
       </div>
 
     </div>
@@ -52,7 +48,9 @@
           <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
           <td class="px-6 py-4 font-semibold">{{ students.full_name }}</td>
           <td class="px-6 py-4 font-semibold">{{ students.email }}</td>
-          <td class="px-6 py-4 font-semibold">{{ students.status }}</td>
+          <td class="px-6 py-4 font-semibold">
+            <StatusBadge :status="students.status" />
+          </td>
           <td class="px-6 py-4 font-semibold">
             <router-link
                 :to="{ name: 'WatchStudent', params: { id: students.id } }"
@@ -89,7 +87,9 @@
         >
           <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
           <td class="px-6 py-4 font-semibold">{{ payment.summa }}</td>
-          <td class="px-6 py-4 font-semibold">{{ payment.status }}</td>
+          <td class="px-6 py-4 font-semibold">
+            <StatusBadge :status="payment.status" />
+          </td>
           <td class="px-6 py-4 font-semibold">
             <router-link
                 :to="{ name: 'WatchPayment', params: { id: payment.id } }"
@@ -129,7 +129,9 @@
           <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
           <td class="px-6 py-4 font-semibold">{{ room.name }}</td>
           <td class="px-6 py-4 font-semibold">{{ room.number }}</td>
-          <td class="px-6 py-4 font-semibold">{{ room.status }}</td>
+          <td class="px-6 py-4 font-semibold">
+            <StatusBadge :status="room.status" />
+          </td>
           <td class="px-6 py-4 font-semibold">
             <router-link
                 :to="{ name: 'Watchroom', params: { id: room.id } }"
@@ -155,8 +157,9 @@
 import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
-
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 export default {
+  components: {StatusBadge},
   setup() {
     const route = useRoute();
     const store = useStore();

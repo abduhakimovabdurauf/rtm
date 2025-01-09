@@ -50,15 +50,7 @@
           <td class="px-6 py-4 font-semibold">{{ course.duration }} oy</td>
           <td class="px-6 py-4 font-semibold">{{ course.price }} UZS</td>
           <td class="px-6 py-4">
-              <span
-                  :class="{
-                  'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                  'bg-green-200 text-green-800': course.status === 'active',
-                  'bg-red-200 text-red-800': course.status === 'inactive',
-                }"
-              >
-                {{ translateStatus( course.status ) }}
-              </span>
+              <StatusBadge :status="course.status" />
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
             <router-link
@@ -118,7 +110,7 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import {getStatus} from "@/utils/stutus.js";
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 import CreateForm from "@/components/MainLayout/course/CreateForm.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import updateCourse from "@/components/MainLayout/course/updateCourse.vue";
@@ -127,6 +119,7 @@ export default {
     updateCourse,
     actionSidebar,
     CreateForm,
+    StatusBadge
   },
   setup() {
     const store = useStore();
@@ -148,10 +141,6 @@ export default {
       if(isReading.value) return "Ko'rish";
       return "";
     });
-
-    const translateStatus = (status) => {
-      return getStatus(status)
-    }
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -242,7 +231,6 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedCourseId,
-      translateStatus,
     };
   },
 };

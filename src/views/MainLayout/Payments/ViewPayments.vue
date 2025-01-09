@@ -54,16 +54,7 @@
           <td class="px-6 py-4 font-semibold">{{ payment.summa }} UZS</td>
           <td class="px-6 py-4 font-semibold">{{ payment.payment_date }}</td>
           <td class="px-6 py-4">
-              <span
-                  :class="{
-                  'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                  'bg-green-200 text-green-800': payment.status === 'completed',
-                  'bg-orange-200 text-orange-800': payment.status === 'pending',
-                  'bg-red-200 text-red-800': payment.status === 'failed',
-                }"
-              >
-                {{ translateStatus( payment.status ) }}
-              </span>
+              <StatusBadge :status="payment.status" />
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
             <button
@@ -132,14 +123,15 @@ import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import Modal from '@/components/MainLayout/Modal.vue'
 import updatePayment from "@/components/MainLayout/payment/updatePayment.vue";
 import ViewRequestPayments from "@/views/MainLayout/Payments/ViewRequestPayments.vue";
-import {getStatus} from "@/utils/stutus.js";
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 export default {
   components: {
     ViewRequestPayments,
     updatePayment,
     actionSidebar,
     CreateForm,
-    Modal
+    Modal,
+    StatusBadge,
   },
   setup() {
     const store = useStore();
@@ -161,11 +153,6 @@ export default {
       if (isReading.value) return "Ko'rish";
       return "";
     });
-
-
-    const translateStatus = (status) => {
-      return getStatus(status)
-    }
 
     const isModalVisible = ref(false);
     const Id = ref(null);
@@ -267,7 +254,6 @@ export default {
       isModalVisible,
       openModal,
       Id,
-      translateStatus,
     };
   },
 };

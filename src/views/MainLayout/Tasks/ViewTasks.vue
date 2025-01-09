@@ -55,16 +55,7 @@
             {{ Task.deadline }}
           </td>
           <td class="px-6 py-4">
-              <span
-                  :class="{
-                  'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                  'bg-green-200 text-green-800': Task.status === 'completed',
-                  'bg-red-200 text-red-800': Task.status === 'unread',
-                  'bg-orange-200 text-blue-800': Task.status === 'pending',
-                }"
-              >
-                {{ translateStatus( Task.status ) }}
-              </span>
+            <StatusBadge :status="Tasks.status" />
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
             <router-link
@@ -125,8 +116,7 @@
 <script>
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
-import { getStatus } from '@/utils/stutus.js';
-
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 
 import CreateTask from "@/components/MainLayout/task/CreateTask.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
@@ -136,6 +126,7 @@ export default {
     updateTask,
     actionSidebar,
     CreateTask,
+    StatusBadge,
   },
   setup() {
     const store = useStore();
@@ -157,11 +148,6 @@ export default {
       if(isReading.value) return "Ko'rish";
       return "";
     });
-
-
-    const translateStatus = (status) => {
-      return getStatus(status)
-    }
 
     const openCreateModal = () => {
       isCreating.value = true;
@@ -254,7 +240,6 @@ export default {
       totalPages,
       paginatedDiscounts,
       changePage,
-      translateStatus,
     };
   },
 };

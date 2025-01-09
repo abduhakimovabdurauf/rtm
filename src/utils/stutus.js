@@ -1,12 +1,11 @@
-// utils/status.js
 const statuses = {
     active: 'Faol',
-    pending: 'Kutmoqda',
+    pending: 'Jarayonda',
     inactive: 'Faol emas',
-    completed: 'Tugallangan',
-    dropped: 'Tushib qolgan',
-    expelled: 'Chekilgan',
-    failed: 'Tasdiqlanmagan',
+    completed: 'Bajarilgan',
+    dropped: 'Bekor qilingan',
+    expelled: 'Haydalgan',
+    failed: 'Muvaffaqiyatsiz'
 };
 
 export function getStatus(status) {

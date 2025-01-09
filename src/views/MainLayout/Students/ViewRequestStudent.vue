@@ -32,11 +32,7 @@
 
       <div class="flex justify-between items-center border-b p-2 duration-300 hover:bg-gray-200">
         <span class="text-sm text-gray-500">Status:</span>
-        <span
-            :class="data.status === 'active' ? 'text-green-600' : 'text-red-600'"
-            class="text-lg font-semibold">
-          {{ data.status === 'active' ? 'Faol' : 'Faol emas' }}
-        </span>
+        <StatusBadge :status="data.status" />
       </div>
     </div>
 
@@ -60,7 +56,9 @@
             <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
             <td class="px-6 py-4 font-semibold">{{ payment.summa }}</td>
             <td class="px-6 py-4 font-semibold">{{ payment.payment_date }}</td>
-            <td class="px-6 py-4 font-semibold">{{ payment.status }}</td>
+            <td class="px-6 py-4 font-semibold text-xs">
+              <StatusBadge :status="payment.status"/>
+            </td>
             <td class="px-6 py-4 font-semibold">
               <router-link
                   :to="{ name: 'WatchPayment', params: { id: payment.id } }"
@@ -86,8 +84,11 @@
 import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
-
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 export default {
+  components: {
+    StatusBadge,
+  },
   setup() {
     const route = useRoute();
     const store = useStore();
@@ -124,7 +125,7 @@ export default {
     return {
       data,
       formatKey,
-      formatData
+      formatData,
     };
   },
 };

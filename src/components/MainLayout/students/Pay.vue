@@ -38,42 +38,23 @@
       />
     </div>
     <div class="mb-4">
-      <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh ID</label>
+      <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh Id</label>
       <select
           id="group_id"
           required
           v-model.trim="newPayment.group_id"
-          v-if="groups && groups.data && groups.data.length > 0"
+          v-if="groups && groups.length > 0"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option
-            v-for="payment in groups.data"
-            :key="payment.id"
-            :value="payment.id"
+            v-for="group in groups"
+            :key="group.id"
+            :value="group.id"
         >
-          {{ payment.name }}
+          {{ group.name }}
         </option>
       </select>
-      <p v-else class="text-gray-500">No groups available</p>
-    </div>
-    <div class="mb-4">
-      <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Oquvchi ID</label>
-      <select
-          id="student_id"
-          required
-          v-if="students && students.data && students.data.length > 0"
-          v-model.trim="newPayment.student_id"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option
-            v-for="student in students.data"
-            :key="student.id"
-            :value="student.id"
-        >
-          {{ student.full_name }}
-        </option>
-      </select>
-      <p v-else class="text-gray-500">O'quvchilar yo'q</p>
+      <p v-else class="text-gray-500">Guruhlar yoq</p>
     </div>
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
@@ -114,13 +95,24 @@ import { reactive, ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
+  props: {
+    studentId: {
+      type: Number,
+      required: true
+    },
+    groupData: {
+      type: Object,
+      required: true
+    }
+  },
   emits: ["close"],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const store = useStore();
+    const groups = reactive( props.groupData )
     const isLoading = computed(() => store.getters.isLoading);
     const newPayment = reactive({
       group_id: "",
-      student_id: "",
+      student_id: props.studentId,
       discount_id: "",
       summa: "",
       payment_method: "cash",
@@ -129,30 +121,21 @@ export default {
       description: "",
       contract_n: "",
     });
-    const groups = ref(null);
-    const students = ref(null);
     const discounts = ref(null);
 
     const fetchData = async () => {
+      console.log('selectedGroup: ',props.groupData)
+      console.log('selectedStudent: ',props.studentId)
       try {
-        groups.value = await store.dispatch('group/getAllGroups', {
-          page: 1,
-          perPage: 5,
-          sortBy: 'id',
-          orderBy: 'desc',
-        });
-        students.value = await store.dispatch('student/getAllStudents', {
-          page: 1,
-          perPage: 5,
-          sortBy: 'id',
-          orderBy: 'desc',
-        });
         discounts.value = await store.dispatch('discount/getAllDiscounts', {
           page: 1,
           perPage: 5,
           sortBy: 'id',
           orderBy: 'desc',
         });
+        if (groups && groups.length > 0) {
+          newPayment.group_id = groups[0].id;
+        }
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -202,7 +185,6 @@ export default {
       handleSubmit,
       isFormValid,
       groups,
-      students,
       isLoading
     };
   },

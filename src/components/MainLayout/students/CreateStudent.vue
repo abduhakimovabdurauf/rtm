@@ -151,8 +151,12 @@
           required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
+        <option value="pending">Jarayonda</option>
         <option value="active">Faol</option>
         <option value="inactive">Faol emas</option>
+        <option value="completed">Bajarilgan</option>
+        <option value="dropped">Bekor qilingan</option>
+        <option value="expelled">Haydalgan</option>
       </select>
     </div>
     <div class="mb-4">
@@ -202,8 +206,8 @@ export default {
       address: '',
       links: '',
       birthday: '',
-      gender: '',
-      from: '',
+      gender: 'man',
+      from: 'tanish',
       work_start: '',
       work_end: '',
       status: 'active',

@@ -25,11 +25,7 @@
 
         <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 duration-300">
           <span class="text-sm text-gray-500">Status:</span>
-          <span
-              :class="data.status === 'active' ? 'text-green-600' : 'text-red-600'"
-              class="text-lg font-semibold">
-          {{ data.status === 'active' ? 'Faol' : 'Faol emas' }}
-        </span>
+          <StatusBadge :status="data.status" />
         </div>
 
         <img
@@ -59,7 +55,9 @@
           <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
           <td class="px-6 py-4 font-semibold">{{ group.name }}</td>
           <td class="px-6 py-4 font-semibold">{{ group.start_time }}</td>
-          <td class="px-6 py-4 font-semibold">{{ group.status }}</td>
+          <td class="px-6 py-4 font-semibold">
+            <StatusBadge :status="group.status" />
+          </td>
           <td class="px-6 py-4 font-semibold">
             <router-link
                 :to="{ name: 'WatchGroup', params: { id: group.id } }"
@@ -87,8 +85,11 @@
 import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
-
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 export default {
+  components: {
+    StatusBadge,
+  },
   setup() {
     const route = useRoute();
     const store = useStore();

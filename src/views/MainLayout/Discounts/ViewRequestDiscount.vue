@@ -20,11 +20,7 @@
 
         <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 duration-300">
           <span class="text-sm text-gray-500">Status:</span>
-          <span
-              :class="data.status === 'active' ? 'text-green-600' : 'text-red-600'"
-              class="text-lg font-semibold">
-            {{ data.status === 'active' ? 'Faol' : 'Faol emas' }}
-          </span>
+          <StatusBadge :status="data.status" />
         </div>
       </div>
     </div>
@@ -37,8 +33,9 @@
 import { useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
-
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 export default {
+  components: {StatusBadge},
   setup() {
     const route = useRoute();
     const store = useStore();

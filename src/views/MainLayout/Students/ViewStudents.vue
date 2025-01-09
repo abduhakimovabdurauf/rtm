@@ -10,14 +10,28 @@
     />
     <UpdateStudentForm
         v-if="isUpdating"
-        :studentId="selectedUserId"
+        :studentId="selectedStudentId"
         @close="closeUpdateModal"
+    />
+    <Pay
+      v-if="isPaying"
+      :studentId="selectedStudentId"
+      :groupData="selectedGroupData"
+      @close="closePayModal"
     />
   </actionSidebar>
     <div class="p-6 min-h-screen dark:bg-gray-900">
       <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">O'quvchilar ro'yxati</h1>
-
+        <div>
+          <input
+              type="text"
+              v-model="keyWord"
+              @input="updateKeyWord($event.target.value)"
+              placeholder="Saralash"
+              class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          />
+        </div>
         <button
             @click="openCreateModal"
             class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
@@ -41,18 +55,6 @@
               Amallar
             </th>
           </tr>
-          <tr class="text-white w-full">
-            <th class=""></th>
-            <th class="py-2">
-              <input
-                  type="text"
-                  v-model="keyWord"
-                  @input="updateKeyWord($event.target.value)"
-                  placeholder="Saralash"
-                  class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-            </th>
-          </tr>
           </thead>
           <tr v-if="isSortLoading">
             <td colspan="7" class="text-center py-6">
@@ -72,17 +74,16 @@
             <td class="px-6 py-4 font-semibold">{{ student.address }}</td>
             <td class="px-6 py-4 font-semibold">{{ student.description }}</td>
             <td class="px-6 py-4">
-              <span :class="{
-                  'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
-                  'bg-green-200 text-green-800': student.status === 'active',
-                  'bg-orange-200 text-orange-800': student.status === 'pending',
-                  'bg-red-200 text-red-800': student.status === 'inactive',
-                }"
-              >
-                {{ translateStatus( student.status ) }}
-              </span>
+              <StatusBadge :status="student.status" />
             </td>
-            <td class="px-6 py-4 space-x-3 text-right">
+            <td
+                @click="openPayModal(student.id,student.groups)"
+                class="px-6 py-4 space-x-3 text-right"
+            >
+              <button class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200">
+                <i class='bx bxs-dollar-circle'></i>
+                To'lov
+              </button>
               <router-link
                   :to="{ name: 'WatchStudent', params: { id: student.id } }"
                   class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
@@ -146,12 +147,16 @@ import { getStatus } from '@/utils/stutus.js';
 import CreateStudentForm from "@/components/MainLayout/students/CreateStudent.vue";
 import UpdateStudentForm from "@/components/MainLayout/students/UpdateStudent.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
+import Pay from "@/components/MainLayout/students/Pay.vue";
 import loader from '@/components/MainLayout/ui/Loader.vue'
+import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 export default {
   components: {
     CreateStudentForm,
     UpdateStudentForm,
     actionSidebar,
+    StatusBadge,
+    Pay,
     loader
   },
   setup() {
@@ -161,31 +166,46 @@ export default {
     const totalPages = ref(null);
     const isCreating = ref(false);
     const isUpdating = ref(false);
-    const selectedUserId = ref(null);
+    const isPaying = ref(false)
+    const selectedStudentId = ref(null);
+    const selectedGroupData = ref(null)
     const perPage = ref(6);
     const isSortLoading = computed(()=> store.getters['isSortLoading'])
     const keyWord = ref('')
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Oquvchi qo'shish";
       if (isUpdating.value) return "Oquvchi malumotlarini o'zgartirish";
+      if (isPaying.value) return "Tolov qilish";
       return "";
     });
 
-    const translateStatus = (status) => {
-      return getStatus(status)
-    }
-
     const openCreateModal = () => {
       isCreating.value = true;
+      isPaying.value = false;
       isUpdating.value = false;
       store.dispatch("toggleSidebar", true);
     };
 
-    const openUpdateModal = (userId) => {
+    const openPayModal = (studentId,groupData) => {
+      isPaying.value = true;
       isCreating.value = false;
-      isUpdating.value = true;
-      selectedUserId.value = userId;
+      isUpdating.value = false;
+      selectedStudentId.value = studentId;
+      selectedGroupData.value = groupData
       store.dispatch("toggleSidebar", true);
+    };
+
+    const openUpdateModal = (studentId) => {
+      isCreating.value = false;
+      isPaying.value = false;
+      isUpdating.value = true;
+      selectedStudentId.value = studentId;
+      store.dispatch("toggleSidebar", true);
+    };
+
+    const closePayModal = () => {
+      isPaying.value = false;
+      store.dispatch("toggleSidebar", false);
     };
 
     const closeCreateModal = () => {
@@ -195,7 +215,7 @@ export default {
 
     const closeUpdateModal = () => {
       isUpdating.value = false;
-      selectedUserId.value = null;
+      selectedStudentId.value = null;
       store.dispatch("toggleSidebar", false);
     };
 
@@ -211,7 +231,7 @@ export default {
     const toggleSidebar = () => {
       isCreating.value = false;
       isUpdating.value = false;
-      selectedUserId.value = null;
+      selectedStudentId.value = null;
       store.dispatch("toggleSidebar", false);
     };
 
@@ -251,15 +271,19 @@ export default {
 
     return {
       students,
-      selectedUserId,
+      selectedStudentId,
+      selectedGroupData,
       currentPage,
       isCreating,
       isUpdating,
+      isPaying,
       sidebarTitle,
       openCreateModal,
       openUpdateModal,
+      openPayModal,
       closeCreateModal,
       closeUpdateModal,
+      closePayModal,
       deleteStudent,
       totalPages,
       changePage,
@@ -268,7 +292,6 @@ export default {
       fetchStudents,
       keyWord,
       updateKeyWord,
-      translateStatus,
     };
   },
 };
