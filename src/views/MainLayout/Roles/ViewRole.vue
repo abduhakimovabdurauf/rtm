@@ -27,7 +27,7 @@
       </button>
     </div>
 
-    <div class="overflow-x-auto shadow-xl rounded-lg" v-if="roles && roles.length > 0">
+    <div class="overflow-x-auto shadow-xl rounded-lg">
       <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
         <thead>
         <tr class="bg-gray-700 text-white">
@@ -37,7 +37,7 @@
           </th>
         </tr>
         </thead>
-        <tbody>
+        <tbody v-if="roles && roles.length > 0">
         <tr
             v-for="role in roles"
             :key="role.id"
@@ -59,6 +59,12 @@
               <i class="bx bxs-edit-alt"></i>
             </a>
           </td>
+        </tr>
+        </tbody>
+
+        <tbody class="w-full h-10" v-else>
+        <tr class="w-full text-center text-lg">
+          Malumot mavjud emas!
         </tr>
         </tbody>
       </table>

@@ -61,7 +61,7 @@
               <loader></loader>
             </td>
           </tr>
-          <tbody v-else>
+          <tbody v-if="!isSortLoading || students">
 
           <tr
               v-for="(student,index) in students"
@@ -105,8 +105,13 @@
             </td>
           </tr>
           </tbody>
+          <tbody class="w-full h-10" v-if="!students.length>0">
+          <tr class="w-full text-center text-lg">
+            Malumot mavjud emas!
+          </tr>
+          </tbody>
         </table>
-        <div class="flex justify-center items-center mt-6 space-x-2">
+        <div class="flex justify-center items-center mt-6 space-x-2" v-if="students && students.length > 0">
           <button
               @click="changePage(currentPage - 1)"
               :disabled="currentPage === 1"

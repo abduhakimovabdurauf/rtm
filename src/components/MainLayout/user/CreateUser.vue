@@ -41,7 +41,7 @@
       />
     </div>
     <div class="mb-4">
-      <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
+      <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
       <input
           v-model="newUser.phone"
           type="text"
@@ -127,8 +127,16 @@
       <input
           type="file"
           id="image"
-          ref="image"
           @change="handleImageUpload"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fayl Yuklash</label>
+      <input
+          type="file"
+          id="file"
+          @change="handleFileUpload"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -157,7 +165,7 @@ export default {
     },
   },
   emits: ['close'],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const store = useStore();
     const newUser = reactive({
       full_name: '',
@@ -173,6 +181,7 @@ export default {
       status: 'active',
       description: '',
       images: null,
+      files: null,
     });
 
     const isFormValid = computed(() => {
@@ -207,7 +216,8 @@ export default {
         formData.append('work_start', newUser.work_start);
         formData.append('work_end', newUser.work_end);
         formData.append('status', newUser.status);
-        if (newUser.image) formData.append('image', newUser.image);
+        if (newUser.images) formData.append('files', newUser.images);
+        if (newUser.files) formData.append('files', newUser.files);
 
         await store.dispatch('user/addUser', formData);
         closeModal();
@@ -225,13 +235,18 @@ export default {
         newUser.status = 'active';
         newUser.description = '';
         newUser.images = null;
+        newUser.files = null;
       } catch (e) {
         console.error(e);
       }
     };
 
     const handleImageUpload = (event) => {
-      newUser.image = event.target.files[0];
+      newUser.images = event.target.files[0];
+    };
+
+    const handleFileUpload = (event) => {
+      newUser.files = event.target.files[0];
     };
 
     function closeModal() {
@@ -243,6 +258,7 @@ export default {
       handleSubmit,
       closeModal,
       handleImageUpload,
+      handleFileUpload,
       isFormValid,
     };
   },

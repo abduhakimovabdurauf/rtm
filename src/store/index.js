@@ -8,7 +8,10 @@ import student from "./modules/student.module.js";
 import group from "./modules/group.module.js";
 import payment from "./modules/payment.module.js";
 import task from "./modules/task.module.js";
+import company from "./modules/company.module.js";
+import branch from "./modules/branch.module.js";
 import discount from "./modules/discount.module.js";
+import tenant from "./modules/tenant.module.js";
 import aktImg from '../assets/images/akt.svg';
 import foundationImg from '../assets/images/found.svg';
 import robotImg from '../assets/images/ROBOT.svg';
@@ -417,6 +420,9 @@ const store = createStore({
     payment,
     task,
     discount,
+    company,
+    branch,
+    tenant,
   }
 });
 

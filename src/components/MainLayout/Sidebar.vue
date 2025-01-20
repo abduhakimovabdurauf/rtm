@@ -23,6 +23,16 @@
           <span v-if="isOpen" class="ml-3">Dashboard</span>
         </router-link>
 
+        <router-link to="/companies" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bxs-buildings'></i>
+          <span v-if="isOpen" class="ml-3">Kompaniyalar</span>
+        </router-link>
+
+        <router-link to="/branches" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bx-git-branch'></i>
+          <span v-if="isOpen" class="ml-3">Filiallar</span>
+        </router-link>
+
         <router-link to="/roles" class="flex items-center p-2 rounded-md hover:bg-gray-700">
           <i class='bx bx-user-circle'></i>
           <span v-if="isOpen" class="ml-3">Lavozimlar</span>
@@ -41,6 +51,11 @@
         <router-link to="/users" class="flex items-center p-2 rounded-md hover:bg-gray-700">
           <i class="bx bx-user text-lg"></i>
           <span v-if="isOpen" class="ml-3">Xodimlar</span>
+        </router-link>
+
+        <router-link to="/tenants" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bxs-user-circle' ></i>
+          <span v-if="isOpen" class="ml-3">Ijarachilar</span>
         </router-link>
 
         <router-link to="/students" class="flex items-center p-2 rounded-md hover:bg-gray-700">

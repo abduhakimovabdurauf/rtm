@@ -113,6 +113,34 @@ const routes = [
     }
   },
   {
+    path: '/companies',
+    name: 'Company',
+    component: () => import('../views/MainLayout/Companies/ViewCompany.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
+    path: '/branches',
+    name: 'Branch',
+    component: () => import('../views/MainLayout/Branches/ViewBranches.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+
+  {
+    path: '/tenants',
+    name: 'Tenants',
+    component: () => import('../views/MainLayout/Tenants/ViewTenants.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
     path: '/watchcourse/:id?',
     name: 'WatchCourse',
     component: ()=> import('../views/MainLayout/Courses/ViewRequestCourse.vue'),
@@ -179,6 +207,35 @@ const routes = [
     path: '/watchDiscount/:id?',
     name: 'WatchDiscount',
     component: ()=> import('../views/MainLayout/Discounts/ViewRequestDiscount.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+  {
+    path: '/watchCompany/:id?',
+    name: 'WatchCompany',
+    component: () => import('../views/MainLayout/Companies/ViewRequestCompany.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+
+  {
+    path: '/watchBranch/:id?',
+    name: 'watchBranch',
+    component: () => import('../views/MainLayout/Branches/ViewRequestBranch.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+
+  {
+    path: '/watchTenant/:id?',
+    name: 'watchTenant',
+    component: () => import('../views/MainLayout/Tenants/ViewRequestTenants.vue'),
     meta: {
       layout: 'main',
       auth: true

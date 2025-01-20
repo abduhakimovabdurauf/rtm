@@ -1,6 +1,6 @@
 <template>
   <div :class="['w-[70vh]', 'overflow-auto', 'h-[100vh]', 'shadow-lg', 'fixed', 'bg-white', 'right-0', isSidebarOpen ? 'translate-x-0' : 'translate-x-full', 'transition-transform', 'duration-300']" style="z-index: 1050">
-    <div class="flex justify-between items-center p-4">
+    <div class="flex justify-between items-center p-4 shadow-md bg-white sticky top-0 z-10">
       <p class="font-semibold text-2xl">{{ title }}</p>
       <button @click="toggleSidebar" class="text-2xl">&times;</button>
     </div>

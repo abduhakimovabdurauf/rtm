@@ -39,7 +39,7 @@
           <th class="px-6 py-4 text-right">Amallar</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody v-if="courses && courses.length > 0">
         <tr
             v-for="(course, index) in courses"
             :key="course.id"
@@ -74,8 +74,13 @@
           </td>
         </tr>
         </tbody>
+        <tbody class="w-full h-10" v-else>
+          <tr class="w-full text-center text-lg">
+            Malumot mavjud emas!
+          </tr>
+        </tbody>
       </table>
-      <div class="flex justify-center items-center mt-6 space-x-2">
+      <div class="flex justify-center items-center mt-6 space-x-2" v-if="courses.length > 0">
         <button
             @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"

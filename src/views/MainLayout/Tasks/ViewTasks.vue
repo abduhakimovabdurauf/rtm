@@ -47,11 +47,11 @@
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index+1 }}</td>
-          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ Task.title }}</td>
-          <td class="px-6 py-4 font-semibold">
+          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white" v-if="Task && Task.title">{{ Task.title }}</td>
+          <td class="px-6 py-4 font-semibold" v-if="Task && Task.text">
             {{ Task.text.length > 20 ? Task.text.slice(0, 20) + '...' : Task.text }}
           </td>
-          <td class="px-6 py-4 font-semibold">
+          <td class="px-6 py-4 font-semibold" v-if="Task && Task.deadline">
             {{ Task.deadline }}
           </td>
           <td class="px-6 py-4">

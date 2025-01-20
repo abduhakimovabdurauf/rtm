@@ -40,7 +40,7 @@
           </th>
         </tr>
         </thead>
-        <tbody>
+        <tbody v-if="groups && groups.length>0">
         <tr
             v-for="(group, index) in groups"
             :key="group.id"
@@ -78,10 +78,16 @@
           </td>
         </tr>
         </tbody>
+
+        <tbody v-else>
+          <tr class="w-full h-10 text-lg text-center mx-auto">
+            Malumot mavjud emas!
+          </tr>
+        </tbody>
       </table>
 
       <!-- Pagination -->
-      <div class="flex justify-center items-center mt-6 space-x-2">
+      <div class="flex justify-center items-center mt-6 space-x-2" v-if="groups && groups.length>0">
         <button
             @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"

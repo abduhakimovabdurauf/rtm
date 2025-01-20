@@ -26,18 +26,6 @@
     </div>
 
     <div class="mb-4">
-      <label for="payment_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        To'lov sanasi
-      </label>
-      <input
-          v-model.trim="newPayment.payment_date"
-          type="date"
-          id="payment_date"
-          required
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
       <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh ID</label>
       <select
           id="group_id"
@@ -124,7 +112,7 @@ export default {
       discount_id: "",
       summa: "",
       payment_method: "cash",
-      payment_date: "",
+      // payment_date: "",
       status: "active",
       description: "",
       contract_n: "",
@@ -168,7 +156,7 @@ export default {
           newPayment.group_id &&
           newPayment.student_id &&
           newPayment.payment_method &&
-          newPayment.payment_date &&
+          // newPayment.payment_date &&
           newPayment.contract_n
       );
     });
@@ -190,7 +178,7 @@ export default {
         student_id: "",
         summa: "",
         payment_method: "cash",
-        payment_date: "",
+        // payment_date: "",
         status: "active",
         description: "",
         contract_n: "",

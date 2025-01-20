@@ -26,18 +26,6 @@
     </div>
 
     <div class="mb-4">
-      <label for="payment_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        To'lov sanasi
-      </label>
-      <input
-          v-model.trim="newPayment.payment_date"
-          type="date"
-          id="payment_date"
-          required
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
       <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh Id</label>
       <select
           id="group_id"
