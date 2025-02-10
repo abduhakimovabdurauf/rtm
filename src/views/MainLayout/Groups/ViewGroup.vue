@@ -32,7 +32,8 @@
         <thead>
         <tr class="bg-gray-700 text-white">
           <th class="px-6 py-4 text-left">№</th>
-          <th class="px-6 py-4 text-left">Kurs nomi</th>
+          <th class="px-6 py-4 text-left">Kurs</th>
+          <th class="px-6 py-4 text-left">Guruh</th>
           <th class="px-6 py-4 text-left">Boshlanish Vaqti</th>
           <th class="px-6 py-4 text-left">Status</th>
           <th class="px-6 py-4 text-right">
@@ -52,6 +53,7 @@
           >
             {{ group.course.name }}
           </td>
+          <td class="px-6 py-4 font-semibold">{{ group.name }}</td>
           <td class="px-6 py-4 font-semibold">{{ group.start_time }}</td>
           <td class="px-6 py-4">
             <StatusBadge :status="group.status" />

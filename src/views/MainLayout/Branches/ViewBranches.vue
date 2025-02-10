@@ -1,118 +1,92 @@
 <template>
+  <actionSidebar
+      :title="sidebarTitle"
+      @closeSidebar="toggleSidebar"
+  >
+    <CreateBranch
+        v-if="isCreating"
+        :isOpen="isCreating"
+        @close="closeCreateModal"
+    />
+    <updateBranch
+        v-if="isUpdating"
+        :branchId="selectedBranchId"
+        @close="closeUpdateModal"
+    />
+  </actionSidebar>
 
-<!--  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-->
-    <actionSidebar
-        :title="sidebarTitle"
-        @closeSidebar="toggleSidebar"
-    >
-      <CreateBranch
-          v-if="isCreating"
-          :isOpen="isCreating"
-          @close="closeCreateModal"
-      />
+  <div class="p-6 min-h-screen dark:bg-gray-900">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">
+        Filiallar ro'yxati
+      </h1>
+      <button
+          @click="openCreateModal"
+          class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
+      >
+        <i class="bx bx-plus-circle text-xl"></i> <span>Filial qo'shish</span>
+      </button>
+    </div>
 
-      <updateBranch
-          v-if="isUpdating"
-          :branchId="selectedBranchId"
-          @close="closeUpdateModal"
-      />
-    </actionSidebar>
-
-    <div class="p-6 min-h-screen dark:bg-gray-900">
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Filiallar ro'yxati</h1>
-        <button
-            @click="openCreateModal"
-            class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
-        >
-          <i class="bx bx-plus-circle text-xl"></i> <span>Filial qo'shish</span>
-        </button>
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div
+          v-if="branches.length === 0"
+          class="flex justify-center items-center col-span-full bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 p-6 rounded-lg shadow-md"
+      >
+        <p class="text-lg font-semibold">Ma'lumot mavjud emas</p>
       </div>
 
-      <div class="overflow-x-auto shadow-xl rounded-lg">
-        <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
-          <thead>
-          <tr class="bg-gray-700 text-white">
-            <th class="px-6 py-4 text-left">№</th>
-            <th class="px-6 py-4 text-left">Filial nomi</th>
-            <th class="px-6 py-4 text-left">Telefon Raqami</th>
-            <th class="px-6 py-4 text-left">Telefon Manzili</th>
-            <th class="px-6 py-4 text-left">Tafsif</th>
-            <th class="px-6 py-4 text-left">Holat</th>
-            <th class="px-6 py-4 text-right">Amallar</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr
-              v-for="(branch, index) in branches"
-              :key="branch.id"
-              class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-          >
-            <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
-            <td class="px-6 py-4 font-semibold">{{ branch.name }}</td>
-            <td class="px-6 py-4 font-semibold">{{ branch.phone }}</td>
-            <td class="px-6 py-4 font-semibold">{{ branch.address }}</td>
-            <td class="px-6 py-4 font-semibold">
-              {{ branch.description.length > 15 ? branch.description.substring(0, 15) + '...' : branch.description }}
-            </td>
-
-            <td class="px-6 py-4">
-              <StatusBadge :status="branch.status" />
-            </td>
-            <td class="px-6 py-4 space-x-3 text-right">
-              <router-link
-                  :to="{ name: 'WatchBranch', params: { id: branch.id } }"
-                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
-              >
-                <i class="bx bxs-show"></i>
-              </router-link>
-              <button
-                  @click="deleteById(branch.id)"
-                  class="mr-0.5 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
-              >
-                <i class="bx bxs-trash-alt"></i>
-              </button>
-              <button
-                  @click.prevent="openUpdateModal(branch.id)"
-                  class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
-              >
-                <i class="bx bxs-edit-alt"></i>
-              </button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <div class="flex justify-center items-center mt-6 space-x-2">
-          <button
-              @click="changePage(currentPage - 1)"
-              :disabled="currentPage === 1"
-              class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
-          >
-            <i class="bx bx-chevron-left"></i>
-          </button>
-          <button
-              v-for="page in totalPages"
-              :key="page"
-              @click="changePage(page)"
-              :class="{
-              'bg-blue-600 text-white': currentPage === page,
-              'bg-gray-300': currentPage !== page,
-            }"
-              class="px-3 py-1 rounded-md font-medium transition duration-150"
-          >
-            {{ page }}
-          </button>
-          <button
-              @click="changePage(currentPage + 1)"
-              :disabled="currentPage === totalPages"
-              class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
-          >
-            <i class="bx bx-chevron-right"></i>
-          </button>
+      <div
+          v-for="branch in branches"
+          :key="branch.id"
+          class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 flex flex-col justify-between"
+      >
+        <div>
+          <h2 class="text-xl font-bold text-gray-800 dark:text-white">
+            {{ branch.name }}
+          </h2>
+          <p class="text-sm text-gray-600 dark:text-gray-400" v-if="branches && branch && branch.phone">
+            Telefon: {{ branch.phone }}
+          </p>
+          <p class="text-sm text-gray-600 dark:text-gray-400" v-if="branches && branch && branch.address">
+            Manzil: {{ branch.address }}
+          </p>
+          <p class="text-sm text-gray-600 dark:text-gray-400" v-if="branches && branch && branch.description">
+            Tavsif: {{
+              branch.description.length > 15
+                  ? branch.description.substring(0, 15) + "..."
+                  : branch.description
+            }}
+          </p>
+        </div>
+        <div class="mt-4 flex justify-between items-center">
+          <StatusBadge :status="branch.status" />
+          <div class="flex space-x-2">
+            <router-link
+                :to="{ name: 'WatchBranch', params: { id: branch.id } }"
+                class="text-white bg-blue-500 hover:bg-blue-600 p-2 py-1 rounded transition"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+            <button
+                @click="deleteById(branch.id)"
+                class="text-white bg-red-500 hover:bg-red-600 p-2 py-1 rounded transition"
+            >
+              <i class="bx bxs-trash-alt"></i>
+            </button>
+            <button
+                @click.prevent="openUpdateModal(branch.id)"
+                class="text-white bg-green-500 hover:bg-green-600 p-2 py-1 rounded transition"
+            >
+              <i class="bx bxs-edit-alt"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
+
 
 <script>
 import { computed, ref, onMounted } from "vue";
@@ -141,7 +115,6 @@ export default {
     const sortBy = ref('id');
     const orderBy = ref('desc');
     const totalPages = ref(null)
-    const isSidebarOpen = computed(() => store.getters.isSidebarOpen);
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Filial qo'shish";
       if (isUpdating.value) return "Filialni o'zgartirish";
@@ -184,7 +157,7 @@ export default {
     };
 
     const deleteById = (id) => {
-      store.dispatch("branch/deletebranch", id);
+      store.dispatch("branch/deleteBranch", id);
     };
 
     const paginatedBranches = computed(() => {

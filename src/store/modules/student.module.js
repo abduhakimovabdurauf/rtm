@@ -82,6 +82,7 @@ export default {
                 toast.error(e.response?.data?.message || "Xodim qo'shishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
         async updateStudent({ commit }, payload) {
@@ -100,6 +101,7 @@ export default {
                 toast.error(e.response?.data?.message || "Oquvchi malumotlarini yangilashda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
         async deleteStudent({ commit }, Id) {
@@ -114,6 +116,7 @@ export default {
                 toast.error(e.response?.data?.message || "O`quvchi malumotlarini o'chirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
     },

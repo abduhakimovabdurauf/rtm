@@ -33,19 +33,19 @@
           <span v-if="isOpen" class="ml-3">Filiallar</span>
         </router-link>
 
+        <router-link to="/courses" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class="bx bx-book text-lg"></i>
+          <span v-if="isOpen" class="ml-3">Kurslar</span>
+        </router-link>
+
         <router-link to="/roles" class="flex items-center p-2 rounded-md hover:bg-gray-700">
           <i class='bx bx-user-circle'></i>
           <span v-if="isOpen" class="ml-3">Lavozimlar</span>
         </router-link>
 
-        <router-link to="/rooms" class="flex items-center p-2 rounded-md hover:bg-gray-700">
-          <i class="bx bx-home-alt text-lg"></i>
-          <span v-if="isOpen" class="ml-3">Xonalar</span>
-        </router-link>
-
-        <router-link to="/courses" class="flex items-center p-2 rounded-md hover:bg-gray-700">
-          <i class="bx bx-book text-lg"></i>
-          <span v-if="isOpen" class="ml-3">Kurslar</span>
+        <router-link to="/permissions" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bxs-lock-open-alt'></i>
+          <span v-if="isOpen" class="ml-3">Huquqlar</span>
         </router-link>
 
         <router-link to="/users" class="flex items-center p-2 rounded-md hover:bg-gray-700">
@@ -53,9 +53,19 @@
           <span v-if="isOpen" class="ml-3">Xodimlar</span>
         </router-link>
 
-        <router-link to="/tenants" class="flex items-center p-2 rounded-md hover:bg-gray-700">
-          <i class='bx bxs-user-circle' ></i>
-          <span v-if="isOpen" class="ml-3">Ijarachilar</span>
+        <router-link to="/rooms" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class="bx bx-home-alt text-lg"></i>
+          <span v-if="isOpen" class="ml-3">Xonalar</span>
+        </router-link>
+
+<!--        <router-link to="/tenants" class="flex items-center p-2 rounded-md hover:bg-gray-700">-->
+<!--          <i class='bx bxs-user-circle' ></i>-->
+<!--          <span v-if="isOpen" class="ml-3">Ijarachilar</span>-->
+<!--        </router-link>-->
+
+        <router-link to="/groups" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bx-group'></i>
+          <span v-if="isOpen" class="ml-3">Guruhlar</span>
         </router-link>
 
         <router-link to="/students" class="flex items-center p-2 rounded-md hover:bg-gray-700">
@@ -63,14 +73,14 @@
           <span v-if="isOpen" class="ml-3">Oquvchilar</span>
         </router-link>
 
-        <router-link to="/groups" class="flex items-center p-2 rounded-md hover:bg-gray-700">
-          <i class='bx bx-group'></i>
-          <span v-if="isOpen" class="ml-3">Guruhlar</span>
-        </router-link>
-
         <router-link to="/payments" class="flex items-center p-2 rounded-md hover:bg-gray-700">
           <i class='bx bxs-credit-card'></i>
           <span v-if="isOpen" class="ml-3">To'lovlar</span>
+        </router-link>
+
+        <router-link to="/discounts" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bxs-discount'></i>
+          <span v-if="isOpen" class="ml-3">Chegirmalar</span>
         </router-link>
 
 
@@ -80,9 +90,9 @@
           <span v-if="isOpen" class="ml-3">Topshiriqlar</span>
         </router-link>
 
-        <router-link to="/discounts" class="flex items-center p-2 rounded-md hover:bg-gray-700">
-          <i class='bx bxs-discount'></i>
-          <span v-if="isOpen" class="ml-3">Chegirmalar</span>
+        <router-link to="/notifications" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bx-bell'></i>
+          <span v-if="isOpen" class="ml-3">Bildirishnomalar</span>
         </router-link>
       </ul>
     </div>

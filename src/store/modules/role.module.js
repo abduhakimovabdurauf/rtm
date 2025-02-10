@@ -61,6 +61,7 @@ export default {
                 toast.error(e.response?.data?.message || "Lavozimlar royhatini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -81,6 +82,7 @@ export default {
                 toast.error(e.response?.data?.message || "Lavozim qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -101,6 +103,7 @@ export default {
                 console.error(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -120,6 +123,7 @@ export default {
                 toast.error(e.response?.data?.message || "lavozim ni ochirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
     },

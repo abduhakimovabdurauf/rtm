@@ -139,7 +139,6 @@ export default {
     const sortBy = ref('id');
     const orderBy = ref('desc');
     const totalPages = ref(null)
-    const isSidebarOpen = computed(() => store.getters.isSidebarOpen);
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Kurs qo'shish";
       if (isUpdating.value) return "Kursni o'zgartirish";
@@ -174,7 +173,6 @@ export default {
       isCreating.value = false;
       store.dispatch("toggleSidebar", false);
     };
-
     const closeUpdateModal = () => {
       isUpdating.value = false;
       selectedCourseId.value = null;

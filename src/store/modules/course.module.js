@@ -69,6 +69,7 @@ export default {
                 toast.error(e.response?.data?.message || "Failed to fetch course!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -87,6 +88,7 @@ export default {
                 toast.error(e.response?.data?.message || "Kurs qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -106,6 +108,7 @@ export default {
                 console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -124,6 +127,7 @@ export default {
                 toast.error(e.response?.data?.message || "Failed to delete course!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
     },

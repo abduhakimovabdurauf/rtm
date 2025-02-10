@@ -64,6 +64,7 @@ export default {
                 toast.error(e.response?.data?.message || "Ijarachilar malumotlarini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
         async addTenant({ commit }, payload) {
@@ -82,6 +83,7 @@ export default {
                 toast.error(e.response?.data?.message || "Ijarachi qo'shishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
         async updateTenant({ commit }, payload) {
@@ -100,6 +102,7 @@ export default {
                 toast.error(e.response?.data?.message || "Ijarachi malumotlarini yangilashda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
         async deleteTenant({ commit }, Id) {
@@ -114,6 +117,7 @@ export default {
                 toast.error(e.response?.data?.message || "Ijarachi malumotlarini o'chirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
     },

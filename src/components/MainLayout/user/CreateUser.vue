@@ -1,12 +1,24 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
+      <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
+      <select
+          id="branch_id"
+          v-if="branches && branches.data && branches.data.length > 0"
+          v-model="newUser.branch_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ismi</label>
       <input
           v-model="newUser.full_name"
           type="text"
           id="name"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -16,7 +28,6 @@
           v-model="newUser.login"
           type="text"
           id="duration"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -26,27 +37,26 @@
           v-model="newUser.password"
           type="text"
           id="password"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
-    <div class="mb-4">
-      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-      <input
-          v-model="newUser.email"
-          type="email"
-          id="email"
-          required
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
+
     <div class="mb-4">
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
       <input
           v-model="newUser.phone"
           type="text"
           id="phone"
-          required
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+      <input
+          v-model="newUser.email"
+          type="email"
+          id="email"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -56,7 +66,6 @@
           v-model="newUser.address"
           type="text"
           id="address"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -66,7 +75,6 @@
           v-model="newUser.links"
           type="text"
           id="links"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -74,9 +82,8 @@
       <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tugilgan sana</label>
       <input
           v-model="newUser.birthday"
-          type="text"
+          type="date"
           id="birthday"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -84,9 +91,8 @@
       <label for="work_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish boshlagan vaqti</label>
       <input
           v-model="newUser.work_start"
-          type="text"
+          type="date"
           id="work_start"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -94,9 +100,8 @@
       <label for="work_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish tamomlagan vaqti</label>
       <input
           v-model="newUser.work_end"
-          type="text"
+          type="date"
           id="work_end"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -105,7 +110,6 @@
       <textarea
           v-model="newUser.description"
           id="description"
-          required
           rows="3"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       ></textarea>
@@ -115,7 +119,6 @@
       <select
           v-model="newUser.status"
           id="status"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option value="active">Faol</option>
@@ -154,7 +157,7 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -167,7 +170,9 @@ export default {
   emits: ['close'],
   setup(_, { emit }) {
     const store = useStore();
+    const activeUser = JSON.parse(localStorage.getItem("user"))
     const newUser = reactive({
+      branch_id: '',
       full_name: '',
       login: '',
       password: '',
@@ -182,21 +187,32 @@ export default {
       description: '',
       images: null,
       files: null,
+      user_id: activeUser.id,
     });
+
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+        console.log(branches.value)
+        if (branches.value.data.length > 0) {
+          newUser.branch_id = branches.value.data[0].id;
+
+          console.log('branchId: '+ typeof branches.value.data[0].id)
+        }
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
+
+    onMounted(fetchData);
 
     const isFormValid = computed(() => {
       return (
           newUser.full_name.trim() &&
           newUser.login.trim() &&
           newUser.password.trim() &&
-          newUser.email.trim() &&
           newUser.phone.trim() &&
-          newUser.description.trim() &&
-          newUser.address.trim() &&
-          newUser.birthday.trim() &&
-          newUser.links.trim() &&
-          newUser.work_start.trim() &&
-          newUser.work_end.trim() &&
           newUser.status.trim()
       );
     });
@@ -260,6 +276,7 @@ export default {
       handleImageUpload,
       handleFileUpload,
       isFormValid,
+      branches
     };
   },
 };

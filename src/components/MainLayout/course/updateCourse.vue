@@ -2,6 +2,20 @@
   <div>
     <form @submit.prevent="handleSubmit" class="overflow-scroll pb-2">
       <div>
+        <label for="branch_id" class="block text-sm font-medium text-gray-700">Filial ID</label>
+        <select
+            id="branch_id"
+            required
+            v-if="branches && branches.data && branches.data.length > 0"
+            v-model="form.branch_id"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        >
+          <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+            {{ branch.name }}
+          </option>
+        </select>
+      </div>
+      <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Nomi</label>
         <input
             type="text"
@@ -82,7 +96,7 @@
 
 
 <script>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -105,10 +119,24 @@ export default {
       duration: '',
       price: '',
       description: '',
+      branch_id: '',
       id: props.courseId,
       status: '',
       image: null,
     });
+
+    const branches = ref(null);
+    const fetchData = async () => {
+      console.log('course_id: ',props.courseId)
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+        form.value.branch_id = branches.value.data[0].id;
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
+
+    onMounted(fetchData);
 
     const initialForm = ref({});
 
@@ -121,7 +149,7 @@ export default {
             form.value = { ...course };
             initialForm.value = { ...course };
             imagePreview.value =
-                course.image && `http://192.168.11.71:8000/storage/${course.image}`;
+                course.image && `http://192.168.11.71:8000/storage/courses/${course.image}`;
           }
         },
         { immediate: true }
@@ -171,6 +199,7 @@ export default {
       handleSubmit,
       handleImageChange,
       isFormChanged,
+      branches,
     };
   },
 };

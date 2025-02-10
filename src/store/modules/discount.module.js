@@ -67,6 +67,7 @@ export default {
                 toast.error(e.response?.data?.message || "Chegirmalar malumotini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -87,6 +88,7 @@ export default {
                 toast.error(e.response?.data?.message || "Chegirma malumotlarini qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -105,6 +107,7 @@ export default {
                 toast.error(e.response?.data?.message || "Chegirma malumotlarini ozgartirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
@@ -123,6 +126,7 @@ export default {
                 toast.error(e.response?.data?.message || "Chegirma malumotlarini ochirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
     },

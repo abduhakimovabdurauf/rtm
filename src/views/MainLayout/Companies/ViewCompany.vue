@@ -9,6 +9,12 @@
         @close="closeCreateModal"
     />
 
+    <CreateBranch
+        v-if="isBranching"
+        :companyId="selectedCompanyId"
+        @close="closeCreateModal"
+    />
+
     <UpdateCompany
         v-if="isUpdating && selectedCompanyId !== null"
         :companyId="selectedCompanyId"
@@ -29,32 +35,40 @@
 
     <div class="overflow-x-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-if="paginatedCompanies" v-for="company in paginatedCompanies" :key="company.id"
+        <div v-if="companies && companies.length > 0" v-for="company in companies"
              class="bg-gray-50 rounded-lg shadow-md p-4 mb-4 transition duration-300">
-          <img v-if="company.image" :src="'https:api.mrtm.uz/storage/tmp/phpq70JRI'" alt="">
-          <h1 class="text-xl font-bold text-gray-800">{{ company.name }}</h1>
 
-          <div class="mb-2 flex justify-between p-2 border-b">
+          <img v-if="company.image" :src="'https://api.mrtm.uz/storage/companies/' + company.image" alt="">
+
+          <h1 v-if="company.name" class="text-xl font-bold text-gray-800">{{ company.name }}</h1>
+
+          <div v-if="company.phone" class="mb-2 flex justify-between p-2 border-b">
             <div class="font-medium text-gray-600">Telefon</div>
             <div class="text-gray-800">{{ company.phone }}</div>
           </div>
 
-          <div class="mb-2 flex justify-between p-2 border-b">
+          <div v-if="company.address" class="mb-2 flex justify-between p-2 border-b">
             <div class="font-medium text-gray-600">Manzil</div>
             <div class="text-gray-800">{{ company.address }}</div>
           </div>
 
-          <div class="mb-2 flex justify-between p-2 border-b">
+          <div v-if="company.description" class="mb-2 flex justify-between p-2 border-b">
             <div class="font-medium text-gray-600">Tavsif</div>
             <div class="text-gray-800">{{ company.description }}</div>
           </div>
 
-          <div class="mb-2 flex justify-between p-2 border-b">
+          <div v-if="company.status" class="mb-2 flex justify-between p-2 border-b">
             <div class="font-medium text-gray-600">Holat</div>
             <StatusBadge :status="company.status"/>
           </div>
 
-          <div class="flex justify-end mt-4">
+          <div v-if="company.id" class="flex justify-end mt-4">
+            <button
+                @click="openBranchModal(company.id)"
+                class="transition ml-2 text-white bg-green-500 hover:bg-green-600 p-2 py-1 rounded duration-200"
+            >
+              Filial qo'shish <i class='bx bx-git-branch'></i>
+            </button>
             <router-link
                 :to="{ name: 'WatchCompany', params: { id: company.id } }"
                 class="transition ml-2 text-white bg-blue-500 hover:bg-blue-600 p-2 py-1 rounded duration-200"
@@ -75,6 +89,7 @@
             </button>
           </div>
         </div>
+
 
 
         <div class="w-full flex justify-center align-center bg-white" v-if="companies.length === 0">
@@ -119,6 +134,7 @@ import { useStore } from "vuex";
 import CreateCompany from "@/components/MainLayout/company/CreateCompany.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import UpdateCompany from "@/components/MainLayout/company/UpdateCompany.vue";
+import CreateBranch from "@/components/MainLayout/company/CreateBranch.vue";
 import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 
 export default {
@@ -126,6 +142,7 @@ export default {
     UpdateCompany,
     actionSidebar,
     CreateCompany,
+    CreateBranch,
     StatusBadge,
   },
   setup() {
@@ -135,6 +152,7 @@ export default {
     const isModalOpen = ref(false);
     const isCreating = ref(false);
     const isUpdating = ref(false);
+    const isBranching = ref(false);
     const isReading = ref(false);
     const selectedCompanyId = ref(null);
     const companies = computed(() => store.getters['company/companies']);
@@ -144,7 +162,7 @@ export default {
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Kompaniya qo'shish";
       if (isUpdating.value) return "Kompaniyani o'zgartirish";
-      if (isReading.value) return "Ko'rish";
+      if (isBranching.value) return "Filial qoshish";
       return "";
     });
 
@@ -152,6 +170,14 @@ export default {
       isCreating.value = true;
       isUpdating.value = false;
       isReading.value = false;
+      store.dispatch("toggleSidebar", true);
+    };
+
+    const openBranchModal = (id) => {
+      isCreating.value = false;
+      isUpdating.value = false;
+      isBranching.value = true;
+      selectedCompanyId.value = id;
       store.dispatch("toggleSidebar", true);
     };
 
@@ -174,6 +200,11 @@ export default {
 
     const closeCreateModal = () => {
       isCreating.value = false;
+      store.dispatch("toggleSidebar", false);
+    };
+
+    const closeBranchModal = () => {
+      isBranching.value = false;
       store.dispatch("toggleSidebar", false);
     };
 
@@ -202,6 +233,7 @@ export default {
     };
 
     const fetchCompanies = async () => {
+      store.commit('SET_LOADING', true, { root: true });
       try {
         store.commit("SET_LOADING", true, { root: true });
         const total = await store.dispatch("company/getAllCompanies", {
@@ -236,10 +268,12 @@ export default {
       changePage,
       isCreating,
       isUpdating,
-      isReading,
+      isBranching,
       sidebarTitle,
       openCreateModal,
       openUpdateModal,
+      openBranchModal,
+      closeBranchModal,
       closeCreateModal,
       closeUpdateModal,
       deleteById,

@@ -1,6 +1,20 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
+      <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
+      <select
+          id="branch_id"
+          required
+          v-if="branches && branches.data && branches.data.length > 0"
+          v-model="newRoom.branch_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xona Nomi</label>
       <input
           v-model.trim="newRoom.name"
@@ -35,13 +49,13 @@
     </div>
     <div class="mb-4">
       <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
-      <input
+      <textarea
           v-model.trim="newRoom.description"
           type="text"
           id="description"
           required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
+      ></textarea>
     </div>
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
@@ -69,21 +83,37 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import { reactive, computed, ref, onMounted, } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
   emits: ['close'],
   setup(_, { emit }) {
     const store = useStore();
+    const activeUser = JSON.parse(localStorage.getItem("user"))
     const newRoom = reactive({
+      branch_id: '',
       name: '',
       quantity: '',
       description: '',
+      user_id: activeUser.id,
       number: '',
       status: 'active',
     });
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+        console.log(branches.value)
+        if (branches.value.data.length > 0) {
+          newRoom.branch_id = branches.value.data[0].id;
+        }
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
 
+    onMounted(fetchData);
     const isFormValid = computed(() => {
       return (
           newRoom.name.trim().length > 0 &&
@@ -126,6 +156,7 @@ export default {
       handleSubmit,
       closeModal,
       isFormValid,
+      branches,
     };
   },
 };

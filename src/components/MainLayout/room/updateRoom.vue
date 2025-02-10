@@ -2,6 +2,20 @@
   <div>
     <form @submit.prevent="handleSubmit" class="overflow-scroll pb-2">
       <div>
+        <label for="branch_id" class="block text-sm font-medium text-gray-700">Filial ID</label>
+        <select
+            id="branch_id"
+            required
+            v-if="branches && branches.data && branches.data.length > 0"
+            v-model="form.branch_id"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        >
+          <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+            {{ branch.name }}
+          </option>
+        </select>
+      </div>
+      <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Nomi</label>
         <input
             type="text"
@@ -68,7 +82,7 @@
 
 
 <script>
-import { ref, watch, computed } from 'vue';
+import {ref, watch, computed, onMounted} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -85,6 +99,19 @@ export default {
     const selectedRoom = computed(() =>
         store.state.room.rooms.find((room) => room.id === props.roomId)
     );
+    const activeUser = JSON.parse(localStorage.getItem("user"))
+    const user = ref(null);
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        user.value = await store.dispatch("user/getUserById",activeUser.id);
+        branches.value = user.value?.branches || [];
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
+
+    onMounted(fetchData);
 
     const form = ref({
       name: '',
@@ -137,6 +164,7 @@ export default {
       form,
       handleSubmit,
       isFormChanged,
+      branches
     };
   },
 };

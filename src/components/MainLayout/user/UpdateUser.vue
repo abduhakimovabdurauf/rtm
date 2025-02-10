@@ -22,6 +22,16 @@
       </div>
 
       <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Parol</label>
+        <input
+            type="text"
+            id="password"
+            v-model="form.password"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <div>
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
         <input
             type="text"

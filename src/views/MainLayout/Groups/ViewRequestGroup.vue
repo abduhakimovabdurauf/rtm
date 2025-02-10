@@ -1,4 +1,15 @@
 <template>
+  <actionSidebar
+      :title="sidebarTitle"
+      @closeSidebar="closeUpdateSidebar"
+  >
+    <updateGroup
+        v-if="isUpdating"
+        @close="closeUpdateSidebar"
+        :groupId="groupId"
+    />
+
+  </actionSidebar>
   <div class="flex justify-evenly flex-wrap">
     <div v-if="data" class="space-y-6 w-1/3 p-6 bg-white rounded-xl mt-6">
       <h1>Guruh malumotlari</h1>
@@ -9,7 +20,7 @@
 
       <div class="flex justify-between items-start border-b p-2 duration-300 hover:bg-gray-200">
         <span class="text-sm text-gray-500">Kurs:</span>
-        <span class="text-lg font-medium text-gray-700 max-w-md leading-relaxed">{{ data.students.name }}</span>
+        <span class="text-lg font-medium text-gray-700 max-w-md leading-relaxed">{{ data.course.name }}</span>
       </div>
 
       <div class="flex justify-between items-center border-b p-2 duration-300 hover:bg-gray-200" v-if="data.number">
@@ -26,8 +37,25 @@
         <span class="text-sm text-gray-500">Status:</span>
         <StatusBadge :status="data.status" />
       </div>
+      <div class="flex justify-end">
+        <button
+            @click="openUpdateSidebar"
+            class="transition ml-2 text-white bg-green-500 hover:bg-green-600 p-2 py-1 rounded duration-200"
+        >
+          <i class="bx bxs-edit-alt"></i>
+        </button>
 
+        <button
+            @click="deleteById(groupId)"
+            class="transition ml-2 text-white bg-red-500 hover:bg-red-600 p-2 py-1 rounded duration-200"
+        >
+          <i class="bx bxs-trash-alt"></i>
+        </button>
+      </div>
     </div>
+
+
+
     <div class="w-2/4 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
       <table class="w-full text-sm">
         <thead class="h-10">
@@ -155,16 +183,47 @@
 
 <script>
 import { useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useStore } from "vuex";
 import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
+import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
+import updateGroup from "@/components/MainLayout/groups/updateGroup.vue";
+import UpdateCourse from "@/components/MainLayout/course/updateCourse.vue";
+import CreateGroup from "@/components/MainLayout/course/CreateGroup.vue";
 export default {
-  components: {StatusBadge},
+  components: {
+    CreateGroup, UpdateCourse,
+    StatusBadge,
+    actionSidebar,
+    updateGroup,
+  },
   setup() {
     const route = useRoute();
     const store = useStore();
     const data = ref(null);
     const payments = ref(null)
+    const groupId = Number(route.params.id);
+    const isUpdating = ref(false)
+    const sidebarTitle = computed(() => {
+      if (isUpdating.value) return "O'zgartirish";
+      return "";
+    });
+
+    const openUpdateSidebar = ()=> {
+      isUpdating.value = true;
+      store.dispatch("toggleSidebar", true);
+    }
+
+    const closeUpdateSidebar = ()=> {
+      isUpdating.value = false;
+      store.dispatch("toggleSidebar", false);
+    }
+
+    const deleteById = (id) => {
+      if (!id) return console.error("Invalid company ID");
+      store.dispatch("course/deleteCourse", id);
+    };
+
     onMounted(async () => {
       try {
         const response = await store.dispatch('group/getGroupById', route.params.id);
@@ -221,10 +280,16 @@ export default {
 
     return {
       data,
+      sidebarTitle,
+      isUpdating,
+      openUpdateSidebar,
+      closeUpdateSidebar,
       isPrimitiveOrFormatted,
       formatKey,
       formatData,
       payments,
+      groupId,
+      deleteById,
     };
   },
 };

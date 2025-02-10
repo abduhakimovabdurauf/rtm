@@ -102,6 +102,7 @@ export default {
                 console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 

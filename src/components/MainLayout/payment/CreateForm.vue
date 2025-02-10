@@ -112,7 +112,6 @@ export default {
       discount_id: "",
       summa: "",
       payment_method: "cash",
-      // payment_date: "",
       status: "active",
       description: "",
       contract_n: "",

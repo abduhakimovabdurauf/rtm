@@ -6,7 +6,6 @@
           v-model="newStudent.full_name"
           type="text"
           id="name"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -16,7 +15,6 @@
           v-model="newStudent.login"
           type="text"
           id="duration"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -26,7 +24,6 @@
           v-model="newStudent.password"
           type="text"
           id="password"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -36,7 +33,6 @@
           v-model="newStudent.email"
           type="email"
           id="email"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -46,7 +42,6 @@
           v-model="newStudent.phone"
           type="text"
           id="phone"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -56,7 +51,6 @@
           v-model="newStudent.address"
           type="text"
           id="address"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -66,7 +60,6 @@
           v-model="newStudent.links"
           type="text"
           id="links"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -76,7 +69,6 @@
           v-model="newStudent.birthday"
           type="date"
           id="birthday"
-          required
           @input="formatDate('birthday')"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
@@ -87,7 +79,6 @@
           v-model="newStudent.work_start"
           type="date"
           id="work_start"
-          required
           @input="formatDate('work_start')"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
@@ -98,7 +89,6 @@
           v-model="newStudent.work_end"
           type="date"
           id="work_end"
-          required
           @input="formatDate('work_end')"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
@@ -109,7 +99,6 @@
       <textarea
           v-model="newStudent.description"
           id="description"
-          required
           rows="3"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       ></textarea>
@@ -119,7 +108,6 @@
       <select
           v-model="newStudent.from"
           id="gender"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option value="tanish">tanish</option>
@@ -136,7 +124,6 @@
       <select
           v-model="newStudent.gender"
           id="gender"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option value="man">Erkak</option>
@@ -148,7 +135,6 @@
       <select
           v-model="newStudent.status"
           id="status"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option value="pending">Jarayonda</option>
@@ -184,21 +170,23 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import {reactive, computed,} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
   props: {
-    isOpen: {
-      type: Boolean,
+    branchId: {
+      type: Number,
       required: true,
     },
   },
   emits: ['close'],
   setup(props, { emit }) {
     const store = useStore();
+    const activeUser = JSON.parse(localStorage.getItem("user"))
     const newStudent = reactive({
       full_name: '',
+      branch_id: props.branchId,
       login: '',
       password: '',
       email: '',
@@ -213,24 +201,16 @@ export default {
       status: 'active',
       description: '',
       images: null,
+      user_id: activeUser.id,
     });
+
 
     const isFormValid = computed(() => {
       return (
           newStudent.full_name.trim() &&
           newStudent.login.trim() &&
           newStudent.password.trim() &&
-          newStudent.email.trim() &&
-          newStudent.phone.trim() &&
-          newStudent.description.trim() &&
-          newStudent.address.trim() &&
-          newStudent.birthday.trim() &&
-          newStudent.gender.trim() &&
-          newStudent.from.trim() &&
-          newStudent.links.trim() &&
-          newStudent.work_start.trim() &&
-          newStudent.work_end.trim() &&
-          newStudent.status.trim()
+          newStudent.phone.trim()
       );
     });
 

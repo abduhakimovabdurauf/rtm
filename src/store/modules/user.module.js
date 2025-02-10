@@ -63,6 +63,7 @@ export default {
                 toast.error(e.response?.data?.message || "Failed to fetch course!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
         async addUser({ commit }, user) {
@@ -81,6 +82,7 @@ export default {
                 toast.error(e.response?.data?.message || "Xodim qo'shishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
         async updateUser({ commit }, user) {
@@ -99,6 +101,7 @@ export default {
                 toast.error(e.response?.data?.message || "Xodim yangilashda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
         async deleteUser({ commit }, userId) {
@@ -113,6 +116,7 @@ export default {
                 toast.error(e.response?.data?.message || "Xodim o'chirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
     },

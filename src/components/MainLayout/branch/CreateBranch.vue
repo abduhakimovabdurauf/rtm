@@ -1,9 +1,9 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
-      <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya Nomi</label>
+      <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial Nomi</label>
       <input
-          v-model="newBranch.name"
+          v-model.trim="newBranch.name"
           type="text"
           id="name"
           @input="validateField('name')"
@@ -13,16 +13,28 @@
       <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
     </div>
     <div class="mb-4">
+      <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya</label>
+      <select
+          id="company_id"
+          required
+          v-if="companies && companies.data && companies.data.length > 0"
+          v-model="newBranch.company_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option v-for="company in companies.data" :key="company.id" :value="company.id" selected>
+          {{ company.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-4">
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
       <input
           v-model="newBranch.phone"
-          type="text"
+          type="number"
           id="phone"
           @input="validateField('phone')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.phone }"
       />
-      <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
     </div>
 
     <div class="mb-4">
@@ -33,9 +45,7 @@
           id="address"
           @input="validateField('address')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.address }"
       />
-      <p v-if="errors.address" class="text-red-500 text-sm mt-1">{{ errors.address }}</p>
     </div>
 
     <div class="mb-4">
@@ -46,12 +56,9 @@
           @input="validateField('description')"
           rows="3"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.description }"
       ></textarea>
-      <p v-if="errors.description" class="text-red-500 text-sm mt-1">{{ errors.description }}</p>
     </div>
 
-    <!-- Holat -->
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
       <select
@@ -59,12 +66,10 @@
           id="status"
           @change="validateField('status')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.status }"
       >
         <option value="active">Faol</option>
         <option value="inactive">Faol emas</option>
       </select>
-      <p v-if="errors.status" class="text-red-500 text-sm mt-1">{{ errors.status }}</p>
     </div>
 
     <div class="flex justify-end">
@@ -81,14 +86,12 @@
 </template>
 
 <script>
-import { reactive, computed } from "vue";
+import {reactive, ref, computed, onMounted} from "vue";
 import { useStore } from "vuex";
 
 export default {
   setup() {
     const store = useStore();
-    const activeUser = JSON.parse(localStorage.getItem("user"))
-
     const newBranch = reactive({
       name: "",
       phone: "",
@@ -97,36 +100,48 @@ export default {
       company_id: "",
       status: "active",
     });
+    
+    const companies = ref(null)
 
+    const fetchData = async () => {
+      try {
+        companies.value = await store.dispatch("company/getAllCompanies");
+        if (companies.value && companies.value.data && companies.value.data.length > 0) {
+          newBranch.company_id = companies.value.data[0].id;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+
+    onMounted(fetchData);
+    
     const errors = reactive({
       name: "",
-      phone: "",
-      address: "",
-      description: "",
-      status: "",
+      company_id: "",
     });
 
     const isFormValid = computed(() => {
       const fieldsValid = Object.keys(errors).every((key) => !errors[key]);
       const requiredFieldsFilled =
-          newBranch.name.trim() &&
-          newBranch.phone.trim() &&
-          newBranch.address.trim() &&
-          newBranch.description.trim() &&
-          newBranch.status;
+          newBranch.name &&
+          newBranch.company_id;
       return fieldsValid && requiredFieldsFilled;
     });
 
     const validateField = (field) => {
       const value = newBranch[field]?.trim?.() || newBranch[field];
-      if (!value) {
+
+      if ((field === "name" || field === "company_id") && !value) {
         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} bo'sh bo'lmasligi kerak.`;
-      } else if (field === "phone" && !/^\+?\d{9,15}$/.test(value)) {
+      } else if (field === "phone" && value && !/^\+?\d{9,15}$/.test(value)) {
         errors[field] = "Telefon raqami noto'g'ri formatda.";
       } else {
         errors[field] = "";
       }
     };
+
 
     const handleSubmit = async () => {
       try {
@@ -150,6 +165,7 @@ export default {
       validateField,
       handleSubmit,
       isFormValid,
+      companies,
     };
   },
 };

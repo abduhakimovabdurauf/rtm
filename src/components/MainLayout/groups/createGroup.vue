@@ -1,6 +1,19 @@
 <template>
   <form @submit.prevent="handleSubmit">
-
+    <div class="mb-4">
+      <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
+      <select
+          id="branch_id"
+          required
+          v-if="branches && branches.data && branches.data.length > 0"
+          v-model="newGroup.branch_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
+    </div>
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh Nomi</label>
       <input
@@ -104,22 +117,6 @@
 
 
     <div class="mb-4">
-      <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xodim ID</label>
-      <select
-          id="user_id"
-          required
-          v-if="users && users.data && users.data.length > 0"
-          v-model="newGroup.user_id"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option v-for="user in users.data" :key="user.id" :value="user.id">
-          {{ user.full_name }}
-        </option>
-      </select>
-    </div>
-
-
-    <div class="mb-4">
       <label for="course_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs ID</label>
       <select
           id="course_id"
@@ -203,9 +200,9 @@ export default {
   emits: ["close"],
   setup(_, { emit }) {
     const store = useStore();
-
+    const activeUser = JSON.parse(localStorage.getItem("user"));
     const newGroup = ref({
-      user_id: "",
+      user_id: activeUser.id,
       course_id: "",
       room_id: "",
       name: "",
@@ -218,12 +215,13 @@ export default {
       lvl: "",
       status: "active",
       description: "",
+      branch_id: "",
     });
 
     const courses = ref(null);
     const rooms = ref(null);
     const users = ref(null);
-
+    const branches = ref(null);
     const fetchData = async () => {
       try {
         courses.value = await store.dispatch("course/getAllCourses", {
@@ -244,6 +242,10 @@ export default {
           sortBy: "id",
           orderBy: "desc",
         });
+        branches.value = await store.dispatch("branch/getAllBranches");
+        if (branches.value.data.length > 0) {
+          newGroup.value.branch_id = branches.value.data[0].id;
+        }
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -253,10 +255,9 @@ export default {
 
     const isFormValid = computed(() => {
       return (
-          newGroup.value.name.trim() &&
-          newGroup.value.description.trim() &&
-          newGroup.value.status.trim() &&
-          newGroup.value.user_id &&
+          newGroup.value.name &&
+          newGroup.value.description &&
+          newGroup.value.status &&
           newGroup.value.course_id &&
           newGroup.value.room_id &&
           newGroup.value.start_time &&
@@ -264,8 +265,7 @@ export default {
           newGroup.value.start_date &&
           newGroup.value.end_date &&
           newGroup.value.part_of_day &&
-          newGroup.value.part_of_time &&
-          newGroup.value.lvl
+          newGroup.value.part_of_time
       );
     });
 
@@ -306,6 +306,7 @@ export default {
       courses,
       rooms,
       users,
+      branches,
     };
   },
 };

@@ -1,10 +1,21 @@
 <template>
+  <actionSidebar
+    :title="sidebarTitle"
+    @closeSidebar="closeUpdateSidebar"
+  >
+    <updateStudent
+      :student-id="studentId"
+      v-if="isUpdating"
+      @close="closeUpdateSidebar"
+    />
+  </actionSidebar>
+
   <div class="flex justify-evenly">
     <div v-if="data" class="w-1/3 p-6 bg-white rounded-xl mt-6">
       <h1>O'quvchi malumotlari</h1>
       <div class="flex py-2">
         <img
-            :src="data.image ? `https://api.mrtm.uz/storage/` + data.image : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
+            :src="data.image ? `https://api.mrtm.uz/storage/students/` + data.image : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
             alt="User Image"
             class="w-20 h-20 mx-auto object-cover rounded-full border-2 border-gray-300"
         />
@@ -34,8 +45,24 @@
         <span class="text-sm text-gray-500">Status:</span>
         <StatusBadge :status="data.status" />
       </div>
+      <div class="flex justify-end">
+        <button
+            @click="openUpdateSidebar"
+            class="transition ml-2 text-white bg-green-500 hover:bg-green-600 p-2 py-1 rounded duration-200"
+        >
+          <i class="bx bxs-edit-alt"></i>
+        </button>
+
+        <button
+            @click="deleteById(courseId)"
+            class="transition ml-2 text-white bg-red-500 hover:bg-red-600 p-2 py-1 rounded duration-200"
+        >
+          <i class="bx bxs-trash-alt"></i>
+        </button>
+      </div>
     </div>
 
+    <!--  starting payment section  -->
     <div class="w-2/4 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
       <table class="w-full text-sm">
         <thead class="h-10">
@@ -77,23 +104,31 @@
 
       </table>
     </div>
+    <!--  starting payment section  -->
+
+
   </div>
 </template>
 
 <script>
 import { useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
 import { useStore } from "vuex";
+import actionSidebar from '@/components/MainLayout/ui/ActionSidebar.vue';
+import updateStudent from '@/components/MainLayout/students/UpdateStudent.vue';
 import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 export default {
   components: {
     StatusBadge,
+    actionSidebar,
+    updateStudent,
   },
   setup() {
     const route = useRoute();
     const store = useStore();
+    const isUpdating = ref(false)
     const data = ref(null);
-
+    const studentId = Number(route.params.id)
     onMounted(async () => {
       try {
         const response = await store.dispatch('student/getStudentById', route.params.id);
@@ -107,6 +142,29 @@ export default {
         console.error("Ma'lumot yuklashda xatolik:", error);
       }
     });
+
+
+    const sidebarTitle = computed(() => {
+      if (isUpdating.value) return "O'zgartirish";
+      return "";
+    });
+
+
+    const openUpdateSidebar = ()=> {
+      isUpdating.value = true;
+      store.dispatch("toggleSidebar", true);
+    }
+
+    const closeUpdateSidebar = ()=> {
+      isUpdating.value = false;
+      store.dispatch("toggleSidebar", false);
+    }
+
+
+    const deleteById = (id) => {
+      if (!id) return console.error("Invalid company ID");
+      store.dispatch("course/deleteCourse", id);
+    };
 
     const formatKey = (key) => {
       return key.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase());
@@ -123,9 +181,15 @@ export default {
     };
 
     return {
+      sidebarTitle,
+      studentId,
       data,
       formatKey,
       formatData,
+      isUpdating,
+      openUpdateSidebar,
+      closeUpdateSidebar,
+      deleteById,
     };
   },
 };

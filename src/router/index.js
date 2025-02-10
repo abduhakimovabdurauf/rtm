@@ -140,6 +140,28 @@ const routes = [
       auth: true
     }
   },
+
+  {
+    path: '/permissions',
+    name: 'Permissions',
+    component: () => import('../views/MainLayout/Permissions/ViewPermissions.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: () => import('../views/MainLayout/Notifications/ViewNotifications.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+
+
   {
     path: '/watchcourse/:id?',
     name: 'WatchCourse',
@@ -224,7 +246,7 @@ const routes = [
 
   {
     path: '/watchBranch/:id?',
-    name: 'watchBranch',
+    name: 'WatchBranch',
     component: () => import('../views/MainLayout/Branches/ViewRequestBranch.vue'),
     meta: {
       layout: 'main',
@@ -236,6 +258,26 @@ const routes = [
     path: '/watchTenant/:id?',
     name: 'watchTenant',
     component: () => import('../views/MainLayout/Tenants/ViewRequestTenants.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+
+  {
+    path: '/watchPermission/:id?',
+    name: 'watchPermission',
+    component: () => import('../views/MainLayout/Permissions/ViewRequestPermission.vue'),
+    meta: {
+      layout: 'main',
+      auth: true
+    }
+  },
+
+  {
+    path: '/watchNotification/:id?',
+    name: 'watchNotification',
+    component: () => import('../views/MainLayout/Notifications/ViewRequestNotification.vue'),
     meta: {
       layout: 'main',
       auth: true
@@ -275,6 +317,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requireAuth = to.meta.auth;
+  store.commit('closeSidebar');
   if (store.getters['auth/isAuthenticated'] && to.path == '/login') {
     next('/dashboard');
   }

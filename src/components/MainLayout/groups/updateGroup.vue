@@ -94,8 +94,8 @@
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
           <option v-for="user in users.data" :key="user.id" :value="user.id">
-            {{ user.full_name }}
-          </option>
+              {{ user.full_name }}
+            </option>
         </select>
       </div>
 

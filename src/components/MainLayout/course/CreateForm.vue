@@ -1,6 +1,20 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
+      <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
+      <select
+          id="branch_id"
+          required
+          v-if="branches && branches.data && branches.data.length > 0"
+          v-model="newCourse.branch_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs Nomi</label>
       <input
           v-model="newCourse.name"
@@ -11,6 +25,19 @@
           :class="{ 'border-red-500': errors.name }"
       />
       <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
+    </div>
+
+    <div class="mb-4">
+      <label for="tag" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Qisqartirligan Nomi</label>
+      <input
+          v-model="newCourse.tag"
+          type="text"
+          id="tag"
+          @input="validateField('tag')"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          :class="{ 'border-red-500': errors.tag }"
+      />
+      <p v-if="errors.tag" class="text-red-500 text-sm mt-1">{{ errors.tag }}</p>
     </div>
 
     <div class="mb-4">
@@ -34,9 +61,7 @@
           id="price"
           @input="validateField('price')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.price }"
       />
-      <p v-if="errors.price" class="text-red-500 text-sm mt-1">{{ errors.price }}</p>
     </div>
 
     <div class="mb-4">
@@ -71,7 +96,7 @@
       <button
           type="submit"
           :disabled="!isFormValid"
-          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg"
+          class="w-full bg-blue-600 text-white px-4 py-2 mb-14 rounded-lg"
           :class="{ 'opacity-50 cursor-not-allowed': !isFormValid }"
       >
         Qo'shish
@@ -81,19 +106,36 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
   setup() {
     const store = useStore();
+    const activeUser = JSON.parse(localStorage.getItem("user"))
     const newCourse = reactive({
       name: '',
       duration: '',
+      tag: '',
       price: '',
       description: '',
+      branch_id: '',
+      user_id: activeUser.id,
       status: 'active',
     });
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+        // console.log(branches.value)
+
+        newCourse.branch_id = branches.value.data[0].id;
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
+
+    onMounted(fetchData);
 
     const errors = reactive({
       name: '',
@@ -101,16 +143,32 @@ export default {
       price: '',
       description: '',
       status: '',
+      tag: '',
     });
+
+
 
     const isFormValid = computed(() => {
-      return Object.values(errors).every((error) => !error) &&
-          Object.values(newCourse).every((field) => field.trim?.() || field > 0);
+      return (
+          Object.values(errors).every(error => !error) &&
+          newCourse.name.trim() &&
+          newCourse.tag.trim() &&
+          newCourse.description.trim() &&
+          newCourse.branch_id &&
+          newCourse.status &&
+          !isNaN(newCourse.price) && newCourse.price > 0 &&
+          !isNaN(newCourse.duration) && newCourse.duration > 0
+      );
     });
 
+
     const validateField = (field) => {
-      if (!newCourse[field]?.trim()) {
+      const value = newCourse[field];
+
+      if (typeof value === 'string' && !value.trim()) {
         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} bo'sh bo'lmasligi kerak.`;
+      } else if (['price', 'duration'].includes(field) && (isNaN(value) || value <= 0)) {
+        errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} musbat son bo‘lishi kerak.`;
       } else {
         errors[field] = '';
       }
@@ -138,6 +196,7 @@ export default {
       validateField,
       handleSubmit,
       isFormValid,
+      branches,
     };
   },
 };

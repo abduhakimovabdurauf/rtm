@@ -1,6 +1,20 @@
 <template>
   <div>
     <form @submit.prevent="handleSubmit">
+      <div>
+        <label for="branch_id" class="block text-sm font-medium text-gray-700">Filial ID</label>
+        <select
+            id="branch_id"
+            required
+            v-if="branches && branches.data && branches.data.length > 0"
+            v-model="form.branch_id"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        >
+          <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+            {{ branch.name }}
+          </option>
+        </select>
+      </div>
       <div class="mb-4">
         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ismi</label>
         <input
@@ -165,7 +179,7 @@
 
 
 <script>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import isEqual from 'lodash/isEqual';
 
@@ -179,7 +193,16 @@ export default {
   emits: ['close'],
   setup(props, { emit }) {
     const store = useStore();
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
 
+    onMounted(fetchData);
     const selectedStudent = computed(() =>
         store.state.student.students.find((student) => student.id === props.studentId)
     );
@@ -196,6 +219,7 @@ export default {
       work_end: '',
       id: props.studentId,
       description: '',
+      branch_id: '',
       status: '',
       image: null,
     });
@@ -252,6 +276,7 @@ export default {
       handleSubmit,
       handleImageChange,
       isFormChanged,
+      branches,
     };
   },
 };

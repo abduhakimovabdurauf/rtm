@@ -52,7 +52,7 @@
             {{ payment.student.full_name }}
           </td>
           <td class="px-6 py-4 font-semibold">{{ payment.summa }} UZS</td>
-          <td class="px-6 py-4 font-semibold">{{ payment.payment_date }}</td>
+          <td class="px-6 py-4 font-semibold">{{ payment.date }}</td>
           <td class="px-6 py-4">
               <StatusBadge :status="payment.status" />
           </td>

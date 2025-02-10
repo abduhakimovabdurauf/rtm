@@ -118,30 +118,20 @@ export default {
 
     const errors = reactive({
       name: "",
-      phone: "",
-      address: "",
-      description: "",
-      image: "",
-      status: "",
     });
 
     const isFormValid = computed(() => {
       const fieldsValid = Object.keys(errors).every((key) => !errors[key]);
-      const requiredFieldsFilled =
-          newCompany.name.trim() &&
-          newCompany.phone.trim() &&
-          newCompany.address.trim() &&
-          newCompany.description.trim() &&
-          newCompany.status;
+      const requiredFieldsFilled = newCompany.name.trim()
       return fieldsValid && requiredFieldsFilled;
     });
 
     const validateField = (field) => {
       const value = newCompany[field]?.trim?.() || newCompany[field];
-      if (!value) {
+      if (!value && field !== "image") {
         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} bo'sh bo'lmasligi kerak.`;
       } else if (field === "phone" && !/^\+?\d{9,15}$/.test(value)) {
-        errors[field] = "'+998901234567' yoki '901234567' formatida bolishi kerak!";
+        errors[field] = "'+998901234567' yoki '901234567' formatida bo'lishi kerak!";
       } else {
         errors[field] = "";
       }
@@ -160,10 +150,7 @@ export default {
 
     const handleSubmit = async () => {
       try {
-        if (!isFormValid.value || !newCompany.image) {
-          if (!newCompany.image) {
-            errors.image = "Rasm yuklash shart.";
-          }
+        if (!isFormValid.value) {
           return;
         }
 
@@ -186,7 +173,6 @@ export default {
       }
     };
 
-
     return {
       newCompany,
       errors,
@@ -197,4 +183,5 @@ export default {
     };
   },
 };
+
 </script>

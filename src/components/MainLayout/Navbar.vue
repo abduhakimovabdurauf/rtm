@@ -40,7 +40,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(user)
+    console.log(user.id)
     return {
       user,
       logout: () => {

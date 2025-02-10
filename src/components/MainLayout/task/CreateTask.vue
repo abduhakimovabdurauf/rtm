@@ -1,6 +1,20 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
+      <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya ID</label>
+      <select
+          id="company_id"
+          required
+          v-if="companies && companies.data && companies.data.length > 0"
+          v-model="newTask.company_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option v-for="company in companies.data" :key="company.id" :value="company.id">
+          {{ company.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-4">
       <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Topshiriq Nomi</label>
       <input
           v-model="newTask.title"
@@ -82,7 +96,7 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import {reactive, computed, onMounted,ref } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -94,6 +108,7 @@ export default {
       deadline: '',
       description: '',
       status: 'pending',
+      company_id: '',
     });
 
     const errors = reactive({
@@ -108,7 +123,18 @@ export default {
       return Object.values(errors).every((error) => !error) &&
           Object.values(newTask).every((field) => field.trim?.() || field > 0);
     });
+    const companies = ref(null)
 
+    const fetchData = async () => {
+      try {
+        companies.value = await store.dispatch("company/getAllCompanies");
+        newTask.company_id = companies.value.data[0].id;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    onMounted(fetchData)
     const validateField = (field) => {
       if (!newTask[field]?.trim()) {
         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} bo'sh bo'lmasligi kerak.`;
@@ -139,6 +165,7 @@ export default {
       validateField,
       handleSubmit,
       isFormValid,
+      companies,
     };
   },
 };

@@ -1,6 +1,20 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
+      <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
+      <select
+          id="branch_id"
+          required
+          v-if="branches && branches.data && branches.data.length > 0"
+          v-model="newDiscount.branch_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Chegirma Nomi</label>
       <input
           v-model="newDiscount.name"
@@ -68,19 +82,34 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import { reactive, computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
   setup() {
     const store = useStore();
+    const activeUser = JSON.parse(localStorage.getItem("user"))
     const newDiscount = reactive({
       name: '',
       percent: '',
       description: '',
       status: 'active',
+      user_id: activeUser.id,
+      branch_id: '',
     });
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+        // console.log(branches.value)
 
+        newDiscount.branch_id = branches.value.data[0].id;
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
+
+    onMounted(fetchData);
     const errors = reactive({
       name: '',
       percent: '',
@@ -123,6 +152,7 @@ export default {
       validateField,
       handleSubmit,
       isFormValid,
+      branches
     };
   },
 };
