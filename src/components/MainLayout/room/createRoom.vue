@@ -127,6 +127,7 @@ export default {
       try {
         const formData = new FormData();
         formData.append('name', newRoom.name);
+        formData.append('branch_id', newRoom.branch_id);
         formData.append('number', newRoom.number);
         formData.append('quantity', newRoom.quantity);
         formData.append('description', newRoom.description);

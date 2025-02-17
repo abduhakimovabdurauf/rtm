@@ -42,7 +42,6 @@ import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
-
   emits: ['close'],
   setup(_,{ emit }) {
     const store = useStore();
@@ -61,7 +60,7 @@ export default {
       try {
         companies.value = await store.dispatch("company/getAllCompanies");
         newRole.company_id = companies.value.data[0].id;
-        console.log("company_id : ", newRole.company_id);
+        console.log("company_id : ", typeof newRole.company_id);
       } catch (error) {
         console.error(error);
       }
@@ -69,9 +68,11 @@ export default {
     
     onMounted(fetchData)
     const handleSubmit = async () => {
+      console.log()
       try {
         const formData = new FormData();
         formData.append('name', newRole.name);
+        formData.append('company_id', newRole.company_id);
 
         await store.dispatch('role/addRole', formData);
         closeModal();

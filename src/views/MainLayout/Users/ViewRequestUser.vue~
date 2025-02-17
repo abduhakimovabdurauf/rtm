@@ -206,6 +206,7 @@ export default {
       } catch (e) {
 
       }
+
     }
 
     const closeUpdateSidebar = ()=> {

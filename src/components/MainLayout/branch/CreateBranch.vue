@@ -99,6 +99,7 @@ export default {
       description: "",
       company_id: "",
       status: "active",
+      users: [],
     });
     
     const companies = ref(null)
@@ -141,7 +142,6 @@ export default {
         errors[field] = "";
       }
     };
-
 
     const handleSubmit = async () => {
       try {

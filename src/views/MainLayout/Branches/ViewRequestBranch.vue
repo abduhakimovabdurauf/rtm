@@ -332,7 +332,7 @@
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
           <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold">{{ user.name }}</td>
+          <td class="px-6 py-4 font-semibold">{{ user.full_name }}</td>
           <td class="px-6 py-4 font-semibold text-xs">
             <StatusBadge :status="user.status"/>
           </td>

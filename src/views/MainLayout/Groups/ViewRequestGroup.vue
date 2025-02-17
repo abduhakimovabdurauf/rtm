@@ -192,7 +192,8 @@ import UpdateCourse from "@/components/MainLayout/course/updateCourse.vue";
 import CreateGroup from "@/components/MainLayout/course/CreateGroup.vue";
 export default {
   components: {
-    CreateGroup, UpdateCourse,
+    CreateGroup,
+    UpdateCourse,
     StatusBadge,
     actionSidebar,
     updateGroup,

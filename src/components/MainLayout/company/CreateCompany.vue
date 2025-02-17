@@ -23,9 +23,7 @@
           id="phone"
           @input="validateField('phone')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.phone }"
       />
-      <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
     </div>
 
     <!-- Manzil -->
@@ -37,9 +35,7 @@
           id="address"
           @input="validateField('address')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.address }"
       />
-      <p v-if="errors.address" class="text-red-500 text-sm mt-1">{{ errors.address }}</p>
     </div>
 
     <!-- Tavsif -->
@@ -51,9 +47,7 @@
           @input="validateField('description')"
           rows="3"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.description }"
       ></textarea>
-      <p v-if="errors.description" class="text-red-500 text-sm mt-1">{{ errors.description }}</p>
     </div>
 
     <!-- Holat -->
@@ -64,12 +58,10 @@
           id="status"
           @change="validateField('status')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.status }"
       >
         <option value="active">Faol</option>
         <option value="inactive">Faol emas</option>
       </select>
-      <p v-if="errors.status" class="text-red-500 text-sm mt-1">{{ errors.status }}</p>
     </div>
 
     <div class="mb-4">
@@ -80,9 +72,7 @@
           ref="image"
           @change="handleImageUpload"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          :class="{ 'border-red-500': errors.image }"
       />
-      <p v-if="errors.image" class="text-red-500 text-sm mt-1">{{ errors.image }}</p>
     </div>
 
 

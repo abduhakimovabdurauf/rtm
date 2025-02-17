@@ -132,6 +132,7 @@ export default {
       isCreating.value = false;
       isUpdating.value = true;
       selectedUserId.value = userId;
+      console.log(selectedUserId.value)
       store.dispatch("toggleSidebar", true);
     };
 

@@ -35,10 +35,10 @@ export default {
             try {
                 const response = await axios.get(API_URL, {
                     params: {
-                        page: payload.page,
-                        per_page: payload.perPage,
-                        sortBy: payload.sortBy,
-                        orderBy: payload.orderBy,
+                        page: payload?.page,
+                        per_page: payload?.perPage,
+                        sortBy: payload?.sortBy,
+                        orderBy: payload?.orderBy,
                     },
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
@@ -49,6 +49,7 @@ export default {
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kurslarni olishda xatolik!");
+                console.error(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }

@@ -1,6 +1,20 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
+      <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
+      <select
+          id="branch_id"
+          required
+          v-if="branches && branches.data && branches.data.length > 0"
+          v-model="newStudent.branch_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ismi</label>
       <input
           v-model="newStudent.full_name"
@@ -28,15 +42,6 @@
       />
     </div>
     <div class="mb-4">
-      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-      <input
-          v-model="newStudent.email"
-          type="email"
-          id="email"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
       <input
           v-model="newStudent.phone"
@@ -45,117 +50,141 @@
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
-    <div class="mb-4">
-      <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Manzili</label>
-      <input
-          v-model="newStudent.address"
-          type="text"
-          id="address"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
-      <label for="links" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Havolalar</label>
-      <input
-          v-model="newStudent.links"
-          type="text"
-          id="links"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
-      <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tug'ilgan sana</label>
-      <input
-          v-model="newStudent.birthday"
-          type="date"
-          id="birthday"
-          @input="formatDate('birthday')"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
-      <label for="work_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish boshlagan vaqti</label>
-      <input
-          v-model="newStudent.work_start"
-          type="date"
-          id="work_start"
-          @input="formatDate('work_start')"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
-      <label for="work_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish tamomlagan vaqti</label>
-      <input
-          v-model="newStudent.work_end"
-          type="date"
-          id="work_end"
-          @input="formatDate('work_end')"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
+
+
+    <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
+      <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
+      <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+      <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
+    </label>
+
+
+
+
+
+    <div v-if="showOptionalFields">
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+        <input
+            v-model="newStudent.email"
+            type="email"
+            id="email"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Manzili</label>
+        <input
+            v-model="newStudent.address"
+            type="text"
+            id="address"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="links" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Havolalar</label>
+        <input
+            v-model="newStudent.links"
+            type="text"
+            id="links"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tug'ilgan sana</label>
+        <input
+            v-model="newStudent.birthday"
+            type="date"
+            id="birthday"
+            @input="formatDate('birthday')"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="work_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish boshlagan vaqti</label>
+        <input
+            v-model="newStudent.work_start"
+            type="date"
+            id="work_start"
+            @input="formatDate('work_start')"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="work_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish tamomlagan vaqti</label>
+        <input
+            v-model="newStudent.work_end"
+            type="date"
+            id="work_end"
+            @input="formatDate('work_end')"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
+        <textarea
+            v-model="newStudent.description"
+            id="description"
+            rows="3"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        ></textarea>
+      </div>
+      <div class="mb-4">
+        <label for="from" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Dan</label>
+        <select
+            v-model="newStudent.from"
+            id="gender"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        >
+          <option value="tanish">tanish</option>
+          <option value="maktab">maktab</option>
+          <option value="telegram">telegram</option>
+          <option value="instagram">instagram</option>
+          <option value="facebook">facebook</option>
+          <option value="ota-onam">ota-onam</option>
+          <option value="tashqi reklama">tashqi reklama</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jinsi</label>
+        <select
+            v-model="newStudent.gender"
+            id="gender"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        >
+          <option value="man">Erkak</option>
+          <option value="woman">Ayol</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+        <select
+            v-model="newStudent.status"
+            id="status"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        >
+          <option value="pending">Jarayonda</option>
+          <option value="active">Faol</option>
+          <option value="inactive">Faol emas</option>
+          <option value="completed">Bajarilgan</option>
+          <option value="dropped">Bekor qilingan</option>
+          <option value="expelled">Haydalgan</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rasm Yuklash</label>
+        <input
+            type="file"
+            id="image"
+            multiple
+            ref="image"
+            @change="handleImageUpload"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
     </div>
 
-    <div class="mb-4">
-      <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
-      <textarea
-          v-model="newStudent.description"
-          id="description"
-          rows="3"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      ></textarea>
-    </div>
-    <div class="mb-4">
-      <label for="from" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Dan</label>
-      <select
-          v-model="newStudent.from"
-          id="gender"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option value="tanish">tanish</option>
-        <option value="maktab">maktab</option>
-        <option value="telegram">telegram</option>
-        <option value="instagram">instagram</option>
-        <option value="facebook">facebook</option>
-        <option value="ota-onam">ota-onam</option>
-        <option value="tashqi reklama">tashqi reklama</option>
-      </select>
-    </div>
-    <div class="mb-4">
-      <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jinsi</label>
-      <select
-          v-model="newStudent.gender"
-          id="gender"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option value="man">Erkak</option>
-        <option value="woman">Ayol</option>
-      </select>
-    </div>
-    <div class="mb-4">
-      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
-      <select
-          v-model="newStudent.status"
-          id="status"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option value="pending">Jarayonda</option>
-        <option value="active">Faol</option>
-        <option value="inactive">Faol emas</option>
-        <option value="completed">Bajarilgan</option>
-        <option value="dropped">Bekor qilingan</option>
-        <option value="expelled">Haydalgan</option>
-      </select>
-    </div>
-    <div class="mb-4">
-      <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rasm Yuklash</label>
-      <input
-          type="file"
-          id="image"
-          multiple
-          ref="image"
-          @change="handleImageUpload"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
     <div class="flex justify-end mb-20">
       <button
           type="submit"
@@ -170,7 +199,7 @@
 </template>
 
 <script>
-import {reactive, computed,} from 'vue';
+import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -204,7 +233,20 @@ export default {
       user_id: activeUser.id,
     });
 
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+        console.log(branches.value)
+        if (branches.value.data.length > 0) {
+          newStudent.branch_id = branches.value.data[0].id;
+        }
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
 
+    onMounted(fetchData);
     const isFormValid = computed(() => {
       return (
           newStudent.full_name.trim() &&
@@ -225,6 +267,7 @@ export default {
     const handleSubmit = async () => {
       try {
         const formData = new FormData();
+        formData.append('branch_id', newStudent.branch_id);
         formData.append('full_name', newStudent.full_name);
         formData.append('login', newStudent.login);
         formData.append('password', newStudent.password);
@@ -239,6 +282,7 @@ export default {
         formData.append('work_start', newStudent.work_start);
         formData.append('work_end', newStudent.work_end);
         formData.append('status', newStudent.status);
+        formData.append('user_id', newStudent.user_id);
         if (newStudent.image) formData.append('image', newStudent.image);
 
         await store.dispatch('student/addStudent', formData);
@@ -263,6 +307,7 @@ export default {
         console.error(e);
       }
     };
+    const showOptionalFields = ref(false);
 
     const handleImageUpload = (event) => {
       newStudent.image = event.target.files[0];
@@ -279,6 +324,8 @@ export default {
       handleImageUpload,
       formatDate,
       isFormValid,
+      branches,
+      showOptionalFields,
     };
   },
 };

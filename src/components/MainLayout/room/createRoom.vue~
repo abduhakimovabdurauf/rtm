@@ -107,7 +107,6 @@ export default {
         console.log(branches.value)
         if (branches.value.data.length > 0) {
           newRoom.branch_id = branches.value.data[0].id;
-
         }
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);

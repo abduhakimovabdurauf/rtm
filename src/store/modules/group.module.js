@@ -18,7 +18,7 @@ export default {
             state.groups = groups;
         },
         ADD_GROUP(state, group) {
-            state.groups.push(group);
+            state.groups.unshift(group);
         },
         UPDATE_GROUP(state, updatedGroup) {
             const index = state.groups.findIndex((c) => c.id === updatedGroup.id);

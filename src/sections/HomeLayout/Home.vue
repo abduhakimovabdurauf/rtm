@@ -6,7 +6,7 @@
       </p>
       <h1 class="home__title text-left w-full max-w-[700px] h-[110px] text-[65px] leading-[65px] mt-2 relative font-bold">
         {{ displayedTitle }}
-        <span class="cursor inline-block opacity-100 transition-opacity duration-300" :class="{ 'active': isCursorActive }">|</span>
+        <span class="cursor inline-block opacity-100 transition-opacity duration-300" :class="{ 'active': isCursorActive }">|</span>  
       </h1>
     </div>
   </div>

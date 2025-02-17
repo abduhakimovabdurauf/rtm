@@ -75,7 +75,7 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("ADD_STUDENT", response.data.data);
+                commit("ADD_STUDENT", response.data.student);
                 toast.success(response.data.message);
             } catch (e) {
                 console.log(e)

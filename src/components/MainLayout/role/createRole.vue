@@ -24,6 +24,17 @@
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
+    <div class="mb-4">
+      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+      <select
+          v-model="newRole.status"
+          id="status"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+      >
+        <option value="active">Faol</option>
+        <option value="inactive">Faol emas</option>
+      </select>
+    </div>
     <div class="flex justify-end">
       <button
           type="submit"
@@ -42,13 +53,13 @@ import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
-
   emits: ['close'],
   setup(_,{ emit }) {
     const store = useStore();
     const newRole = reactive({
       name: '',
       company_id: '',
+      status: 'active',
     });
 
     const isFormValid = computed(() => {
@@ -69,9 +80,12 @@ export default {
     
     onMounted(fetchData)
     const handleSubmit = async () => {
+      console.log()
       try {
         const formData = new FormData();
         formData.append('name', newRole.name);
+        formData.append('company_id', newRole.company_id);
+        formData.append('status', newRole.status);
 
         await store.dispatch('role/addRole', formData);
         closeModal();

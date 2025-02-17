@@ -18,7 +18,7 @@ export default {
             state.groups = groups;
         },
         ADD_GROUP(state, group) {
-            state.groups.push(group);
+            state.groups.shift(group);
         },
         UPDATE_GROUP(state, updatedGroup) {
             const index = state.groups.findIndex((c) => c.id === updatedGroup.id);
@@ -49,7 +49,6 @@ export default {
                 toast.error(e.response?.data?.message || "Guruhlar malumotlarini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
-                commit("closeSidebar", false, { root: true });
             }
         },
 
