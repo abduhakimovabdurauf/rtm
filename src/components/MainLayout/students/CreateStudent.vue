@@ -1,19 +1,6 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <div class="mb-4">
-      <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
-      <select
-          id="branch_id"
-          required
-          v-if="branches && branches.data && branches.data.length > 0"
-          v-model="newStudent.branch_id"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
-          {{ branch.name }}
-        </option>
-      </select>
-    </div>
+
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ismi</label>
       <input
@@ -32,6 +19,42 @@
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filiallar</label>
+      <div v-if="branches?.data?.length" class="flex flex-wrap gap-3">
+        <div v-for="branch in branches.data" :key="branch.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <input
+              type="checkbox"
+              :id="'branch_' + branch.id"
+              :value="branch.id"
+              v-model="newStudent.branch_id"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label :for="'branch_' + branch.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+            {{ branch.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurslar</label>
+    <div v-if="courses?.data?.length" class="flex flex-wrap gap-3">
+      <div v-for="course in courses.data" :key="course.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+        <input
+            type="checkbox"
+            :id="'course_' + course.id"
+            :value="course.id"
+            v-model="newStudent.courses"
+            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+        />
+        <label :for="'course_' + course.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+          {{ course.name }}
+        </label>
+      </div>
+    </div>
+  </div>
 
 
     <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
@@ -167,6 +190,8 @@
       </div>
     </div>
 
+
+
     <div class="flex justify-end mb-20">
       <button
           type="submit"
@@ -204,13 +229,16 @@ export default {
       status: 'active',
       description: '',
       images: null,
+      courses: [],
       user_id: activeUser.id,
     });
 
     const branches = ref(null);
+    const courses = ref(null)
     const fetchData = async () => {
       try {
         branches.value = await store.dispatch("branch/getAllBranches");
+        courses.value = await store.dispatch("course/getAllCourses");
         console.log(branches.value)
         if (branches.value.data.length > 0) {
           newStudent.branch_id = branches.value.data[0].id;
@@ -239,7 +267,8 @@ export default {
     const handleSubmit = async () => {
       try {
         const formData = new FormData();
-        formData.append('branch_id', newStudent.branch_id);
+        formData.append('branches', newStudent.branch_id);
+        formData.append('courses', newStudent.courses);
         formData.append('full_name', newStudent.full_name);
         formData.append('email', newStudent.email);
         formData.append('phone', newStudent.phone);
@@ -294,6 +323,7 @@ export default {
       isFormValid,
       branches,
       showOptionalFields,
+      courses
     };
   },
 };
