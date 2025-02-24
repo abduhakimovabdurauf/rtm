@@ -314,12 +314,12 @@ const router = createRouter({
   linkActiveClass:'bg-gray-700',
   linkExactActiveClass:'bg-gray-700',
 });
-
+const activeUser = JSON.parse(localStorage.getItem("user"));
 router.beforeEach((to, from, next) => {
   const requireAuth = to.meta.auth;
   store.commit('closeSidebar');
   if (store.getters['auth/isAuthenticated'] && to.path == '/login') {
-    next('/dashboard');
+    next('/watchUser/'+activeUser.id);
   }
   else if (requireAuth && store.getters['auth/isAuthenticated']) {
     next();

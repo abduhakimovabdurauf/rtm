@@ -36,6 +36,25 @@
         <option value="inactive">Faol emas</option>
       </select>
     </div>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Huquqlar</label>
+      <div v-if="roles?.data?.length" class="flex flex-wrap gap-3">
+        <div v-for="role in roles.data" :key="role.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <input
+              type="checkbox"
+              :id="'role_' + role.id"
+              :value="role.id"
+              v-model="newPermission.roles"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label :for="'role_' + role.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+            {{ role.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    
     <div class="flex justify-end">
       <button
           type="submit"
@@ -61,6 +80,7 @@ export default {
     const newPermission = reactive({
       name: '',
       company_id: '',
+      roles: [],
       status: 'active',
     });
 
@@ -69,10 +89,11 @@ export default {
     });
 
     const companies = ref(null)
-
+    const roles = ref(null)
     const fetchData = async () => {
       try {
         companies.value = await store.dispatch("company/getAllCompanies");
+        roles.value = await store.dispatch("role/getAllRoles");
         newPermission.company_id = companies.value.data[0].id;
       } catch (error) {
         console.error(error);
@@ -84,6 +105,9 @@ export default {
       try {
         const formData = new FormData();
         formData.append('name', newPermission.name);
+        formData.append('company_id', newPermission.company_id);
+        formData.append('roles', newPermission.roles);
+        formData.append('status', newPermission.status);
 
         await store.dispatch('permission/addPermission', formData);
         closeModal();
@@ -103,6 +127,7 @@ export default {
       closeModal,
       isFormValid,
       companies,
+      roles
     };
   },
 };

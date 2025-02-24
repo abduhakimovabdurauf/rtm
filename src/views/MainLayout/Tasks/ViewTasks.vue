@@ -28,7 +28,7 @@
       </button>
     </div>
 
-    <div class="overflow-x-auto shadow-xl rounded-lg" v-if="Tasks && Tasks.length > 0">
+    <div class="overflow-x-auto shadow-xl rounded-lg">
       <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
         <thead>
         <tr class="bg-gray-700 text-white">
@@ -80,7 +80,7 @@
         </tr>
         </tbody>
       </table>
-      <div class="flex justify-center items-center mt-6 space-x-2">
+      <div class="flex justify-center items-center mt-6 space-x-2" v-if="Tasks && Tasks.length > 0">
         <button
             @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"

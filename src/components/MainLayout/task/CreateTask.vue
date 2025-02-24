@@ -109,6 +109,8 @@ export default {
       description: '',
       status: 'pending',
       company_id: '',
+      t_status: 'unread',
+      users: [],
     });
 
     const errors = reactive({
@@ -124,9 +126,10 @@ export default {
           Object.values(newTask).every((field) => field.trim?.() || field > 0);
     });
     const companies = ref(null)
-
+    const users = ref(null)
     const fetchData = async () => {
       try {
+        users.value = await store.dispatch("user/getAllUsers")
         companies.value = await store.dispatch("company/getAllCompanies");
         newTask.company_id = companies.value.data[0].id;
       } catch (error) {
@@ -149,6 +152,17 @@ export default {
         const formData = new FormData();
         Object.entries(newTask).forEach(([key, value]) => {
           formData.append(key, value);
+        });
+
+        formData.append("title", newTask.title);
+        formData.append("text", newTask.text);
+        formData.append("deadline", newTask.deadline);
+        formData.append("status", newTask.status);
+        formData.append("description", newTask.description);
+        formData.append("t_status", newTask.t_status);
+        formData.append("company_id", newTask.company_id);
+        newTask.users.forEach(userId => {
+          formData.append("users[]", userId);
         });
         await store.dispatch('task/addTask', formData);
         Object.keys(newTask).forEach((key) => {

@@ -4,7 +4,7 @@
       <p class="font-semibold text-2xl">{{ title }}</p>
       <button
         @click="toggleSidebar"
-        class="text-2xl transition-transform duration-200 hover:rotate-90 hover:scale-110"
+        class="text-2xl transition-transform duration-200 hover:rotate-90"
     >
       &times;
     </button>

@@ -24,24 +24,6 @@
       />
     </div>
     <div class="mb-4">
-      <label for="duration" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Login</label>
-      <input
-          v-model="newStudent.login"
-          type="text"
-          id="duration"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
-      <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parol</label>
-      <input
-          v-model="newStudent.password"
-          type="text"
-          id="password"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
       <input
           v-model="newStudent.phone"
@@ -203,21 +185,13 @@ import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
-  props: {
-    branchId: {
-      type: Number,
-      required: true,
-    },
-  },
   emits: ['close'],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const store = useStore();
     const activeUser = JSON.parse(localStorage.getItem("user"))
     const newStudent = reactive({
       full_name: '',
-      branch_id: props.branchId,
-      login: '',
-      password: '',
+      branch_id: '',
       email: '',
       phone: '',
       address: '',
@@ -250,8 +224,6 @@ export default {
     const isFormValid = computed(() => {
       return (
           newStudent.full_name.trim() &&
-          newStudent.login.trim() &&
-          newStudent.password.trim() &&
           newStudent.phone.trim()
       );
     });
@@ -269,8 +241,6 @@ export default {
         const formData = new FormData();
         formData.append('branch_id', newStudent.branch_id);
         formData.append('full_name', newStudent.full_name);
-        formData.append('login', newStudent.login);
-        formData.append('password', newStudent.password);
         formData.append('email', newStudent.email);
         formData.append('phone', newStudent.phone);
         formData.append('description', newStudent.description);
@@ -289,8 +259,6 @@ export default {
         closeModal();
 
         newStudent.full_name = '';
-        newStudent.login = '';
-        newStudent.password = '';
         newStudent.email = '';
         newStudent.phone = '';
         newStudent.address = '';

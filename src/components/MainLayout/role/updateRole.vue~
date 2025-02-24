@@ -90,7 +90,6 @@ export default {
     const users = ref(null)
     const permissions = ref(null)
     const fetchData = async () => {
-      console.info(selectedRole.value)
       try {
         users.value = await store.dispatch('user/getAllUsers')
         permissions.value = await store.dispatch('permission/getAllPermissions')

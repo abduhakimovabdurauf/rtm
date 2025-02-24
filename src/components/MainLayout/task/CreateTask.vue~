@@ -6,7 +6,7 @@
           id="company_id"
           required
           v-if="companies && companies.data && companies.data.length > 0"
-          v-model="newNotification.company_id"
+          v-model="newTask.company_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option v-for="company in companies.data" :key="company.id" :value="company.id">
@@ -15,9 +15,9 @@
       </select>
     </div>
     <div class="mb-4">
-      <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sarlavha</label>
+      <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Topshiriq Nomi</label>
       <input
-          v-model="newNotification.title"
+          v-model="newTask.title"
           type="text"
           id="title"
           @input="validateField('title')"
@@ -30,7 +30,7 @@
     <div class="mb-4">
       <label for="text" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Matn</label>
       <input
-          v-model="newNotification.text"
+          v-model="newTask.text"
           type="text"
           id="text"
           @input="validateField('text')"
@@ -41,28 +41,42 @@
     </div>
 
     <div class="mb-4">
-      <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Turi</label>
+      <label for="deadline" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Muhlat</label>
+      <input
+          v-model="newTask.deadline"
+          type="date"
+          id="deadline"
+          @input="validateField('deadline')"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          :class="{ 'border-red-500': errors.deadline }"
+      />
+      <p v-if="errors.deadline" class="text-red-500 text-sm mt-1">{{ errors.deadline }}</p>
+    </div>
+
+    <div class="mb-4">
+      <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
       <textarea
-          v-model="newNotification.type"
-          id="type"
-          @input="validateField('type')"
+          v-model="newTask.description"
+          id="description"
+          @input="validateField('description')"
           rows="3"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.type }"
+          :class="{ 'border-red-500': errors.description }"
       ></textarea>
-      <p v-if="errors.type" class="text-red-500 text-sm mt-1">{{ errors.type }}</p>
+      <p v-if="errors.description" class="text-red-500 text-sm mt-1">{{ errors.description }}</p>
     </div>
 
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
       <select
-          v-model="newNotification.status"
+          v-model="newTask.status"
           id="status"
           @change="validateField('status')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
           :class="{ 'border-red-500': errors.status }"
       >
-        <option value="active" selected>Faol</option>
+        <option value="completed">Bajarildi</option>
+        <option value="pending">Bajarilmoqda</option>
         <option value="inactive">Faol emas</option>
       </select>
       <p v-if="errors.status" class="text-red-500 text-sm mt-1">{{ errors.status }}</p>
@@ -88,31 +102,36 @@ import { useStore } from 'vuex';
 export default {
   setup() {
     const store = useStore();
-    const newNotification = reactive({
+    const newTask = reactive({
       title: '',
       text: '',
-      type: '',
-      status: 'active',
+      deadline: '',
+      description: '',
+      status: 'pending',
       company_id: '',
+      t_status: 'bg-green-500',
+      users: [],
     });
 
     const errors = reactive({
       title: '',
       text: '',
-      type: '',
+      deadline: '',
+      description: '',
       status: '',
     });
 
     const isFormValid = computed(() => {
       return Object.values(errors).every((error) => !error) &&
-          Object.values(newNotification).every((field) => field.trim?.() || field > 0);
+          Object.values(newTask).every((field) => field.trim?.() || field > 0);
     });
     const companies = ref(null)
-
+    const users = ref(null)
     const fetchData = async () => {
       try {
+        users.value = await store.dispatch("user/getAllUsers")
         companies.value = await store.dispatch("company/getAllCompanies");
-        newNotification.company_id = companies.value.data[0].id;
+        newTask.company_id = companies.value.data[0].id;
       } catch (error) {
         console.error(error);
       }
@@ -120,7 +139,7 @@ export default {
 
     onMounted(fetchData)
     const validateField = (field) => {
-      if (!newNotification[field]?.trim()) {
+      if (!newTask[field]?.trim()) {
         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} bo'sh bo'lmasligi kerak.`;
       } else {
         errors[field] = '';
@@ -131,12 +150,23 @@ export default {
       try {
         if (!isFormValid.value) return;
         const formData = new FormData();
-        Object.entries(newNotification).forEach(([key, value]) => {
+        Object.entries(newTask).forEach(([key, value]) => {
           formData.append(key, value);
         });
-        await store.dispatch('notification/addNotification', formData);
-        Object.keys(newNotification).forEach((key) => {
-          newNotification[key] = key === 'status' ? 'active' : '';
+
+        formData.append("title", newTask.title);
+        formData.append("text", newTask.text);
+        formData.append("deadline", newTask.deadline);
+        formData.append("status", newTask.status);
+        formData.append("description", newTask.description);
+        formData.append("t_status", newTask.t_status);
+        formData.append("company_id", newTask.company_id);
+        newTask.users.forEach(userId => {
+          formData.append("users[]", userId);
+        });
+        await store.dispatch('task/addTask', formData);
+        Object.keys(newTask).forEach((key) => {
+          newTask[key] = key === 'status' ? 'active' : '';
         });
       } catch (e) {
         console.error(e);
@@ -144,7 +174,7 @@ export default {
     };
 
     return {
-      newNotification,
+      newTask,
       errors,
       validateField,
       handleSubmit,

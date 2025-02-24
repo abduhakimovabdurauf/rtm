@@ -1,139 +1,215 @@
 <template>
   <div>
-    <form @submit.prevent="handleSubmit" class="overflow-scroll pb-2">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Ismi</label>
+    <form @submit.prevent="handleSubmit">
+      <!--    start required fields-->
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ismi</label>
         <input
+            v-model="form.full_name"
             type="text"
             id="name"
-            v-model="form.full_name"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
-
-      <div>
-        <label for="login" class="block text-sm font-medium text-gray-700">Login</label>
+      <div class="mb-4">
+        <label for="duration" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Login</label>
         <input
-            type="text"
-            id="login"
             v-model="form.login"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-        <input
             type="text"
-            id="email"
-            v-model="form.email"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            id="duration"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parol</label>
+        <input
+            v-model="form.password"
+            type="text"
+            id="password"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
-      <div>
-        <label for="phone" class="block text-sm font-medium text-gray-700">Telefon raqami</label>
+      <div class="mb-4">
+        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
         <input
+            v-model="form.phone"
             type="text"
             id="phone"
-            v-model="form.phone"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
-      <div>
-        <label for="address" class="block text-sm font-medium text-gray-700">Manzili</label>
-        <input
-            type="text"
-            id="address"
-            v-model="form.address"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-
-      <div>
-        <label for="links" class="block text-sm font-medium text-gray-700">Havolalar</label>
-        <input
-            type="text"
-            id="links"
-            v-model="form.links"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-
-      <div>
-        <label for="birthday" class="block text-sm font-medium text-gray-700">Tug`ilgan sana</label>
-        <input
-            type="text"
-            id="birthday"
-            v-model="form.birthday"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-
-      <div>
-        <label for="work_start" class="block text-sm font-medium text-gray-700">Ish boshlagan sana</label>
-        <input
-            type="text"
-            id="work_start"
-            v-model="form.work_start"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-
-      <div>
-        <label for="work_end" class="block text-sm font-medium text-gray-700">Ish tugallagan sana</label>
-        <input
-            type="text"
-            id="work_end"
-            v-model="form.work_end"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-
-      <div>
-        <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-        <select
-            id="status"
-            v-model="form.status"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        >
-          <option value="active">Faol</option>
-          <option value="inactive">Faol emas</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="description" class="block text-sm font-medium text-gray-700">Tavsif</label>
-        <textarea
-            id="description"
-            v-model="form.description"
-            rows="4"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        ></textarea>
-      </div>
-
-      <div>
-        <label for="image" class="block text-sm font-medium text-gray-700">Upload Image</label>
-        <input
-            type="file"
-            id="image"
-            @change="handleImageChange"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            accept="image/*"
-        />
-        <div v-if="imagePreview" class="mt-2">
-          <img :src="imagePreview" alt="Image Preview" class="w-full h-auto rounded-md" />
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filiallar</label>
+        <div v-if="branches?.data?.length" class="flex flex-wrap gap-3">
+          <div v-for="branch in branches.data" :key="branch.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+            <input
+                type="checkbox"
+                :id="'branch_' + branch.id"
+                :value="branch.id"
+                v-model="form.branches"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label :for="'branch_' + branch.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+              {{ branch.name }}
+            </label>
+          </div>
         </div>
       </div>
 
-      <div class="flex justify-between items-center">
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurslar</label>
+        <div v-if="courses?.data?.length" class="flex flex-wrap gap-3">
+          <div v-for="course in courses.data" :key="course.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+            <input
+                type="checkbox"
+                :id="'course_' + course.id"
+                :value="course.id"
+                v-model="form.courses"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label :for="'course_' + course.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+              {{ course.name }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lavozimlar</label>
+        <div v-if="roles?.data?.length" class="flex flex-wrap gap-3">
+          <div v-for="role in roles.data" :key="role.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+            <input
+                type="checkbox"
+                :id="'role_' + role.id"
+                :value="role.id"
+                v-model="form.roles"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label :for="'role_' + role.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+              {{ role.name }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <!--    end required fields-->
+
+      <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
+        <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
+        <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
+      </label>
+
+      <!--  nullable qiymatlar   -->
+
+      <div v-if="showOptionalFields">
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+          <input
+              v-model="form.email"
+              type="email"
+              id="email"
+              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Manzili</label>
+          <input
+              v-model="form.address"
+              type="text"
+              id="address"
+              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="links" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Havolalar</label>
+          <input
+              v-model="form.links"
+              type="text"
+              id="links"
+              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tugilgan sana</label>
+          <input
+              v-model="form.birthday"
+              type="date"
+              id="birthday"
+              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="work_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish boshlagan vaqti</label>
+          <input
+              v-model="form.work_start"
+              type="date"
+              id="work_start"
+              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="work_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish tamomlagan vaqti</label>
+          <input
+              v-model="form.work_end"
+              type="date"
+              id="work_end"
+              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
+          <textarea
+              v-model="form.description"
+              id="description"
+              rows="3"
+              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          ></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+          <select
+              v-model="form.status"
+              id="status"
+              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            <option value="active">Faol</option>
+            <option value="inactive">Faol emas</option>
+          </select>
+        </div>
+<!--        <div class="mb-4">-->
+<!--          <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rasm Yuklash</label>-->
+<!--          <input-->
+<!--              type="file"-->
+<!--              id="image"-->
+<!--              @change="handleImageUpload"-->
+<!--              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"-->
+<!--          />-->
+<!--        </div>-->
+<!--        <div class="mb-4">-->
+<!--          <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fayl Yuklash</label>-->
+<!--          <input-->
+<!--              type="file"-->
+<!--              id="file"-->
+<!--              @change="handleFileUpload"-->
+<!--              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"-->
+<!--          />-->
+<!--        </div>-->
+
+      </div>
+
+      <!--    end nullable qiymatlar    -->
+
+
+      <div class="flex justify-end mb-20">
         <button
             type="submit"
             :disabled="!isFormChanged"
-            class="w-full px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg"
+            :class="{ 'opacity-50 cursor-not-allowed': !isFormChanged }"
         >
-          Saqlash
+          Qo'shish
         </button>
       </div>
     </form>
@@ -143,7 +219,7 @@
 
 
 <script>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import isEqual from 'lodash/isEqual';
 
@@ -162,6 +238,8 @@ export default {
         store.state.user.users.find((user) => user.id === props.userId)
     );
 
+    console.log(selectedUser.value)
+
     const form = ref({
       full_name: '',
       login: '',
@@ -178,6 +256,9 @@ export default {
       id: props.userId,
       status: '',
       description: '',
+      branches: [],
+      courses: [],
+      roles: [],
       images: null,
     });
 
@@ -211,6 +292,23 @@ export default {
       }
     };
 
+    const courses = ref(null)
+    const roles = ref(null)
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+        courses.value = await store.dispatch("course/getAllCourses");
+        roles.value = await store.dispatch("role/getAllRoles");
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
+
+    onMounted(fetchData);
+
+    const showOptionalFields = ref(false);
+    
     const isFormChanged = computed(() => {
       return !isEqual(form.value, initialForm.value);
     });
@@ -233,6 +331,10 @@ export default {
       handleSubmit,
       handleImageChange,
       isFormChanged,
+      showOptionalFields,
+      courses,
+      branches,
+      roles,
     };
   },
 };

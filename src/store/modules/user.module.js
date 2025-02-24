@@ -15,7 +15,7 @@ export default {
             state.users = users;
         },
         ADD_USER(state, user) {
-            state.users.push(user);
+            state.users.unshift(user);
         },
         UPDATE_USER(state, updatedUser) {
             const index = state.users.findIndex((u) => u.id === updatedUser.id);
@@ -31,10 +31,10 @@ export default {
             try {
                 const response = await axios.get(API_URL, {
                     params: {
-                        page: payload.page,
-                        per_page: payload.perPage,
-                        sortBy: payload.sortBy,
-                        orderBy: payload.orderBy,
+                        page: payload?.page,
+                        per_page: payload?.perPage,
+                        sortBy: payload?.sortBy,
+                        orderBy: payload?.orderBy,
                     },
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
@@ -45,6 +45,7 @@ export default {
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Xodim malumotlarni olishda xatolik!");
+                console.error(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }

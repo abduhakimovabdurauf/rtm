@@ -17,7 +17,7 @@ export default {
             state.roles = roles;
         },
         ADD_ROLE(state, role) {
-            state.roles.push(role);
+            state.roles.unshift(role);
         },
         UPDATE_ROLE(state, updatedRole) {
             const index = state.roles.findIndex((r) => r.id === updatedRole.id);
@@ -36,9 +36,12 @@ export default {
                     },
                 });
                 commit("SET_ROLES", response.data.data);
-                return response.data.total;
+                console.log(response.data.data)
+                return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Lavozimlar ro‘yxatini olishda xatolik!");
+            } finally {
+                commit("SET_LOADING", false, { root: true });
             }
         },
 
@@ -53,6 +56,7 @@ export default {
                 commit("ADD_ROLE", response.data.data);
                 toast.success(response.data.message);
             } catch (e) {
+                console.error(e)
                 toast.error(e.response?.data?.message || "Lavozim qo‘shishda xatolik!");
             }
         },
@@ -89,5 +93,6 @@ export default {
     },
     getters: {
         roles: (state) => state.roles,
+        roleById: (state) => (id) => state.roles.find(role => role.id === id),
     },
 };

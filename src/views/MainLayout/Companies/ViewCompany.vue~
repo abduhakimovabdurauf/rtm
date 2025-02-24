@@ -9,6 +9,12 @@
         @close="closeCreateModal"
     />
 
+    <CreateBranch
+        v-if="isBranching"
+        :companyId="selectedCompanyId"
+        @close="closeCreateModal"
+    />
+
     <UpdateCompany
         v-if="isUpdating && selectedCompanyId !== null"
         :companyId="selectedCompanyId"
@@ -57,11 +63,17 @@
           </div>
 
           <div v-if="company.id" class="flex justify-end mt-4">
+            <button
+                @click="openBranchModal(company.id)"
+                class="transition ml-2 text-white bg-green-500 hover:bg-green-600 p-2 py-1 rounded duration-200"
+            >
+              Filial qo'shish <i class='bx bx-git-branch'></i>
+            </button>
             <router-link
                 :to="{ name: 'WatchCompany', params: { id: company.id } }"
                 class="transition ml-2 text-white bg-blue-500 hover:bg-blue-600 p-2 py-1 rounded duration-200"
             >
-              Batasil <i class="bx bxs-show"></i>
+              <i class="bx bxs-show"></i>
             </router-link>
             <button
                 @click="openUpdateModal(company.id)"
@@ -122,6 +134,7 @@ import { useStore } from "vuex";
 import CreateCompany from "@/components/MainLayout/company/CreateCompany.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import UpdateCompany from "@/components/MainLayout/company/UpdateCompany.vue";
+import CreateBranch from "@/components/MainLayout/company/CreateBranch.vue";
 import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 
 export default {
@@ -129,6 +142,7 @@ export default {
     UpdateCompany,
     actionSidebar,
     CreateCompany,
+    CreateBranch,
     StatusBadge,
   },
   setup() {
@@ -138,6 +152,7 @@ export default {
     const isModalOpen = ref(false);
     const isCreating = ref(false);
     const isUpdating = ref(false);
+    const isBranching = ref(false);
     const isReading = ref(false);
     const selectedCompanyId = ref(null);
     const companies = computed(() => store.getters['company/companies']);
@@ -147,6 +162,7 @@ export default {
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Kompaniya qo'shish";
       if (isUpdating.value) return "Kompaniyani o'zgartirish";
+      if (isBranching.value) return "Filial qoshish";
       return "";
     });
 
@@ -154,6 +170,14 @@ export default {
       isCreating.value = true;
       isUpdating.value = false;
       isReading.value = false;
+      store.dispatch("toggleSidebar", true);
+    };
+
+    const openBranchModal = (id) => {
+      isCreating.value = false;
+      isUpdating.value = false;
+      isBranching.value = true;
+      selectedCompanyId.value = id;
       store.dispatch("toggleSidebar", true);
     };
 
@@ -176,6 +200,11 @@ export default {
 
     const closeCreateModal = () => {
       isCreating.value = false;
+      store.dispatch("toggleSidebar", false);
+    };
+
+    const closeBranchModal = () => {
+      isBranching.value = false;
       store.dispatch("toggleSidebar", false);
     };
 
@@ -239,9 +268,12 @@ export default {
       changePage,
       isCreating,
       isUpdating,
+      isBranching,
       sidebarTitle,
       openCreateModal,
       openUpdateModal,
+      openBranchModal,
+      closeBranchModal,
       closeCreateModal,
       closeUpdateModal,
       deleteById,

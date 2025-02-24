@@ -31,6 +31,7 @@ export default {
                 commit("setToken", token);
                 // commit("SET_USER", response.data.user);
                 localStorage.setItem("user",JSON.stringify(response.data.user));
+                await router.push('/watchUser/'+response.data.user.id)
                 toast.success(response.data.message || "Login successful!");
             } catch (e) {
                 console.error(e.message);

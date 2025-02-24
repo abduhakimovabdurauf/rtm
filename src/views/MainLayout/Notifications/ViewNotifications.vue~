@@ -61,7 +61,7 @@
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
             <router-link
-                :to="{ name: 'WatchNotification', params: { id: notification.id } }"
+                :to="{ name: 'watchNotification', params: { id: notification.id } }"
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
             >
               <i class="bx bxs-show"></i>

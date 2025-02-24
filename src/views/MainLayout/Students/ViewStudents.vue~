@@ -14,12 +14,12 @@
         :studentId="selectedStudentId"
         @close="closeUpdateModal"
     />
-<!--    <Pay-->
-<!--      v-if="isPaying"-->
-<!--      :studentId="selectedStudentId"-->
-<!--      :groupData="selectedGroupData"-->
-<!--      @close="closePayModal"-->
-<!--    />-->
+    <Pay
+      v-if="isPaying"
+      :studentId="selectedStudentId"
+      :groupData="selectedGroupData"
+      @close="closePayModal"
+    />
   </actionSidebar>
     <div class="p-6 min-h-screen dark:bg-gray-900">
       <div class="flex justify-between items-center mb-6">

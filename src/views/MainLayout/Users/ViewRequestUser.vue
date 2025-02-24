@@ -83,9 +83,9 @@
           <th class="px-6 py-4 text-right">Amallar</th>
         </tr>
         </thead>
-        <tbody v-if="data && data.courses && data.courses.length">
+        <tbody v-if="data && data.my_courses && data.my_courses.length">
         <tr
-            v-for="(course, index) in data.courses"
+            v-for="(course, index) in data.my_courses"
             :key="course.id"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >

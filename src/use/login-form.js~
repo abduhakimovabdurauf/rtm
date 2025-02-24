@@ -27,20 +27,19 @@ export function useLoginForm() {
     )
 
     const router = useRouter()
-    // const activeUser = JSON.parse(localStorage.getItem("user"))
+    const activeUser = JSON.parse(localStorage.getItem("user"))
     const submit = handleSubmit (async values => {
         try {
             await store.dispatch('auth/login',values)
-            await router.push('dashboard')
+            // await router.push('dashboard')
         }
         catch (e) {
             console.error(e.response)
+        } finally {
+            if (activeUser) {
+                await router.push('/watchUser/'+activeUser.id)
+            }
         }
-        // finally {
-        //     if (activeUser) {
-        //         await router.push('/watchUser/'+activeUser.id)
-        //     }
-        // }
     })
 
     const tryCount = computed(() => submitCount.value > 3)
