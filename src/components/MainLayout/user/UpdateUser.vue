@@ -48,7 +48,8 @@
                 type="checkbox"
                 :id="'branch_' + branch.id"
                 :value="branch.id"
-                v-model="form.branches"
+                :checked="form.branches.some(b => b.id === branch.id)"
+                @change="toggleBranch(branch)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />
             <label :for="'branch_' + branch.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
@@ -56,6 +57,7 @@
             </label>
           </div>
         </div>
+
       </div>
 
       <div class="mb-4">
@@ -66,7 +68,8 @@
                 type="checkbox"
                 :id="'course_' + course.id"
                 :value="course.id"
-                v-model="form.my_courses"
+                :checked="form.my_courses.some(c => c.id === course.id)"
+                @change="toggleCourse(course)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />
             <label :for="'course_' + course.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
@@ -75,7 +78,6 @@
           </div>
         </div>
       </div>
-
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lavozimlar</label>
         <div v-if="roles?.data?.length" class="flex flex-wrap gap-3">
@@ -84,7 +86,8 @@
                 type="checkbox"
                 :id="'role_' + role.id"
                 :value="role.id"
-                v-model="form.roles"
+                :checked="form.roles.some(r => r.id === role.id)"
+                @change="toggleRole(role)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />
             <label :for="'role_' + role.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
@@ -92,6 +95,19 @@
             </label>
           </div>
         </div>
+      </div>
+
+
+      <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+        <select
+            v-model="form.status"
+            id="status"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        >
+          <option value="active">Faol</option>
+          <option value="inactive">Faol emas</option>
+        </select>
       </div>
       <!--    end required fields-->
 
@@ -166,17 +182,6 @@
               rows="3"
               class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           ></textarea>
-        </div>
-        <div class="mb-4">
-          <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
-          <select
-              v-model="form.status"
-              id="status"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          >
-            <option value="active">Faol</option>
-            <option value="inactive">Faol emas</option>
-          </select>
         </div>
 <!--        <div class="mb-4">-->
 <!--          <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rasm Yuklash</label>-->
@@ -291,7 +296,6 @@ export default {
         reader.readAsDataURL(file);
       }
     };
-
     const courses = ref(null)
     const roles = ref(null)
     const branches = ref(null);
@@ -300,6 +304,7 @@ export default {
         branches.value = await store.dispatch("branch/getAllBranches");
         courses.value = await store.dispatch("course/getAllCourses");
         roles.value = await store.dispatch("role/getAllRoles");
+        console.log('form: ', form.value)
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -321,6 +326,33 @@ export default {
       closeModal();
     };
 
+    const toggleBranch = (branch) => {
+      const index = form.value.branches.findIndex(b => b.id === branch.id);
+      if (index !== -1) {
+        form.value.branches.splice(index, 1);
+      } else {
+        form.value.branches.push(branch);
+      }
+    };
+
+    const toggleCourse = (course) => {
+      const index = form.value.my_courses.findIndex(c => c.id === course.id);
+      if (index !== -1) {
+        form.value.my_courses.splice(index, 1);
+      } else {
+        form.value.my_courses.push(course);
+      }
+    };
+
+    const toggleRole = (role) => {
+      const index = form.value.roles.findIndex(r => r.id === role.id);
+      if (index !== -1) {
+        form.value.roles.splice(index, 1);
+      } else {
+        form.value.roles.push(role);
+      }
+    };
+
     function closeModal() {
       emit('close');
     }
@@ -335,6 +367,9 @@ export default {
       courses,
       branches,
       roles,
+      toggleBranch,
+      toggleCourse,
+      toggleRole,
     };
   },
 };

@@ -46,35 +46,40 @@
             :key="index"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">
-            {{ notification.title || 'Noma’lum' }}
+            {{ index + 1 }}
+          </td>
+          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">
+            {{ notification?.title || 'Noma’lum' }}
           </td>
           <td class="px-6 py-4 font-semibold">
-            {{ notification.text?.length > 20 ? notification.text.slice(0, 20) + '...' : notification.text }}
+            {{ notification?.text?.length > 20 ? notification?.text.slice(0, 20) + '...' : notification?.text || 'Noma’lum' }}
           </td>
           <td class="px-6 py-4 font-semibold">
-            {{ notification.type || 'Noma’lum' }}
+            {{ notification?.type || 'Noma’lum' }}
           </td>
           <td class="px-6 py-4">
-            <StatusBadge :status="notification.status" />
+            <StatusBadge :status="notification?.status" />
           </td>
           <td class="px-6 py-4 space-x-3 text-right">
             <router-link
-                :to="{ name: 'watchNotification', params: { id: notification.id } }"
+                :to="{ name: 'watchNotification', params: { id: notification?.id } }"
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+                v-if="notification?.id"
             >
               <i class="bx bxs-show"></i>
             </router-link>
             <button
-                @click="deleteById(notification.id)"
+                @click="deleteById(notification?.id)"
                 class="mr-0.5 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+                v-if="notification?.id"
             >
               <i class="bx bxs-trash-alt"></i>
             </button>
             <button
-                @click.prevent="openUpdateModal(notification.id)"
+                @click.prevent="openUpdateModal(notification?.id)"
                 class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+                v-if="notification?.id"
             >
               <i class="bx bxs-edit-alt"></i>
             </button>
@@ -218,7 +223,8 @@ export default {
           sortBy: sortBy.value,
           orderBy: orderBy.value,
         });
-        totalPages.value = Math.ceil(total.total / perPage.value);
+        console.log(total)
+        totalPages.value = Math.ceil(total / perPage.value);
       } catch (e) {
         console.error("Error fetching discounts:", e.message);
       }

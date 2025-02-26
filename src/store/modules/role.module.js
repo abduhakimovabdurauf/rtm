@@ -63,7 +63,7 @@ export default {
 
         async updateRole({ commit }, updatedRole) {
             try {
-                const response = await axios.put(`${API_URL}/${updatedRole.id}`, updatedRole, {
+                const response = await axios.post(`${API_URL}/${updatedRole.id}`, updatedRole, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,

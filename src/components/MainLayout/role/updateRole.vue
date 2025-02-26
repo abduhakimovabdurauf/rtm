@@ -19,7 +19,8 @@
                 type="checkbox"
                 :id="'user_' + user.id"
                 :value="user.id"
-                v-model="form.users"
+                :checked="form.users.some(b => b.id === user.id)"
+                @change="toggleUser(user)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />
             <label :for="'user_' + user.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
@@ -37,7 +38,8 @@
                 type="checkbox"
                 :id="'permission_' + permission.id"
                 :value="permission.id"
-                v-model="form.permissions"
+                :checked="form.permissions.some(b => b.id === permission.id)"
+                @change="togglePermission(permission)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />
             <label :for="'permission_' + permission.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
@@ -50,7 +52,6 @@
       <div class="flex justify-between items-center">
         <button
             type="submit"
-            :disabled="!isFormChanged"
             class="w-full px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Saqlash
@@ -75,7 +76,7 @@ export default {
   emits: ['close'],
   setup(props,{ emit }) {
     const store = useStore();
-
+    
     const selectedRole = computed(() =>
         store.state.role.roles.find((course) => course.id === props.roleId)
     );
@@ -111,14 +112,26 @@ export default {
         { immediate: true }
     );
 
-    const isFormChanged = computed(() => {
-      const { name, } = form.value;
-      const { name: initName, } = initialForm.value;
+    const isFormChanged = ref(false);
 
-      return (
-          name !== initName
-      );
-    });
+    watch(
+        form,
+        (newForm) => {
+          const { name, users, permissions } = newForm;
+          const { name: initName, users: initUsers, permissions: initPermissions } = initialForm.value;
+
+          const usersChanged = users.length !== initUsers.length ||
+              users.some(user => !initUsers.find(initUser => initUser.id === user.id));
+
+          const permissionsChanged = permissions.length !== initPermissions.length ||
+              permissions.some(permission => !initPermissions.find(initPermission => initPermission.id === permission.id));
+
+          isFormChanged.value = name !== initName || usersChanged || permissionsChanged;
+        },
+        { deep: true }
+    );
+
+
 
     const handleSubmit = () => {
       const updatedRole = {
@@ -129,6 +142,26 @@ export default {
       closeModal();
     };
 
+    const toggleUser = (user) => {
+      const index = form.value.users.findIndex(b => b.id === user.id);
+      isFormChanged.value = true
+      if (index !== -1) {
+        form.value.users.splice(index, 1);
+      } else {
+        form.value.users.push(user);
+      }
+    };
+
+    const togglePermission = (permission) => {
+      const index = form.value.permissions.findIndex(b => b.id === permission.id);
+      isFormChanged.value = true
+      if (index !== -1) {
+        form.value.permissions.splice(index, 1);
+      } else {
+        form.value.permissions.push(permission);
+      }
+    };
+    
     function closeModal() {
       emit('close');
     }
@@ -139,6 +172,8 @@ export default {
       isFormChanged,
       users,
       permissions,
+      toggleUser,
+      togglePermission,
     };
   },
 };

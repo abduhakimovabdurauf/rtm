@@ -10,7 +10,7 @@
 
         <div class="flex justify-between items-start border-b p-2 hover:bg-gray-200 duration-300">
           <span class="text-sm text-gray-500">Matn:</span>
-          <span class="text-lg font-medium text-gray-700 max-w-md leading-relaxed">{{ data?.text }}</span>
+          <span class="text-lg font-medium text-gray-700 max-w-md leading-relaxed">{{ data?.text }} %</span>
         </div>
 
         <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 duration-300">

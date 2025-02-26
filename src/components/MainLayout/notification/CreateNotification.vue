@@ -64,7 +64,7 @@
 
 
     <div class="mb-4">
-      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">O'qildimi</label>
       <select
           v-model="newNotification.n_status"
           id="status"
@@ -111,7 +111,7 @@
       <button
           type="submit"
           :disabled="!isFormValid"
-          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg"
+          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg mb-20"
           :class="{ 'opacity-50 cursor-not-allowed': !isFormValid }"
       >
         Qo'shish

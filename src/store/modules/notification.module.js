@@ -18,7 +18,7 @@ export default {
             state.notifications = notifications;
         },
         ADD_NOTIFICATION(state, group) {
-            state.notifications.push(group);
+            state.notifications.unshift(group);
         },
         UPDATE_NOTIFICATION(state, updatedNotification) {
             const index = state.notifications.findIndex((c) => c.id === updatedNotification.id);
@@ -77,7 +77,8 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("ADD_NOTIFICATION", response.data.group);
+                commit("ADD_NOTIFICATION", response.data.notification);
+                console.log(response)
                 toast.success(response.data.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kurs qoshishda xatolik!");

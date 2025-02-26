@@ -24,6 +24,11 @@
             :companyId="companyId"
             @close="closeNotificationSidebar"
         />
+        <CreateRole
+            v-if="isRoling"
+            :companyId="companyId"
+            @close="closeNotificationSidebar"
+        />
       </actionSidebar>
       
       <!--   Starting companies section   -->
@@ -180,7 +185,7 @@
             </td>
             <td class="px-6 py-4 font-semibold">
               <router-link
-                  :to="{ name: 'WatchPermission', params: { id: permission.id } }"
+                  :to="{ name: 'watchPermission', params: { id: permission.id } }"
                   class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
               >
                 <i class="bx bxs-show"></i>
@@ -251,6 +256,49 @@
         </table>
       </div>
       <!--  Starting notification section   -->
+
+      <!--  Starting role section   -->
+      <div class="w-1/2 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+        <div class="w-full flex justify-between">
+          <h1 class="text-2xl text-bold m-2">Lavozim malumotlari</h1>
+
+          <button
+              @click="openRoleSidebar"
+              class="transition scale-75 p-2 text-white bg-green-500 hover:bg-green-600 rounded duration-200"
+          >
+            Lavozim qo'shish <i class='bx bx-git-role'></i>
+          </button>
+        </div>
+        <table class="w-full text-sm">
+          <thead class="h-10">
+          <tr class="bg-gray-700 text-white">
+            <th class="px-6 py-4 text-left">№</th>
+            <th class="px-6 py-4 text-left">Nomi</th>
+            <th class="px-6 py-4 text-left">Holat</th>
+          </tr>
+          </thead>
+          <tbody v-if="data && data.roles && data.roles.length">
+          <tr
+              v-for="(role, index) in data.roles"
+              :key="role.id"
+              class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+          >
+            <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
+            <td class="px-6 py-4 font-semibold">{{ role.name }}</td>
+            <td class="px-6 py-4 font-semibold text-xs">
+              <StatusBadge :status="role.status"/>
+            </td>
+          </tr>
+          </tbody>
+          <tbody v-else>
+          <tr>
+            <td colspan="5" class="text-center py-4 text-gray-500">Lavozim ma'lumotlari mavjud emas.</td>
+          </tr>
+          </tbody>
+
+        </table>
+      </div>
+      <!--  Starting role section   -->
       
       
     </div>
@@ -269,6 +317,7 @@
   import CreatePermission from "@/components/MainLayout/company/CreatePermission.vue";
   import UpdateCompany from "@/components/MainLayout/company/UpdateCompany.vue";
   import CreateNotification from "@/components/MainLayout/company/CreateNotification.vue";
+  import CreateRole from "@/components/MainLayout/company/CreateRole.vue";
   export default {
     components: {
       StatusBadge,
@@ -277,6 +326,7 @@
       CreatePermission,
       UpdateCompany,
       CreateNotification,
+      CreateRole,
     },
     setup() {
       const route = useRoute();
@@ -287,11 +337,13 @@
       const isPermission = ref(false)
       const isNotification = ref(false)
       const isUpdating = ref(false)
+      const isRoling = ref(false)
       const sidebarTitle = computed(() => {
         if (isBranching.value) return "Filial qoshish";
         if (isPermission.value) return "Huquq qoshish";
         if (isUpdating.value) return "Kompaniya malumotlarini ozgartirish";
         if (isNotification.value) return "Bildrishnoma qoshish";
+        if (isRoling.value) return "Lavozim qoshish";
         return "";
       });
 
@@ -317,6 +369,19 @@
 
       const closePermissionSidebar = ()=> {
         isPermission.value = false;
+        store.dispatch("toggleSidebar", false);
+      }
+
+      const openRoleSidebar = ()=> {
+        isRoling.value = false;
+        isUpdating.value = false;
+        isBranching.value = false;
+        isPermission.value = false;
+        store.dispatch("toggleSidebar", true);
+      }
+
+      const closeRoleSidebar = ()=> {
+        isRoling.value = false;
         store.dispatch("toggleSidebar", false);
       }
 
@@ -359,8 +424,6 @@
           }
         } catch (error) {
           console.error("Ma'lumot yuklashda xatolik:", error);
-        } finally {
-          console.log(data.value[0].branches)
         }
       });
 
@@ -375,11 +438,14 @@
         closePermissionSidebar,
         openNotificationSidebar,
         closeNotificationSidebar,
+        openRoleSidebar,
+        closeRoleSidebar,
         sidebarTitle,
         isBranching,
         isUpdating,
         isPermission,
         isNotification,
+        isRoling,
         deleteById
       };
     },

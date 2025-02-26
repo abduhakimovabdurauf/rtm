@@ -18,14 +18,14 @@ export default {
             state.notifications = notifications;
         },
         ADD_NOTIFICATION(state, group) {
-            state.notifications.push(group);
+            state.notifications.unshift(group);
         },
         UPDATE_NOTIFICATION(state, updatedNotification) {
             const index = state.notifications.findIndex((c) => c.id === updatedNotification.id);
             if (index !== -1) state.notifications.splice(index, 1, updatedNotification);
         },
         DELETE_NOTIFICATION(state, Id) {
-            state.notifications = state.notifications.filter((group) => group.id !== Id);
+            state.notifications = state.notifications.filter((notification) => notification.id !== Id);
         },
     },
     actions: {
@@ -78,6 +78,7 @@ export default {
                     },
                 });
                 commit("ADD_NOTIFICATION", response.data.group);
+                console.log(response)
                 toast.success(response.data.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kurs qoshishda xatolik!");
@@ -109,7 +110,7 @@ export default {
         },
 
         async deleteNotification({ commit }, Id) {
-            if (!confirm("Siz rostdanxam bu Bildirishnoma malumotlarni o'chirib yubormoqchimisiz o'chirib yubormoqchimisiz??")) {
+            if (!confirm("Siz rostdanxam bu Bildirishnoma malumotlarni o'chirib yubormoqchimisiz??")) {
                 return;
             }
             commit("SET_LOADING", true, { root: true });

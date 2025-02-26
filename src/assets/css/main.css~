@@ -46,7 +46,7 @@ body {
 
 
 ::-webkit-scrollbar {
-    width: 7px;
+    width: 8px;
   }
 
   ::-webkit-scrollbar-track {
