@@ -21,22 +21,18 @@
     </div>
 
     <div class="mb-4">
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filiallar</label>
-      <div v-if="branches?.data?.length" class="flex flex-wrap gap-3">
-        <div v-for="branch in branches.data" :key="branch.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
-          <input
-              type="checkbox"
-              :id="'branch_' + branch.id"
-              :value="branch.id"
-              v-model="newStudent.branch_id"
-              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
-          />
-          <label :for="'branch_' + branch.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
-            {{ branch.name }}
-          </label>
-        </div>
-      </div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial</label>
+      <select
+          v-if="branches?.data?.length"
+          v-model="newStudent.branch_id"
+          class="w-full p-2 mt-1 border rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:ring focus:ring-blue-500"
+      >
+        <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
     </div>
+
 
     <div class="mb-4">
     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurslar</label>
@@ -55,6 +51,7 @@
       </div>
     </div>
   </div>
+
 
 
     <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
@@ -239,10 +236,8 @@ export default {
       try {
         branches.value = await store.dispatch("branch/getAllBranches");
         courses.value = await store.dispatch("course/getAllCourses");
+        newStudent.branch_id = branches?.value?.data[0].id
         console.log(branches.value)
-        if (branches.value.data.length > 0) {
-          newStudent.branch_id = branches.value.data[0].id;
-        }
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -267,7 +262,7 @@ export default {
     const handleSubmit = async () => {
       try {
         const formData = new FormData();
-        formData.append('branches', newStudent.branch_id);
+        formData.append('branch_id', newStudent.branch_id);
         formData.append('courses', newStudent.courses);
         formData.append('full_name', newStudent.full_name);
         formData.append('email', newStudent.email);

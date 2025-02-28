@@ -97,7 +97,7 @@ export default {
                     },
                 });
                 console.log(response)
-                commit("UPDATE_COMPANY", response.data.company);
+                commit("UPDATE_COMPANY", response.data);
                 toast.success(response?.data?.message || "Kompaniya malumotlarini ozgartirildi!");
             } catch (e) {
                 handleError(e, "Kompaniya malumotlarini ozgartirishda xatolik!");

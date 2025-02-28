@@ -32,33 +32,33 @@
         <div v-if="companies && companies.length > 0" v-for="company in companies"
              class="bg-gray-50 rounded-lg shadow-md p-4 mb-4 transition duration-300">
 
-          <img v-if="company.image" :src="'https://api.mrtm.uz/storage/companies/' + company.image" alt="">
+          <img v-if="company?.image" :src="'https://api.mrtm.uz/storage/companies/' + company?.image" alt="">
 
-          <h1 v-if="company.name" class="text-xl font-bold text-gray-800">{{ company.name }}</h1>
+          <h1 v-if="company?.name" class="text-xl font-bold text-gray-800">{{ company?.name }}</h1>
 
-          <div v-if="company.phone" class="mb-2 flex justify-between p-2 border-b">
+          <div v-if="company?.phone" class="mb-2 flex justify-between p-2 border-b">
             <div class="font-medium text-gray-600">Telefon</div>
-            <div class="text-gray-800">{{ company.phone }}</div>
+            <div class="text-gray-800">{{ company?.phone }}</div>
           </div>
 
-          <div v-if="company.address" class="mb-2 flex justify-between p-2 border-b">
+          <div v-if="company?.address" class="mb-2 flex justify-between p-2 border-b">
             <div class="font-medium text-gray-600">Manzil</div>
-            <div class="text-gray-800">{{ company.address }}</div>
+            <div class="text-gray-800">{{ company?.address }}</div>
           </div>
 
-          <div v-if="company.description" class="mb-2 flex justify-between p-2 border-b">
+          <div v-if="company?.description" class="mb-2 flex justify-between p-2 border-b">
             <div class="font-medium text-gray-600">Tavsif</div>
-            <div class="text-gray-800">{{ company.description }}</div>
+            <div class="text-gray-800">{{ company?.description }}</div>
           </div>
 
-          <div v-if="company.status" class="mb-2 flex justify-between p-2 border-b">
+          <div v-if="company?.status" class="mb-2 flex justify-between p-2 border-b">
             <div class="font-medium text-gray-600">Holat</div>
-            <StatusBadge :status="company.status"/>
+            <StatusBadge :status="company?.status"/>
           </div>
 
-          <div v-if="company.id" class="flex justify-end mt-4">
+          <div v-if="company?.id" class="flex justify-end mt-4">
             <router-link
-                :to="{ name: 'WatchCompany', params: { id: company.id } }"
+                :to="{ name: 'WatchCompany', params: { id: company?.id } }"
                 class="transition ml-2 text-white bg-blue-500 hover:bg-blue-600 p-2 py-1 rounded duration-200"
             >
               Batasil <i class="bx bxs-show"></i>
@@ -215,7 +215,7 @@ export default {
         });
 
         if (total && total.total) {
-          totalPages.value = Math.ceil(total.total / perPage.value);
+          totalPages.value = Math.ceil(total?.total / perPage.value);
         } else {
           console.error("Error: Total value is missing.");
           totalPages.value = 1;

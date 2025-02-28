@@ -6,7 +6,7 @@
         <input
             type="text"
             id="name"
-            v-model="form.name"
+            v-model="form?.name"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
@@ -14,17 +14,17 @@
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
         <div v-if="users?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="user in users?.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
             <input
                 type="checkbox"
-                :id="'user_' + user.id"
-                :value="user.id"
-                :checked="form.users.some(b => b.id === user.id)"
+                :id="'user_' + user?.id"
+                :value="user?.id"
+                :checked="form?.users?.some(b => b.id === user.id)"
                 @change="toggleUser(user)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />
             <label :for="'user_' + user.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
-              {{ user.full_name }}
+              {{ user?.full_name }}
             </label>
           </div>
         </div>
@@ -33,12 +33,12 @@
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Huquqlar</label>
         <div v-if="permissions?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="permission in permissions.data" :key="permission.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="permission? in permissions?.data" :key="permission.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
             <input
                 type="checkbox"
-                :id="'permission_' + permission.id"
-                :value="permission.id"
-                :checked="form.permissions.some(b => b.id === permission.id)"
+                :id="'permission_' + permission?.id"
+                :value="permission?.id"
+                :checked="form?.permissions?.some(b => b.id === permission.id)"
                 @change="togglePermission(permission)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />

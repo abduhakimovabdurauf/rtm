@@ -157,7 +157,7 @@ export default {
     };
 
     const deleteById = (id) => {
-      store.dispatch("branch/deletebranch", id);
+      store.dispatch("branch/deleteBranch", id);
     };
 
     const paginatedBranches = computed(() => {

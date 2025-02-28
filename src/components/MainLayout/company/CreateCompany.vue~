@@ -110,7 +110,11 @@ export default {
       name: "",
     });
 
-    const isFormValid = computed(() => !!newCompany.name.trim());
+    const isFormValid = computed(() => {
+      const fieldsValid = Object.keys(errors).every((key) => !errors[key]);
+      const requiredFieldsFilled = newCompany.name.trim()
+      return fieldsValid && requiredFieldsFilled;
+    });
 
     const validateField = (field) => {
       const value = newCompany[field]?.trim?.() || newCompany[field];

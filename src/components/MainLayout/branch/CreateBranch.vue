@@ -1,18 +1,6 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
-      <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial Nomi</label>
-      <input
-          v-model.trim="newBranch.name"
-          type="text"
-          id="name"
-          @input="validateField('name')"
-          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.name }"
-      />
-      <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
-    </div>
-    <div class="mb-4">
       <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya</label>
       <select
           id="company_id"
@@ -26,6 +14,20 @@
         </option>
       </select>
     </div>
+
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial Nomi</label>
+      <input
+          v-model.trim="newBranch.name"
+          type="text"
+          id="name"
+          @input="validateField('name')"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          :class="{ 'border-red-500': errors.name }"
+      />
+      <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
+    </div>
+
     <div class="mb-4">
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
       <input

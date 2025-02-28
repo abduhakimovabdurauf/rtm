@@ -24,7 +24,7 @@ export default {
             if (!Array.isArray(state.branches)) {
                 state.branches = [];
             }
-            state.branches.push(branch);
+            state.branches.unshift(branch);
         },
         UPDATE_BRANCH(state, updatedBranch) {
             const index = state.branches.findIndex((c) => c.id === updatedBranch.id);
@@ -81,7 +81,7 @@ export default {
                     },
                 });
                 console.log("added",response)
-                commit("ADD_BRANCH", response.data.branch);
+                commit("ADD_BRANCH", response.data);
                 toast.success(response.data.message || "Filial qo'shildi!");
             } catch (e) {
                 console.error(e)
@@ -102,7 +102,7 @@ export default {
                     },
                 });
                 commit("UPDATE_BRANCH", response.data);
-                toast.success(response?.data?.message);
+                toast.success(response?.data?.message || "Muvaffaqiyatli ozgartirildi");
             } catch (e) {
                 toast.error(e.response?.data?.message || "Filial malumotlarini ozgartirishda xatolik!");
                 console.log(e)

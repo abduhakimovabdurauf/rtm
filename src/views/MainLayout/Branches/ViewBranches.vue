@@ -30,7 +30,7 @@
 
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <div
-          v-if="branches.length === 0"
+          v-if="branches?.length === 0"
           class="flex justify-center items-center col-span-full bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 p-6 rounded-lg shadow-md"
       >
         <p class="text-lg font-semibold">Ma'lumot mavjud emas</p>
@@ -38,32 +38,32 @@
 
       <div
           v-for="branch in branches"
-          :key="branch.id"
+          :key="branch?.id"
           class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 flex flex-col justify-between"
       >
         <div>
           <h2 class="text-xl font-bold text-gray-800 dark:text-white">
-            {{ branch.name }}
+            {{ branch?.name }}
           </h2>
           <p class="text-sm text-gray-600 dark:text-gray-400" v-if="branches && branch && branch.phone">
-            Telefon: {{ branch.phone }}
+            Telefon: {{ branch?.phone }}
           </p>
           <p class="text-sm text-gray-600 dark:text-gray-400" v-if="branches && branch && branch.address">
-            Manzil: {{ branch.address }}
+            Manzil: {{ branch?.address }}
           </p>
           <p class="text-sm text-gray-600 dark:text-gray-400" v-if="branches && branch && branch.description">
             Tavsif: {{
-              branch.description.length > 15
-                  ? branch.description.substring(0, 15) + "..."
-                  : branch.description
+              branch?.description.length > 15
+                  ? branch?.description.substring(0, 15) + "..."
+                  : branch?.description
             }}
           </p>
         </div>
         <div class="mt-4 flex justify-between items-center">
-          <StatusBadge :status="branch.status" />
+          <StatusBadge :status="branch?.status" />
           <div class="flex space-x-2">
             <router-link
-                :to="{ name: 'WatchBranch', params: { id: branch.id } }"
+                :to="{ name: 'WatchBranch', params: { id: branch?.id } }"
                 class="text-white bg-blue-500 hover:bg-blue-600 p-2 py-1 rounded transition"
             >
               <i class="bx bxs-show"></i>

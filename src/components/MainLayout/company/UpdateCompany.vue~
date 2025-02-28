@@ -140,15 +140,14 @@ export default {
     };
 
     const isFormChanged = computed(() => {
-      const { name, phone, address, description, status } = form.value;
-      const { name: initName, phone: initPhone, address: initAddress, description: initDescription, status: initStatus } = initialForm.value;
+      const { name, phone, address, description } = form.value;
+      const { name: initName, phone: initPhone, address: initAddress, description: initDescription } = initialForm.value;
 
       return (
           name !== initName ||
           phone !== initPhone ||
           address !== initAddress ||
           description !== initDescription ||
-          status !== initStatus ||
           form.value.image !== initialForm.value.image
       );
     });
