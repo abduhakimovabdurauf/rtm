@@ -67,6 +67,25 @@
         ></textarea>
       </div>
 
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
+        <div v-if="users?.data?.length" class="flex flex-wrap gap-3">
+          <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+            <input
+                type="checkbox"
+                :id="'user_' + user.id"
+                :value="user.id"
+                :checked="form.users.some(r => r.id === user.id)"
+                @change="toggleUser(user)"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label :for="'user_' + user.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+              {{ user.full_name }}
+            </label>
+          </div>
+        </div>
+      </div>
+      
       <div>
         <label for="image" class="block text-sm font-medium text-gray-700">Upload Image</label>
         <input
@@ -84,7 +103,6 @@
       <div class="flex justify-between items-center">
         <button
             type="submit"
-            :disabled="!isFormChanged"
             class="w-full px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Saqlash
@@ -122,14 +140,17 @@ export default {
       branch_id: '',
       id: props.courseId,
       status: '',
+      users:[],
       image: null,
     });
 
     const branches = ref(null);
+    const users = ref(null)
     const fetchData = async () => {
       console.log('course_id: ',props.courseId)
       try {
         branches.value = await store.dispatch("branch/getAllBranches");
+        users.value = await store.dispatch("user/getAllUsers");
         form.value.branch_id = branches.value.data[0].id;
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
@@ -168,18 +189,21 @@ export default {
     };
 
     const isFormChanged = computed(() => {
-      const { name, duration, price, description } = form.value;
-      const { name: initName, duration: initDuration, price: initPrice, description: initDescription } = initialForm.value;
-
-      return (
-          name !== initName ||
-          duration !== initDuration ||
-          price !== initPrice ||
-          description !== initDescription ||
-          form.value.image !== initialForm.value.image
-      );
+      return JSON.stringify(form.value) !== JSON.stringify(initialForm.value);
     });
 
+
+
+
+    const toggleUser = (user) => {
+      const index = form.value.users.findIndex(r => r.id === user.id);
+      if (index !== -1) {
+        form.value.users.splice(index, 1);
+      } else {
+        form.value.users.push(user);
+      }
+    };
+    
     const handleSubmit = () => {
       const updatedCourse = {
         ...form.value,
@@ -200,6 +224,8 @@ export default {
       handleImageChange,
       isFormChanged,
       branches,
+      users,
+      toggleUser,
     };
   },
 };

@@ -72,7 +72,7 @@
     </div>
 
     <!--  Starting group section   -->
-    <div class="w-1/2 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+    <div class="w-3/5 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
       <div class="w-full flex justify-between">
         <h1 class="text-xl text-bold m-2">Guruh malumotlari</h1>
 

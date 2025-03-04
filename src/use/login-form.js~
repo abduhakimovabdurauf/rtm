@@ -27,20 +27,24 @@ export function useLoginForm() {
     )
 
     const router = useRouter()
-    const activeUser = JSON.parse(localStorage.getItem("user"))
-    const submit = handleSubmit (async values => {
+    const submit = handleSubmit(async values => {
         try {
-            await store.dispatch('auth/login',values)
-            // await router.push('dashboard')
-        }
-        catch (e) {
-            console.error(e.response)
-        } finally {
-            if (activeUser) {
-                await router.push('/watchUser/'+activeUser.id)
+            const login = await store.dispatch('auth/login', values);
+
+            const roleNames = login.roles?.map(r => r.name.toLowerCase()) || [];
+
+            const allowedRoles = ["administrator", "direktor", "manager"];
+
+            if (allowedRoles.some(role => roleNames.includes(role))) {
+                await router.push('/dashboard');
+            } else {
+                await router.push('/profile');
             }
+        } catch (e) {
+            console.error(e.response);
         }
-    })
+    });
+
 
     const tryCount = computed(() => submitCount.value > 3)
 

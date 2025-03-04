@@ -2,10 +2,13 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
       <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
+      <div v-if="branches==null">
+        <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
+      </div>
       <select
           id="branch_id"
           required
-          v-if="branches && branches.data && branches.data.length > 0"
+          v-else-if="branches && branches.data && branches.data.length > 0"
           v-model="newCourse.branch_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
@@ -13,6 +16,10 @@
           {{ branch.name }}
         </option>
       </select>
+
+      <div v-else>
+        <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
+      </div>
     </div>
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs Nomi</label>
@@ -77,6 +84,29 @@
       <p v-if="errors.description" class="text-red-500 text-sm mt-1">{{ errors.description }}</p>
     </div>
 
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
+      <div v-if="users==null">
+        <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
+      </div>
+      <div v-else-if="users?.data?.length" class="flex flex-wrap gap-3">
+        <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <input
+              type="checkbox"
+              :id="'user_' + user.id"
+              :value="user.id"
+              v-model="newCourse.users"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label :for="'user_' + user.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+            {{ user.full_name }}
+          </label>
+        </div>
+      </div>
+      <div v-else>
+        <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
+      </div>
+    </div>
 
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
@@ -122,13 +152,16 @@ export default {
       description: '',
       branch_id: '',
       user_id: activeUser.id,
+      users:[],
       status: 'active',
     });
     const branches = ref(null);
+    const users = ref(null)
     const fetchData = async () => {
       try {
         branches.value = await store.dispatch("branch/getAllBranches");
-
+        newCourse.branch_id = branches.value.data[0].id;
+        users.value = await store.dispatch("user/getAllUsers");
         // console.log(branches.value)
 
         newCourse.branch_id = branches.value.data[0].id;
@@ -158,8 +191,8 @@ export default {
           newCourse.description.trim() &&
           newCourse.branch_id &&
           newCourse.status &&
-          !isNaN(newCourse.price) && newCourse.price > 0 &&
-          !isNaN(newCourse.duration) && newCourse.duration > 0
+          !isNaN(newCourse?.price) && newCourse.price > 0 &&
+          !isNaN(newCourse?.duration) && newCourse.duration > 0
       );
     });
 
@@ -199,6 +232,7 @@ export default {
       handleSubmit,
       isFormValid,
       branches,
+      users,
     };
   },
 };

@@ -54,7 +54,7 @@
         </button>
 
         <button
-            @click="deleteById(courseId)"
+            @click="deleteById(data.id)"
             class="transition ml-2 text-white bg-red-500 hover:bg-red-600 p-2 py-1 rounded duration-200"
         >
           <i class="bx bxs-trash-alt"></i>
@@ -132,7 +132,6 @@ export default {
     onMounted(async () => {
       try {
         const response = await store.dispatch('student/getStudentById', route.params.id);
-        console.log(response)
         if (response) {
           data.value = response;
         } else {

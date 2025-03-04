@@ -14,12 +14,12 @@
         :studentId="selectedStudentId"
         @close="closeUpdateModal"
     />
-<!--    <Pay-->
-<!--      v-if="isPaying"-->
-<!--      :studentId="selectedStudentId"-->
-<!--      :groupData="selectedGroupData"-->
-<!--      @close="closePayModal"-->
-<!--    />-->
+    <Pay
+      v-if="isPaying"
+      :studentId="selectedStudentId"
+      :groupData="selectedGroupData"
+      @close="closePayModal"
+    />
   </actionSidebar>
     <div class="p-6 min-h-screen dark:bg-gray-900">
       <div class="flex justify-between items-center mb-6">
@@ -78,10 +78,9 @@
               <StatusBadge :status="student.status" />
             </td>
             <td
-                @click="openPayModal(student.id,student.groups)"
                 class="px-6 py-4 space-x-3 text-right"
             >
-              <button class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200">
+              <button @click="openPayModal(student.id,student.groups)" class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200">
                 <i class='bx bxs-dollar-circle'></i>
                 To'lov
               </button>
@@ -148,7 +147,6 @@
 import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { debounce } from "lodash";
-import { getStatus } from '@/utils/stutus.js';
 
 import CreateStudentForm from "@/components/MainLayout/students/CreateStudent.vue";
 import UpdateStudentForm from "@/components/MainLayout/students/UpdateStudent.vue";

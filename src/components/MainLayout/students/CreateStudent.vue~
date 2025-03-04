@@ -235,8 +235,8 @@ export default {
     const fetchData = async () => {
       try {
         branches.value = await store.dispatch("branch/getAllBranches");
-        newStudent.branch_id = branches?.value?.data[0].id
         courses.value = await store.dispatch("course/getAllCourses");
+        newStudent.branch_id = branches?.value?.data[0].id
         console.log(branches.value)
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);

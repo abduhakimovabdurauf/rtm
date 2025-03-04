@@ -19,7 +19,7 @@ export default {
             state.courses = courses;
         },
         ADD_COURSE(state, course) {
-            state.courses.push(course);
+            state.courses.unshift(course);
         },
         UPDATE_COURSE(state, updatedCourse) {
             const index = state.courses.findIndex((c) => c.id === updatedCourse.id);

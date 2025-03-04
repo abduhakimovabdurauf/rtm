@@ -32,6 +32,7 @@ export default {
                 // commit("SET_USER", response.data.user);
                 localStorage.setItem("user",JSON.stringify(response.data.user));
                 toast.success(response.data.message || "Login successful!");
+                return response.data.user
             } catch (e) {
                 console.error(e.message);
                 toast.error(e.response?.data?.message || "Login failed!");

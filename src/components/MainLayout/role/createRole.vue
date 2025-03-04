@@ -2,10 +2,11 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
       <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya ID</label>
+      <span v-if="companies==null" class="text-gray-600 dark:text-gray-400">Malumotlar yuklanmoqda...</span>
       <select
           id="company_id"
           required
-          v-if="companies && companies.data && companies.data.length > 0"
+          v-else-if="companies && companies.data && companies.data.length > 0"
           v-model="newRole.company_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
@@ -13,6 +14,7 @@
           {{ company.name }}
         </option>
       </select>
+      <span v-else class="text-gray-600 dark:text-gray-400">Kompaniyalar malumotlari mavjud emas! :(</span>
     </div>
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lavozim</label>
@@ -38,7 +40,10 @@
 
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
-      <div v-if="users?.data?.length" class="flex flex-wrap gap-3">
+      <div v-if="users==null">
+        Malumotlar yuklanmoqda...
+      </div>
+      <div v-else-if="users?.data?.length" class="flex flex-wrap gap-3">
         <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
           <input
               type="checkbox"
@@ -52,11 +57,18 @@
           </label>
         </div>
       </div>
+      <div v-else>
+        Hodimlar malumotlari mavjud emas! :(
+      </div>
     </div>
 
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Huquqlar</label>
-      <div v-if="permissions?.data?.length" class="flex flex-wrap gap-3">
+
+      <div v-if="permissions==null">
+        Malumotlar yuklanmoqda...
+      </div>
+      <div v-else-if="permissions?.data?.length" class="flex flex-wrap gap-3">
         <div v-for="permission in permissions.data" :key="permission.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
           <input
               type="checkbox"
@@ -69,6 +81,9 @@
             {{ permission.name }}
           </label>
         </div>
+      </div>
+      <div v-else>
+        Huquq malumotlari mavjud emas! :(
       </div>
     </div>
 

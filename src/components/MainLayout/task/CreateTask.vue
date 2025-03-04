@@ -2,10 +2,13 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
       <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya ID</label>
+      <div v-if="companies==null">
+        <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
+      </div>
       <select
           id="company_id"
           required
-          v-if="companies && companies.data && companies.data.length > 0"
+          v-else-if="companies && companies.data && companies.data.length > 0"
           v-model="newTask.company_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
@@ -13,6 +16,9 @@
           {{ company.name }}
         </option>
       </select>
+      <div v-else>
+        <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
+      </div>
     </div>
     <div class="mb-4">
       <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Topshiriq Nomi</label>
@@ -65,7 +71,29 @@
       ></textarea>
       <p v-if="errors.description" class="text-red-500 text-sm mt-1">{{ errors.description }}</p>
     </div>
-
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
+      <div v-if="users==null">
+        <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
+      </div>
+      <div v-else-if="users?.data?.length" class="flex flex-wrap gap-3">
+        <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <input
+              type="checkbox"
+              :id="'user_' + user.id"
+              :value="user.id"
+              v-model="newTask.users"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label :for="'user_' + user.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+            {{ user.full_name }}
+          </label>
+        </div>
+      </div>
+      <div v-else>
+        <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
+      </div>
+    </div>
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
       <select
@@ -86,7 +114,7 @@
       <button
           type="submit"
           :disabled="!isFormValid"
-          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg"
+          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg mb-16"
           :class="{ 'opacity-50 cursor-not-allowed': !isFormValid }"
       >
         Qo'shish
@@ -122,16 +150,23 @@ export default {
     });
 
     const isFormValid = computed(() => {
-      return Object.values(errors).every((error) => !error) &&
-          Object.values(newTask).every((field) => field.trim?.() || field > 0);
+      return (
+          newTask.title.trim() &&
+          newTask.text.trim() &&
+          newTask.deadline &&
+          newTask.description.trim() &&
+          newTask.status &&
+          newTask.company_id
+      );
     });
+
     const companies = ref(null)
     const users = ref(null)
     const fetchData = async () => {
       try {
-        users.value = await store.dispatch("user/getAllUsers")
         companies.value = await store.dispatch("company/getAllCompanies");
         newTask.company_id = companies.value.data[0].id;
+        users.value = await store.dispatch("user/getAllUsers")
       } catch (error) {
         console.error(error);
       }
@@ -180,6 +215,7 @@ export default {
       handleSubmit,
       isFormValid,
       companies,
+      users,
     };
   },
 };

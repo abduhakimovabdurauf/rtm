@@ -21,7 +21,6 @@
     <button
         @click="openCreateModal"
         class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
-<!--        v-if="users && users.length >0"-->
     >
       <i class="bx bx-plus-circle text-xl"></i> <span>Xodim qo'shish</span>
     </button>
@@ -41,7 +40,9 @@
         />
         <div>
           <h2 class="text-lg font-bold">{{ user.full_name }}</h2>
-          <p class="text-gray-600">{{ user.email }}</p>
+          <p class="text-gray-600">{{ user.roles.map(role => role.name).join(', ') }}</p>
+          <p class="text-gray-600">{{ user.branches.map(branch => branch.name).join(', ') }}</p>
+          <p class="text-gray-600">{{ user.phone }}</p>
         </div>
       </div>
       <div class="mt-4 flex justify-around">

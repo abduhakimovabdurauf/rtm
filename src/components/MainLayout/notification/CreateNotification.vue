@@ -2,10 +2,13 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
       <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya ID</label>
+      <div v-if="companies==null">
+        <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
+      </div>
       <select
           id="company_id"
           required
-          v-if="companies && companies.data && companies.data.length > 0"
+          v-else-if="companies && companies.data && companies.data.length > 0"
           v-model="newNotification.company_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
@@ -13,6 +16,9 @@
           {{ company.name }}
         </option>
       </select>
+      <div v-else>
+        <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
+      </div>
     </div>
     <div class="mb-4">
       <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sarlavha</label>
@@ -62,20 +68,6 @@
       <p v-if="errors.type" class="text-red-500 text-sm mt-1">{{ errors.type }}</p>
     </div>
 
-
-    <div class="mb-4">
-      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">O'qildimi</label>
-      <select
-          v-model="newNotification.n_status"
-          id="status"
-          @change="validateField('status')"
-          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-      >
-        <option value="active" selected>O'qildi</option>
-        <option value="inactive">O'qilmadi</option>
-      </select>
-    </div>
-
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
       <select
@@ -91,7 +83,10 @@
 
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
-      <div v-if="users?.data?.length" class="flex flex-wrap gap-3">
+      <div v-if="companies==null">
+        <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
+      </div>
+      <div v-else-if="users?.data?.length" class="flex flex-wrap gap-3">
         <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
           <input
               type="checkbox"
@@ -104,6 +99,9 @@
             {{ user.full_name }}
           </label>
         </div>
+      </div>
+      <div v-else>
+        <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
       </div>
     </div>
 

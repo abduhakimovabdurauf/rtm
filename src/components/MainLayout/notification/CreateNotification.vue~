@@ -2,28 +2,22 @@
   <form @submit.prevent="handleSubmit">
     <div class="mb-4">
       <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya ID</label>
-      <div v-if="companies==null">
-        <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
-      </div>
       <select
           id="company_id"
           required
-          v-else-if="companies && companies.data && companies.data.length > 0"
-          v-model="newTask.company_id"
+          v-if="companies && companies.data && companies.data.length > 0"
+          v-model="newNotification.company_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option v-for="company in companies.data" :key="company.id" :value="company.id">
           {{ company.name }}
         </option>
       </select>
-      <div v-else>
-        <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
-      </div>
     </div>
     <div class="mb-4">
-      <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Topshiriq Nomi</label>
+      <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sarlavha</label>
       <input
-          v-model="newTask.title"
+          v-model="newNotification.title"
           type="text"
           id="title"
           @input="validateField('title')"
@@ -36,7 +30,7 @@
     <div class="mb-4">
       <label for="text" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Matn</label>
       <input
-          v-model="newTask.text"
+          v-model="newNotification.text"
           type="text"
           id="text"
           @input="validateField('text')"
@@ -47,42 +41,63 @@
     </div>
 
     <div class="mb-4">
-      <label for="deadline" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Muhlat</label>
-      <input
-          v-model="newTask.deadline"
-          type="date"
-          id="deadline"
-          @input="validateField('deadline')"
+      <label for="type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Rangi
+      </label>
+      <select
+          v-model="newNotification.type"
+          id="type"
+          @change="validateField('type')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.deadline }"
-      />
-      <p v-if="errors.deadline" class="text-red-500 text-sm mt-1">{{ errors.deadline }}</p>
+          :class="{ 'border-red-500': errors.type }"
+      >
+        <option
+            v-for="color in colors"
+            :key="color.value"
+            :value="color.value"
+        >
+          {{ color.label }}
+        </option>
+      </select>
+      <p v-if="errors.type" class="text-red-500 text-sm mt-1">{{ errors.type }}</p>
+    </div>
+
+
+    <div class="mb-4">
+      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">O'qildimi</label>
+      <select
+          v-model="newNotification.n_status"
+          id="status"
+          @change="validateField('status')"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+      >
+        <option value="active" selected>O'qildi</option>
+        <option value="inactive">O'qilmadi</option>
+      </select>
     </div>
 
     <div class="mb-4">
-      <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
-      <textarea
-          v-model="newTask.description"
-          id="description"
-          @input="validateField('description')"
-          rows="3"
+      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+      <select
+          v-model="newNotification.status"
+          id="status"
+          @change="validateField('status')"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.description }"
-      ></textarea>
-      <p v-if="errors.description" class="text-red-500 text-sm mt-1">{{ errors.description }}</p>
+      >
+        <option value="active" selected>Faol</option>
+        <option value="inactive">Faol emas</option>
+      </select>
     </div>
+
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
-      <div v-if="companies==null">
-        <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
-      </div>
-      <div v-else-if="users?.data?.length" class="flex flex-wrap gap-3">
+      <div v-if="users?.data?.length" class="flex flex-wrap gap-3">
         <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
           <input
               type="checkbox"
               :id="'user_' + user.id"
               :value="user.id"
-              v-model="newTask.users"
+              v-model="newNotification.users"
               class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
           />
           <label :for="'user_' + user.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
@@ -90,31 +105,13 @@
           </label>
         </div>
       </div>
-      <div v-else>
-        <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
-      </div>
-    </div>
-    <div class="mb-4">
-      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
-      <select
-          v-model="newTask.status"
-          id="status"
-          @change="validateField('status')"
-          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-          :class="{ 'border-red-500': errors.status }"
-      >
-        <option value="completed">Bajarildi</option>
-        <option value="pending">Bajarilmoqda</option>
-        <option value="inactive">Faol emas</option>
-      </select>
-      <p v-if="errors.status" class="text-red-500 text-sm mt-1">{{ errors.status }}</p>
     </div>
 
     <div class="flex justify-end">
       <button
           type="submit"
           :disabled="!isFormValid"
-          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg mb-16"
+          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg mb-20"
           :class="{ 'opacity-50 cursor-not-allowed': !isFormValid }"
       >
         Qo'shish
@@ -123,6 +120,7 @@
   </form>
 </template>
 
+
 <script>
 import {reactive, computed, onMounted,ref } from 'vue';
 import { useStore } from 'vuex';
@@ -130,43 +128,45 @@ import { useStore } from 'vuex';
 export default {
   setup() {
     const store = useStore();
-    const newTask = reactive({
+    const newNotification = reactive({
       title: '',
       text: '',
-      deadline: '',
-      description: '',
-      status: 'pending',
+      type: 'bg-green-500',
+      status: 'active',
       company_id: '',
-      t_status: 'unread',
+      n_status: 'inactive',
       users: [],
     });
+    const colors = [
+      { label: "🟢 Yashil", value: "bg-green-500" },
+      { label: "🔴 Qizil", value: "bg-red-500" },
+      { label: "🟡 Sariq", value: "bg-yellow-500" },
+      { label: "🔵 Ko'k", value: "bg-blue-500" },
+      { label: "🟣 Binafsha", value: "bg-violet-500" },
+    ];
 
     const errors = reactive({
       title: '',
       text: '',
-      deadline: '',
-      description: '',
+      type: '',
       status: '',
     });
 
     const isFormValid = computed(() => {
-      return (
-          newTask.title.trim() &&
-          newTask.text.trim() &&
-          newTask.deadline &&
-          newTask.description.trim() &&
-          newTask.status &&
-          newTask.company_id
-      );
+      return !!newNotification.title.trim() &&
+          !!newNotification.text.trim() &&
+          !!newNotification.type.trim() &&
+          !!newNotification.status &&
+          !!newNotification.company_id;
     });
 
     const companies = ref(null)
     const users = ref(null)
     const fetchData = async () => {
       try {
-        companies.value = await store.dispatch("company/getAllCompanies");
-        newTask.company_id = companies.value.data[0].id;
         users.value = await store.dispatch("user/getAllUsers")
+        companies.value = await store.dispatch("company/getAllCompanies");
+        newNotification.company_id = companies.value.data[0].id;
       } catch (error) {
         console.error(error);
       }
@@ -174,7 +174,7 @@ export default {
 
     onMounted(fetchData)
     const validateField = (field) => {
-      if (!newTask[field]?.trim()) {
+      if (!newNotification[field]?.trim()) {
         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} bo'sh bo'lmasligi kerak.`;
       } else {
         errors[field] = '';
@@ -185,23 +185,18 @@ export default {
       try {
         if (!isFormValid.value) return;
         const formData = new FormData();
-        Object.entries(newTask).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-
-        formData.append("title", newTask.title);
-        formData.append("text", newTask.text);
-        formData.append("deadline", newTask.deadline);
-        formData.append("status", newTask.status);
-        formData.append("description", newTask.description);
-        formData.append("t_status", newTask.t_status);
-        formData.append("company_id", newTask.company_id);
-        newTask.users.forEach(userId => {
+        formData.append("title", newNotification.title);
+        formData.append("text", newNotification.text);
+        formData.append("type", newNotification.type);
+        formData.append("status", newNotification.status);
+        formData.append("n_status", newNotification.n_status);
+        formData.append("company_id", newNotification.company_id);
+        newNotification.users.forEach(userId => {
           formData.append("users[]", userId);
         });
-        await store.dispatch('task/addTask', formData);
-        Object.keys(newTask).forEach((key) => {
-          newTask[key] = key === 'status' ? 'active' : '';
+        await store.dispatch('notification/addNotification', formData);
+        Object.keys(newNotification).forEach((key) => {
+          newNotification[key] = key === 'status' ? 'active' : '';
         });
       } catch (e) {
         console.error(e);
@@ -209,13 +204,14 @@ export default {
     };
 
     return {
-      newTask,
+      newNotification,
       errors,
       validateField,
       handleSubmit,
       isFormValid,
       companies,
       users,
+      colors,
     };
   },
 };

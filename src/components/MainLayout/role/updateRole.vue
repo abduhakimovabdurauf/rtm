@@ -47,6 +47,9 @@
             </label>
           </div>
         </div>
+        <div v-else>
+          Huquq malumotlari mavjud emas! :(
+        </div>
       </div>
 
       <div class="flex justify-between items-center">

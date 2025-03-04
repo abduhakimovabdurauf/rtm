@@ -32,12 +32,6 @@
             {{ company.name }}
           </p>
         </div>
-        <div class="p-3 bg-gray-50 rounded-lg shadow-sm" v-if="data?.branches && data?.branches.length>0">
-          <span class="text-sm text-gray-500">Filial</span>
-          <p class="text-lg font-semibold text-gray-900" v-for="branch in data?.branches">
-            {{ branch.name }}
-          </p>
-        </div>
         <div class="p-3 bg-gray-50 rounded-lg shadow-sm" v-if="data?.birthday">
           <span class="text-sm text-gray-500">Tug'ilgan sana</span>
           <p class="text-lg font-semibold text-gray-900">{{ data?.birthday }}</p>

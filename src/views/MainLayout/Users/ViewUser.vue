@@ -40,7 +40,9 @@
         />
         <div>
           <h2 class="text-lg font-bold">{{ user.full_name }}</h2>
-          <p class="text-gray-600">{{ user.email }}</p>
+          <p class="text-gray-600">{{ user.roles.map(role => role.name).join(', ') }}</p>
+          <p class="text-gray-600">{{ user.branches.map(branch => branch.name).join(', ') }}</p>
+          <p class="text-gray-600">{{ user.phone }}</p>
         </div>
       </div>
       <div class="mt-4 flex justify-around">
@@ -114,7 +116,7 @@ export default {
     const isCreating = ref(false);
     const isUpdating = ref(false);
     const selectedUserId = ref(null);
-    const perPage = ref(6);
+    const perPage = ref(9);
     const loading = computed(store.getters.isLoading)
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Xodim qo'shish";
