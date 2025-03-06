@@ -1,0 +1,110 @@
+<template>
+  <div class="p-6">
+    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
+
+    <!-- Cards Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div
+          v-for="card in stats"
+          :key="card.id"
+          class="bg-white shadow-md p-4 rounded-lg text-center"
+      >
+        <h2 class="text-xl font-semibold">{{ card.title }}</h2>
+        <p class="text-3xl font-bold">{{ card.value }}</p>
+        <p class="text-gray-500">{{ card.description }}</p>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ChartComponent
+          v-for="(chart, index) in chartsData"
+          :key="index"
+          :chart-id="chart.id"
+          :chart-type="chart.type"
+          :chart-title="chart.title"
+          :chart-data="chart.data"
+      />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import {onMounted, ref} from "vue";
+import ChartComponent from "@/components/MainLayout/ui/chart/ChartComponent.vue";
+
+// Mock data
+const stats = ref([
+  {id: 1, title: "Total Sales", value: "$23,500", description: "Last month sales"},
+  {id: 2, title: "New Users", value: "1,250", description: "Joined this month"},
+  {id: 3, title: "Active Users", value: "4,760", description: "Currently online"},
+]);
+
+const chartsData = ref([
+  {
+    id: "pie_chart",
+    type: "PieChart",
+    title: "User Distribution",
+    data: [
+      ["Type", "Count"],
+      ["Free Users", 300],
+      ["Premium Users", 150],
+      ["Enterprise", 50],
+    ],
+  },
+  {
+    id: "column_chart",
+    type: "ColumnChart",
+    title: "Monthly Sales",
+    data: [
+      ["Month", "Sales"],
+      ["Jan", 5000],
+      ["Feb", 7000],
+      ["Mar", 8000],
+      ["Apr", 6000],
+    ],
+  },
+  {
+    id: "line_chart",
+    type: "LineChart",
+    title: "Website Traffic",
+    data: [
+      ["Day", "Visits"],
+      ["Mon", 100],
+      ["Tue", 300],
+      ["Wed", 250],
+      ["Thu", 500],
+      ["Fri", 450],
+    ],
+  },
+  {
+    id: "bar_chart",
+    type: "BarChart",
+    title: "Revenue Sources",
+    data: [
+      ["Source", "Revenue"],
+      ["Direct", 4000],
+      ["Referral", 2500],
+      ["Social", 1800],
+      ["Email", 1200],
+    ],
+  },
+]);
+
+onMounted(() => {
+  if (!window.google?.charts) {
+    const script = document.createElement("script");
+    script.src = "https://www.gstatic.com/charts/loader.js";
+    script.onload = () => {
+      window.google.charts.load("current", { packages: ["corechart"] });
+      window.google.charts.setOnLoadCallback(() => {
+        chartsData.value.forEach(chart => drawChart(chart.id));
+      });
+    };
+    document.head.appendChild(script);
+  } else {
+    chartsData.value.forEach(chart => drawChart(chart.id));
+  }
+});
+
+</script>

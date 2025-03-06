@@ -1,0 +1,46 @@
+<template>
+  <div class="bg-white shadow-md p-4 rounded-lg">
+    <h2 class="text-lg font-semibold mb-2">{{ chartTitle }}</h2>
+    <div :id="chartId" class="h-64"></div>
+  </div>
+</template>
+
+<script setup>
+import { onMounted, defineProps, watch } from "vue";
+
+const props = defineProps({
+  chartId: String,
+  chartType: String,
+  chartTitle: String,
+  chartData: Array,
+});
+
+const drawChart = () => {
+  if (!window.google?.charts) return; // Google Charts hali yuklanmagan bo‘lsa, return qilish
+
+  const data = window.google.visualization.arrayToDataTable(props.chartData);
+  const options = { title: props.chartTitle, legend: { position: "bottom" } };
+
+  const chart = new window.google.visualization[props.chartType](
+      document.getElementById(props.chartId)
+  );
+  chart.draw(data, options);
+};
+
+onMounted(() => {
+  if (window.google?.charts) {
+    drawChart();
+  } else {
+    window.google.charts.setOnLoadCallback(drawChart); // Grafik yuklangach, chizish
+  }
+});
+
+// Ekran o‘lchami o‘zgarsa, chart qayta chiziladi
+watch(() => window.innerWidth, drawChart);
+</script>
+
+<style scoped>
+.h-64 {
+  height: 250px;
+}
+</style>

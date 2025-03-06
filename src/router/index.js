@@ -17,7 +17,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: ()=> import('../views/MainLayout/ViewDashboard.vue'),
-    meta: { layout: 'main', auth: true, roles: ['admin', 'director', 'manager'] }
+    meta: { layout: 'main', auth: true, roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR'] }
   },
   {
     path: '/login',
@@ -32,7 +32,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'teacher', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR', 'Teacher', 'Administrator']
     }
   },
   {
@@ -42,7 +42,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -52,7 +52,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -62,7 +62,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -72,7 +72,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager','reception','teacher', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR','Reception','Teacher', 'Administrator']
     }
   },
   {
@@ -82,7 +82,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'teacher', 'reception', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR', 'Teacher', 'Reception', 'Administrator']
     }
   },
   {
@@ -92,7 +92,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -102,7 +102,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -112,7 +112,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -122,7 +122,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director']
     }
   },
   {
@@ -132,7 +132,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -143,7 +143,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -154,7 +154,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -165,7 +165,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -177,7 +177,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR', 'Administrator']
     }
   },
   {
@@ -187,7 +187,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -197,7 +197,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -207,7 +207,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR', 'Administrator']
     }
   },
   {
@@ -217,7 +217,7 @@ const routes = [
      meta: {
        layout: 'main',
        auth: true,
-       roles: ['admin', 'director', 'manager', 'Administrator']
+       roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR', 'Administrator']
      }
   },
   {
@@ -226,7 +226,7 @@ const routes = [
     component: ()=> import('../views/MainLayout/Payments/ViewRequestPayments.vue'),
     meta: {
       layout: 'main',
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -236,7 +236,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -246,7 +246,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager', 'Administrator']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
   {
@@ -256,7 +256,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -267,7 +267,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -278,7 +278,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -289,7 +289,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -300,7 +300,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'director', 'manager']
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
     }
   },
 
@@ -345,7 +345,7 @@ router.beforeEach((to, from, next) => {
     const allowedRoles = to?.meta?.roles || [];
     console.info(allowedRoles)
     console.info(userRoles)
-    const hasAccess = userRoles.some(r => allowedRoles.some(role => role === r))
+    const hasAccess = userRoles.some(r => allowedRoles.some(role => role === r)) || allowedRoles.includes('all');
 
     if (hasAccess) {
       next();

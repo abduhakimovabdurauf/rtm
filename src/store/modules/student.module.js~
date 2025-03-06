@@ -60,7 +60,7 @@ export default {
                 });
                 return response.data;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Failed to fetch student!");
+                toast.error(e.response?.data?.message || "Failed to fetch course!");
             } finally {
                 commit("SET_LOADING", false, { root: false });
             }
@@ -76,7 +76,7 @@ export default {
                 });
                 return response.data;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Failed to fetch student!");
+                toast.error(e.response?.data?.message || "Failed to fetch course!");
             } finally {
                 commit("SET_LOADING", false, { root: false });
             }

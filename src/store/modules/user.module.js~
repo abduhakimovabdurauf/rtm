@@ -42,6 +42,7 @@ export default {
                 });
                 commit("SET_USERS", response.data.data);
                 console.log(response)
+                toast.success('Xodimlar malumotlari muvaffaqiyatli olindi!');
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Xodim malumotlarni olishda xatolik!");

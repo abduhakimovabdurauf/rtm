@@ -5,7 +5,7 @@
     @closeSidebar="toggleSidebar"
   >
     <updateUser
-      :userId="data?.id"
+      :userId="userId"
     >
 
     </updateUser>

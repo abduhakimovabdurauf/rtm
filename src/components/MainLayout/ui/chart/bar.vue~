@@ -1,0 +1,22 @@
+<script setup>
+import { ref } from "vue";
+import { Bar } from "vue-chartjs";
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
+const chartData = ref({
+  labels: ["Yanvar", "Fevral", "Mart"],
+  datasets: [
+    {label: "Savdo", data: [5000, 7000, 6000], backgroundColor: "#4F46E5"},
+  ],
+});
+
+const chartOptions = ref({responsive: true});
+</script>
+
+<template>
+  <div>
+    <Bar :data="chartData" :options="chartOptions"/>
+  </div>
+</template>

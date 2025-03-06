@@ -40,8 +40,8 @@
         />
         <div>
           <h2 class="text-lg font-bold">{{ user.full_name }}</h2>
-          <p class="text-gray-600">{{ user.roles.map(role => role.name).join(', ') }}</p>
-          <p class="text-gray-600">{{ user.branches.map(branch => branch.name).join(', ') }}</p>
+          <p class="text-gray-600">{{ user?.roles?.map(role => role.name).join(', ') }}</p>
+          <p class="text-gray-600">{{ user?.branches?.map(branch => branch.name).join(', ') }}</p>
           <p class="text-gray-600">{{ user.phone }}</p>
         </div>
       </div>

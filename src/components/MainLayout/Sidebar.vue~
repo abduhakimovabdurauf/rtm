@@ -115,14 +115,6 @@ export default {
     const handleResize = () => {
       isOpen.value = window.innerWidth > 1024;
     };
-    const sdfewrg=router.getRoutes().filter(route => route?.meta?.layout === 'main')
-    const filteredRoutes = computed(() => {
-      return sdfewrg.filter(route =>
-          route?.meta?.roles?.some(role => userRoles.value.includes(role))
-      );
-    });
-
-   console.log(`hasAccess: `+ filteredRoutes.value)
     onMounted(() => {
       handleResize();
       window.addEventListener('resize', handleResize);

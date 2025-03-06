@@ -20,6 +20,7 @@
           id="course_id"
           v-if="courses && courses.data && courses.data.length > 0"
           v-model="newGroup.course_id"
+          @change="fetchStudents"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option v-for="course in courses.data" :key="course.id" :value="course.id">
@@ -41,6 +42,19 @@
           {{ room.name }}
         </option>
       </select>
+    </div>
+
+    <div class="mb-4" v-if="students && students.length > 0">
+      <label for="student_id">O'quvchilar</label>
+      <div v-for="student in students" :key="student.id">
+        <input
+            id="student_id"
+            type="checkbox"
+            :value="student.id"
+            v-model="newGroup.students"
+        />
+        {{ student.name }}
+      </div>
     </div>
 
     <div class="mb-4">
@@ -218,12 +232,28 @@ export default {
       status: "active",
       description: "",
       branch_id: "",
+      students: [],
     });
 
     const courses = ref(null);
     const rooms = ref(null);
     const users = ref(null);
     const branches = ref(null);
+    const students = ref(null);
+    const selectedCourse = ref(null);
+
+    const fetchStudents = async () => {
+      selectedCourse.value = newGroup.value.course_id
+      console.log(typeof selectedCourse.value)
+      if (!selectedCourse.value) return;
+
+      try {
+        const response = await store.dispatch('student/getStudentByCourseId', selectedCourse.value);
+        students.value = response.data.data;
+      } catch (error) {
+        console.error("Error fetching students:", error);
+      }
+    };
     const fetchData = async () => {
       try {
         courses.value = await store.dispatch("course/getAllCourses", {
@@ -308,7 +338,9 @@ export default {
       rooms,
       users,
       branches,
-      showOptionalFields
+      students,
+      showOptionalFields,
+      fetchStudents
     };
   },
 };
