@@ -3,6 +3,8 @@
       'px-3 py-1 text-xs font-medium rounded-full shadow-sm': true,
       'bg-green-200 text-green-800': status === 'active',
       'bg-orange-200 text-orange-800': status === 'pending',
+      'bg-orange-300 text-orange-800': status === 'unread',
+      'bg-green-200 text-orange-800': status === 'read',
       'bg-red-200 text-red-800': status === 'inactive',
       'bg-blue-200 text-blue-800': status === 'completed',
       'bg-purple-200 text-purple-800': status === 'dropped',

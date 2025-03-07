@@ -166,7 +166,8 @@ export default {
       isUpdating.value = false;
       isReading.value = false
       selectedCourseId.value = null;
-      store.dispatch("toggleSidebar", false);    };
+      store.dispatch("toggleSidebar", false);
+    };
 
     const closeCreateModal = () => {
       isCreating.value = false;

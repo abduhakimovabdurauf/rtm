@@ -5,9 +5,7 @@ const statuses = {
     completed: 'Bajarilgan',
     dropped: 'Bekor qilingan',
     expelled: 'Haydalgan',
-    failed: 'Muvaffaqiyatsiz',
-    read: 'O`qildi',
-    unread: 'O`qilmadi'
+    failed: 'Muvaffaqiyatsiz'
 };
 
 export function getStatus(status) {

@@ -54,7 +54,6 @@ export default {
         },
 
         async getBranchById({ commit }, branchId) {
-            commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(`${API_URL}/${branchId}`, {
                     headers: {
@@ -67,7 +66,6 @@ export default {
                 toast.error(e.response?.data?.message || "Filial malumotini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
-                commit("closeSidebar", false, { root: true });
             }
         },
 

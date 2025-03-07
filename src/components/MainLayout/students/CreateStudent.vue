@@ -263,7 +263,7 @@ export default {
       try {
         const formData = new FormData();
         formData.append('branch_id', newStudent.branch_id);
-        formData.append('courses', newStudent.courses);
+        formData.append('courses', JSON.stringify(newStudent.courses));
         formData.append('full_name', newStudent.full_name);
         formData.append('email', newStudent.email);
         formData.append('phone', newStudent.phone);
@@ -281,6 +281,7 @@ export default {
 
         await store.dispatch('student/addStudent', formData);
         closeModal();
+        console.log('malumotlar',newStudent)
 
         newStudent.full_name = '';
         newStudent.email = '';

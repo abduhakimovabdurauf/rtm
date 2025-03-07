@@ -235,8 +235,8 @@ export default {
     const fetchData = async () => {
       try {
         branches.value = await store.dispatch("branch/getAllBranches");
-        courses.value = await store.dispatch("course/getAllCourses");
         newStudent.branch_id = branches?.value?.data[0].id
+        courses.value = await store.dispatch("course/getAllCourses");
         console.log(branches.value)
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
@@ -263,7 +263,7 @@ export default {
       try {
         const formData = new FormData();
         formData.append('branch_id', newStudent.branch_id);
-        formData.append('courses', newStudent.courses);
+        formData.append('courses', JSON.stringify(newStudent.courses));
         formData.append('full_name', newStudent.full_name);
         formData.append('email', newStudent.email);
         formData.append('phone', newStudent.phone);
@@ -279,8 +279,9 @@ export default {
         formData.append('user_id', newStudent.user_id);
         if (newStudent.image) formData.append('image', newStudent.image);
 
-        await store.dispatch('student/addStudent', formData);
+        await store.dispatch('student/addStudent', newStudent);
         closeModal();
+        console.log('malumotlar',newStudent)
 
         newStudent.full_name = '';
         newStudent.email = '';

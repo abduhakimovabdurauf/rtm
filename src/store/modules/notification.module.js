@@ -45,7 +45,7 @@ export default {
                 });
                 console.log('notifications',response)
                 commit("SET_NOTIFICATIONS", response.data.data);
-                return response.data.total;
+                return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Bildirishnoma malumotlarini olishda xatolik!");
             } finally {

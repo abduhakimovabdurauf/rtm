@@ -6,6 +6,7 @@
           id="branch_id"
           v-if="branches && branches.data && branches.data.length > 0"
           v-model="newGroup.branch_id"
+          @change="fetchData"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
@@ -14,31 +15,29 @@
       </select>
     </div>
 
-    <div class="mb-4">
+    <div class="mb-4" v-if="courses && courses && courses.length > 0">
       <label for="course_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs ID</label>
       <select
           id="course_id"
-          v-if="courses && courses.data && courses.data.length > 0"
           v-model="newGroup.course_id"
           @change="fetchStudents"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
-        <option v-for="course in courses.data" :key="course.id" :value="course.id">
+        <option v-for="course in courses" :key="course.id" :value="course.id">
           {{ course.name }}
         </option>
       </select>
     </div>
 
 
-    <div class="mb-4">
+    <div class="mb-4" v-if="rooms && rooms && rooms.length > 0">
       <label for="room_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xona ID</label>
       <select
           id="room_id"
-          v-if="rooms && rooms.data && rooms.data.length > 0"
           v-model="newGroup.room_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
-        <option v-for="room in rooms.data" :key="room.id" :value="room.id">
+        <option v-for="room in rooms" :key="room.id" :value="room.id">
           {{ room.name }}
         </option>
       </select>
@@ -237,10 +236,10 @@ export default {
 
     const courses = ref(null);
     const rooms = ref(null);
-    const users = ref(null);
     const branches = ref(null);
     const students = ref(null);
     const selectedCourse = ref(null);
+    const selectedBranch = ref(null);
 
     const fetchStudents = async () => {
       selectedCourse.value = newGroup.value.course_id
@@ -249,36 +248,31 @@ export default {
 
       try {
         const response = await store.dispatch('student/getStudentByCourseId', selectedCourse.value);
-        students.value = response.data.data;
+        console.log(response)
+        students.value = response.data;
       } catch (error) {
         console.error("Error fetching students:", error);
       }
     };
+
+
     const fetchData = async () => {
+      selectedBranch.value = newGroup.value.branch_id
       try {
-        courses.value = await store.dispatch("course/getAllCourses", {
-          page: 1,
-          perPage: 5,
-          sortBy: "id",
-          orderBy: "desc",
-        });
-        newGroup.value.course_id = courses.value.data[0].id;
-        rooms.value = await store.dispatch("room/getAllRooms", {
-          page: 1,
-          perPage: 5,
-          sortBy: "id",
-          orderBy: "desc",
-        });
-        newGroup.value.room_id = rooms.value.data[0].id;
-        
-        users.value = await store.dispatch("user/getAllUsers", {
-          page: 1,
-          perPage: 5,
-          sortBy: "id",
-          orderBy: "desc",
-        });
-        newGroup.value.user_id = users.value.data[0].id;
-        
+        const response = await store.dispatch("branch/getBranchById", selectedBranch.value);
+        courses.value = response?.courses;
+        rooms.value = response?.rooms;
+        newGroup.value.course_id = courses?.value[0]?.id
+        newGroup.value.room_id = rooms?.value[0]?.id
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    }
+    
+    const fetchBranch = async () => {
+      try {
+
+
         branches.value = await store.dispatch("branch/getAllBranches");
         if (branches.value.data.length > 0) {
           newGroup.value.branch_id = branches.value.data[0].id;
@@ -288,7 +282,7 @@ export default {
       }
     };
 
-    onMounted(fetchData);
+    onMounted(fetchBranch);
 
     const isFormValid = computed(() => {
       return (
@@ -315,8 +309,8 @@ export default {
     const resetForm = () => {
       newGroup.value = {
         user_id: "",
-        course_id: "",
-        room_id: "",
+        course_id: null,
+        room_id: null,
         name: "",
         start_time: "",
         end_time: "",
@@ -336,11 +330,11 @@ export default {
       isFormValid,
       courses,
       rooms,
-      users,
       branches,
       students,
       showOptionalFields,
-      fetchStudents
+      fetchStudents,
+      fetchData,
     };
   },
 };

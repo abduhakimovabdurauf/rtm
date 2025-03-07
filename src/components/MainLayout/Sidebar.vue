@@ -1,7 +1,7 @@
 <template>
   <aside
       :class="[
-      'flex flex-col h-full overflow-y-auto transition-all duration-300 ease-in-out bg-gray-800 text-sm text-gray-300',
+      'flex flex-col z-[99999999] h-full overflow-y-auto transition-all duration-300 ease-in-out bg-gray-800 text-sm text-gray-300',
       isOpen ? 'w-64' : 'w-20'
     ]"
   >

@@ -42,7 +42,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
+      roles: ['admin', 'Director', 'HR']
     }
   },
   {
@@ -132,7 +132,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
+      roles: ['admin', 'Director',]
     }
   },
 
@@ -256,7 +256,7 @@ const routes = [
     meta: {
       layout: 'main',
       auth: true,
-      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
+      roles: ['admin', 'Director']
     }
   },
 
