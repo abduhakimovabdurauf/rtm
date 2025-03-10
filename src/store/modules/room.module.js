@@ -43,11 +43,9 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('rooms : ',response)
                 commit("SET_ROOMS", response.data.rooms.data);
                 return response.data.rooms
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Xonalarni olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -81,11 +79,9 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log("added",response)
                 commit("ADD_ROOM", response.data.room);
                 toast.success(response.data.message);
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Xona qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });

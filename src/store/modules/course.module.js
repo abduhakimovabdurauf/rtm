@@ -44,12 +44,10 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log(response)
                 commit("SET_COURSES", response.data.data);
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kurslarni olishda xatolik!");
-                console.error(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
@@ -57,14 +55,12 @@ export default {
 
         async getCourseById({ commit }, courseId) {
             commit("SET_LOADING", true, { root: true });
-            console.log('courseId',courseId)
             try {
                 const response = await axios.get(`${API_URL}/${courseId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                // console.log('response: ',response)
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Failed to fetch course!");
@@ -106,7 +102,6 @@ export default {
                 toast.success(response?.data?.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kursni o`zgartirishda xatolik!");
-                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });

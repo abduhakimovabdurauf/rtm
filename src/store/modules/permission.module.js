@@ -37,12 +37,10 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log(response)
                 commit("SET_PERMISSIONS", response.data.data);
                 return response.data;
             } catch (e) {
-                console.log(e)
-                toast.error(e.response?.data?.message || "Lavozimlar royhatini olishda xatolik!");
+                toast.error(e.response?.data?.message || "Huquqlar royhatini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
@@ -58,7 +56,7 @@ export default {
                 });
                 return response.data;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Lavozimlar royhatini olishda xatolik!");
+                toast.error(e.response?.data?.message || "Huquq royhatini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
@@ -74,12 +72,10 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log(response)
                 commit("ADD_PERMISSION", response.data.data);
                 toast.success(response.data.message);
             } catch (e) {
-                console.error(e)
-                toast.error(e.response?.data?.message || "Lavozim qoshishda xatolik!");
+                toast.error(e.response?.data?.message || "Huquq qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
@@ -99,8 +95,7 @@ export default {
                 commit("UPDATE_PERMISSIONS", response.data.data);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Lavozim ozgartirishda xatolik!");
-                console.error(e)
+                toast.error(e.response?.data?.message || "Huquq ozgartirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
@@ -108,7 +103,7 @@ export default {
         },
 
         async deletePermission({ commit }, permissionId) {
-            if (!confirm("Siz rostdanxam bu rolni o'chirib yubormoqchimisiz?")) {
+            if (!confirm("Siz rostdanxam bu huquqni o'chirib yubormoqchimisiz?")) {
                 return;
             }
 

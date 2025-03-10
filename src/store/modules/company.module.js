@@ -38,7 +38,6 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log(response.data.data)
                 commit("SET_COMPANIES", response.data.data);
                 return response.data;
             } catch (e) {
@@ -76,7 +75,6 @@ export default {
                     },
                 });
                 commit("ADD_COMPANY", response.data);
-                console.log(response)
                 toast.success(response.data.message || "Kompaniya qo'shildi!");
             } catch (e) {
                 handleError(e, "Kompaniya malumotlarini qoshishda xatolik!");
@@ -87,7 +85,6 @@ export default {
         },
 
         async updateCompany({ commit }, updatedCompany) {
-            console.log('id: '+ updatedCompany.id)
             commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.post(`${API_URL}/${updatedCompany.id}`, updatedCompany, {
@@ -96,7 +93,6 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log(response)
                 commit("UPDATE_COMPANY", response.data.company);
                 toast.success(response?.data?.message || "Kompaniya malumotlarini ozgartirildi!");
             } catch (e) {
@@ -136,6 +132,5 @@ export default {
 };
 
 function handleError(error, defaultMessage) {
-    console.error(error);
     toast.error(error.response?.data?.message || defaultMessage);
 }

@@ -36,7 +36,6 @@ export default {
                     },
                 });
                 commit("SET_ROLES", response.data.data);
-                console.log(response.data.data)
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Lavozimlar ro‘yxatini olishda xatolik!");
@@ -58,7 +57,6 @@ export default {
                 commit("ADD_ROLE", response.data.data);
                 toast.success(response.data.message);
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Lavozim qo‘shishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });

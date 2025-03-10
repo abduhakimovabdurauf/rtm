@@ -2,6 +2,7 @@ import axios from "../../axios/settings.js";
 import { useToast } from "vue-toastification";
 import router from "@/router/index.js";
 const toast = useToast();
+const router = useRouter();
 export default {
     namespaced: true,
     state() {

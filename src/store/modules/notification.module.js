@@ -43,7 +43,6 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('notifications',response)
                 commit("SET_NOTIFICATIONS", response.data.data);
                 return response.data;
             } catch (e) {
@@ -54,14 +53,12 @@ export default {
         },
 
         async getNotificationById({ commit }, Id) {
-            console.log('Id',Id)
             try {
                 const response = await axios.get(`${API_URL}/${Id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                // console.log('response: ',response)
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Failed to fetch group!");
@@ -78,11 +75,9 @@ export default {
                     },
                 });
                 commit("ADD_NOTIFICATION", response.data.notification);
-                console.log(response)
                 toast.success(response.data.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kurs qoshishda xatolik!");
-                console.error(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
@@ -102,7 +97,6 @@ export default {
                 toast.success(response?.data?.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Bildirishnoma malumotlarini o`zgartirishda xatolik!");
-                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
@@ -127,6 +121,18 @@ export default {
                 commit("closeSidebar", false, { root: true });
             }
         },
+
+        async markNotificationAsRead({ commit }, Id) {
+            try {
+                const response = await axios.post(`${API_URL}/${Id}/read`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
+                });
+                commit("DELETE_NOTIFICATION", Id);
+                toast.success('muvaffaqiyatli belgilandi');
+            } catch (e) {
+                toast.error(e.response?.data?.message || "Failed to delete notification!");
+            }
+        }
     },
     getters: {
         notifications(state) {

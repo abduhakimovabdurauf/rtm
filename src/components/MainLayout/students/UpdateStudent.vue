@@ -206,7 +206,6 @@ export default {
     const selectedStudent = computed(() =>
         store.state.student.students.find((student) => student.id === props.studentId)
     );
-    console.log('student: ',selectedStudent.value);
     const form = ref({
       full_name: '',
       login: '',

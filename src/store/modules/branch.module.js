@@ -42,11 +42,9 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('branches : ',response)
                 commit("SET_BRANCHES", response.data.data);
                 return response.data
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Filial malumotlarini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -78,11 +76,9 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log("added",response)
                 commit("ADD_BRANCH", response.data);
                 toast.success(response.data.message || "Filial qo'shildi!");
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Filial malumotlarini qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -103,7 +99,6 @@ export default {
                 toast.success(response?.data?.message || "Muvaffaqiyatli ozgartirildi");
             } catch (e) {
                 toast.error(e.response?.data?.message || "Filial malumotlarini ozgartirishda xatolik!");
-                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });

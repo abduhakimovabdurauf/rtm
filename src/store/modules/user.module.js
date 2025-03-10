@@ -41,18 +41,15 @@ export default {
                     },
                 });
                 commit("SET_USERS", response.data.data);
-                console.log(response)
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Xodim malumotlarni olishda xatolik!");
-                console.error(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
         async getUserById({ commit }, userId) {
             commit("SET_LOADING", true, { root: true });
-            console.log('courseId',userId)
             try {
                 const response = await axios.get(`${API_URL}/${userId}`, {
                     headers: {
@@ -76,12 +73,10 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('response', response)
                 commit("ADD_USER", response.data.user);
 
                 toast.success('Xodim muvaffaqiyatli qo\'shildi!');
             } catch (e) {
-                console.log(e)
                 toast.error(e.response?.data?.message || "Xodim qo'shishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -100,7 +95,6 @@ export default {
                 commit("UPDATE_USER", response.data.user);
                 toast.success(`Xodim muvaffaqiyatli o'zgartirildi!`);
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Xodim yangilashda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });

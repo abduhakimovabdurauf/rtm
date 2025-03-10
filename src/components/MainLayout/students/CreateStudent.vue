@@ -237,7 +237,6 @@ export default {
         branches.value = await store.dispatch("branch/getAllBranches");
         newStudent.branch_id = branches?.value?.data[0].id
         courses.value = await store.dispatch("course/getAllCourses");
-        console.log(branches.value)
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -281,7 +280,6 @@ export default {
 
         await store.dispatch('student/addStudent', formData);
         closeModal();
-        console.log('malumotlar',newStudent)
 
         newStudent.full_name = '';
         newStudent.email = '';

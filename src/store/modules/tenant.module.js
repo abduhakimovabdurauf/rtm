@@ -41,10 +41,8 @@ export default {
                     },
                 });
                 commit("SET_TENANTS", response.data.tenants.data);
-                console.log("o'quvchilar",response)
                 return response.data.tenants;
             } catch (e) {
-                console.log('Ijarachilar',e)
                 toast.error(e.response?.data?.message || "Ijarachi malumotlarni olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -79,7 +77,6 @@ export default {
                 commit("ADD_TENANT", response.data.data);
                 toast.success(response.data.message);
             } catch (e) {
-                console.log(e)
                 toast.error(e.response?.data?.message || "Ijarachi qo'shishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -98,7 +95,6 @@ export default {
                 commit("UPDATE_TENANT", response.data.tenant);
                 toast.success(response.data.message);
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Ijarachi malumotlarini yangilashda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });

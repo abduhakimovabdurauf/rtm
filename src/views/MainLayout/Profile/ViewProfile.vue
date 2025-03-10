@@ -126,9 +126,6 @@ export default {
 
     const openUpdateSidebar = ()=> {
       try {
-        watch(() => user.id, (newId) => {
-          userId.value = Number(newId);
-        });
         isUpdating.value = true;
         store.dispatch("toggleSidebar", true);
       } catch (e) {
@@ -151,7 +148,7 @@ export default {
         const response = await store.dispatch('user/getUserById', user.id);
         if (response) {
           data.value = response.user;
-          console.log(data?.value)
+          userId.value = response.user.id
         } else {
           console.error("Ma'lumot topilmadi.");
         }

@@ -31,9 +31,9 @@ export function useLoginForm() {
         try {
             const login = await store.dispatch('auth/login', values);
 
-            const roleNames = login.roles?.map(r => r.name.toLowerCase()) || [];
+            const roleNames = login.roles?.map(r => r.name) || [];
 
-            const allowedRoles = ["admin", "direktor", "manager"];
+            const allowedRoles = ["admin", "Director"];
 
             if (allowedRoles.some(role => roleNames.includes(role))) {
                 await router.push('/dashboard');

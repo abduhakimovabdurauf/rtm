@@ -43,7 +43,6 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('payments',response)
                 commit("SET_PAYMENTS", response.data.data);
                 return response.data.total;
             } catch (e) {
@@ -54,14 +53,12 @@ export default {
         },
 
         async getPaymentById({ commit }, Id) {
-            console.log('Id',Id)
             try {
                 const response = await axios.get(`${API_URL}/${Id}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                // console.log('response: ',response)
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Failed to fetch group!");
@@ -99,7 +96,6 @@ export default {
                 toast.success(response?.data?.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Tolov malumotlarini o`zgartirishda xatolik!");
-                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });

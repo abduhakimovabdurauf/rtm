@@ -17,7 +17,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: ()=> import('../views/MainLayout/ViewDashboard.vue'),
-    meta: { layout: 'main', auth: true, roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR'] }
+    meta: { layout: 'main', auth: true, roles: ['admin', 'Director'] }
   },
   {
     path: '/login',
@@ -151,6 +151,17 @@ const routes = [
     path: '/permissions',
     name: 'Permissions',
     component: () => import('../views/MainLayout/Permissions/ViewPermissions.vue'),
+    meta: {
+      layout: 'main',
+      auth: true,
+      roles: ['admin', 'Director', 'Manager', 'Accountant', 'HR']
+    }
+  },
+
+  {
+    path: '/callLogs',
+    name: 'callLogs',
+    component: () => import('../views/MainLayout/callLog/viewCallLog.vue'),
     meta: {
       layout: 'main',
       auth: true,
@@ -341,10 +352,10 @@ router.beforeEach((to, from, next) => {
 
   if (store.getters['auth/isAuthenticated'] && to?.path === '/login') {
     next('/dashboard');
-  } else if (requireAuth && store.getters['auth/isAuthenticated']) {
-    const allowedRoles = to?.meta?.roles || [];
-    console.info(allowedRoles)
-    console.info(userRoles)
+  }
+
+  else if (requireAuth===true && store.getters['auth/isAuthenticated']) {
+    const allowedRoles = to?.meta?.roles;
     const hasAccess = userRoles.some(r => allowedRoles.some(role => role === r)) || allowedRoles.includes('all');
 
     if (hasAccess) {
@@ -353,9 +364,14 @@ router.beforeEach((to, from, next) => {
       toast.warning('Sizga bu sahifa ga kirish ruhsati berilmagan!');
       next('/profile');
     }
-  } else if (requireAuth && !store.getters['auth/isAuthenticated']) {
+  }
+
+
+  else if (requireAuth && !store.getters['auth/isAuthenticated']) {
     next('/login');
-  } else {
+  }
+
+  else {
     next();
   }
 });

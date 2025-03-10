@@ -104,7 +104,6 @@ export default {
                 toast.success(response?.data?.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kursni o`zgartirishda xatolik!");
-                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });

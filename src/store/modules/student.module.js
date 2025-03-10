@@ -41,10 +41,8 @@ export default {
                     },
                 });
                 commit("SET_STUDENTS", response.data.students.data);
-                console.log("o'quvchilar",response)
                 return response.data.students;
             } catch (e) {
-                console.log('oquvchilar',e)
                 toast.error(e.response?.data?.message || "Oquvchi malumotlarni olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -94,7 +92,6 @@ export default {
                 commit("ADD_STUDENT", response.data.student);
                 toast.success(response.data.message);
             } catch (e) {
-                console.log(e)
                 toast.error(e.response?.data?.message || "O'quvchi qo'shishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -113,7 +110,6 @@ export default {
                 commit("UPDATE_STUDENT", response.data.student);
                 toast.success(response.data.message);
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Oquvchi malumotlarini yangilashda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });

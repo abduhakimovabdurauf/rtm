@@ -12,33 +12,36 @@
     <div class="flex items-center gap-4 mt-4 sm:mt-0 w-auto justify-between relative">
       <!-- Bell icon -->
       <div class="relative">
-        <i
-            class="bx bx-bell text-xl sm:text-2xl text-gray-500 cursor-pointer"
-            @click="toggleNotificationPopup"
-        ></i>
-        <span v-if="notifications?.length" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+        <i class="bx bx-bell text-xl sm:text-2xl text-gray-500 cursor-pointer" @click="toggleNotificationPopup"></i>
+        <span v-if="notifications?.length" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 scale-75 py-0.5 rounded-full">
           {{ notifications?.length }}
         </span>
 
-        <!-- Notification Pop-up -->
-        <div
-            v-if="showNotifications"
-            class="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-md p-2 z-50"
-        >
-          <div v-if="notifications?.length">
-            <div
-                v-for="(notification, index) in notifications"
-                :key="index"
-                class="p-2 border-b last:border-0 hover:bg-gray-100 cursor-pointer"
-            >
-              <p class="text-sm text-gray-700">{{ notification?.title }}</p>
-              <span class="text-xs text-gray-500">{{ notification?.text }}</span>
+        <transition name="fade">
+          <div v-show="showNotifications" class="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-md p-2 z-50">
+            <div v-if="notifications?.length">
+              <div
+                  v-for="(notification, index) in notifications"
+                  :key="index"
+                  class="p-2 border-b last:border-0 hover:bg-gray-100 cursor-pointer flex justify-between items-center"
+              >
+                <div>
+                  <p class="text-sm text-gray-700">{{ notification?.title }}</p>
+                  <span class="text-xs text-gray-500">{{ notification?.text }}</span>
+                </div>
+                <button
+                    class="text-xs bg-blue-500 text-white px-2 py-1 rounded-md"
+                    @click="markAsRead(notification.id)"
+                >
+                  O'qildi
+                </button>
+              </div>
+            </div>
+            <div v-else class="p-2 text-center text-gray-500">
+              Bildirishnomalar yo'q :(
             </div>
           </div>
-          <div v-else class="p-2 text-center text-gray-500">
-            Bildirishnomalar yo'q :(
-          </div>
-        </div>
+        </transition>
       </div>
 
       <i class="bx bx-cog text-xl sm:text-2xl text-gray-500 cursor-pointer"></i>
@@ -76,11 +79,19 @@ export default {
     const user = JSON.parse(localStorage.getItem("user"));
 
     const showNotifications = ref(false);
-    const notifications = ref();
+    const notifications = ref([]);
 
     const toggleNotificationPopup = () => {
       showNotifications.value = !showNotifications.value;
-      console.log(notifications.value)
+    };
+
+    const markAsRead = async (id) => {
+      try {
+        await store.dispatch("notification/markNotificationAsRead", id);
+        notifications.value = notifications.value.filter(n => n?.id !== id);
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
     };
 
     onMounted(async () => {
@@ -88,8 +99,6 @@ export default {
         const response = await store.dispatch('user/getUserById', user.id);
         if (response) {
           notifications.value = response.user.notifications;
-          console.log(response)
-          console.log(notifications.value)
         } else {
           console.error("Ma'lumot topilmadi.");
         }
@@ -97,11 +106,13 @@ export default {
         console.error("Ma'lumot yuklashda xatolik:", error);
       }
     });
+
     return {
       user,
       showNotifications,
       notifications,
       toggleNotificationPopup,
+      markAsRead,
       logout: () => {
         store.dispatch("auth/logout");
         router.push("/login");
@@ -110,3 +121,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>

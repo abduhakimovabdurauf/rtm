@@ -43,11 +43,9 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('tasks : ',response)
                 commit("SET_TASKS", response.data.data);
                 return response.data
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Topshiriqlar royhatini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -81,12 +79,10 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log("added",response)
                 commit("ADD_TASK", response.data.task);
                 commit("closeSidebar");
                 toast.success(response.data.message);
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Topshiriq malumotlarini qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });

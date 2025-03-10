@@ -48,6 +48,11 @@
           <span v-if="isOpen" class="ml-3">Oquvchilar</span>
         </router-link>
 
+        <router-link v-if="hasAccess('/callLogs')" to="/callLogs" class="flex items-center p-2 rounded-md hover:bg-gray-700">
+          <i class='bx bxl-blogger'></i>
+          <span v-if="isOpen" class="ml-3">Qo'ngiroqlar tarixi</span>
+        </router-link>
+
         <router-link v-if="hasAccess('/rooms')" to="/rooms" class="flex items-center p-2 rounded-md hover:bg-gray-700">
           <i class="bx bx-home-alt text-lg"></i>
           <span v-if="isOpen" class="ml-3">Xonalar</span>

@@ -42,11 +42,9 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log('discounts : ',response)
                 commit("SET_DISCOUNTS", response.data.data);
                 return response.data
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Chegirmalar malumotlarini olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
@@ -80,11 +78,9 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                console.log("added",response)
                 commit("ADD_DISCOUNT", response.data.discount);
                 toast.success(response.data.message);
             } catch (e) {
-                console.error(e)
                 toast.error(e.response?.data?.message || "Chegirma malumotlarini qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });

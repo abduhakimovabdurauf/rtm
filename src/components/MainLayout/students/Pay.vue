@@ -112,8 +112,6 @@ export default {
     const discounts = ref(null);
 
     const fetchData = async () => {
-      console.log('selectedGroup: ',props.groupData)
-      console.log('selectedStudent: ',props.studentId)
       try {
         discounts.value = await store.dispatch('discount/getAllDiscounts', {
           page: 1,
@@ -151,7 +149,6 @@ export default {
         emit("close");
       } catch (error) {
         alert("Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.");
-        console.error(error);
       }
     };
 

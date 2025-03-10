@@ -14,6 +14,8 @@ import discount from "./modules/discount.module.js";
 import tenant from "./modules/tenant.module.js";
 import permission from "./modules/permission.module.js";
 import notification from "@/store/modules/notification.module.js";
+import callLog from "@/store/modules/callLog.module.js";
+
 import aktImg from '../assets/images/akt.svg';
 import foundationImg from '../assets/images/found.svg';
 import robotImg from '../assets/images/ROBOT.svg';
@@ -427,6 +429,7 @@ const store = createStore({
     tenant,
     permission,
     notification,
+    callLog,
   }
 });
 
