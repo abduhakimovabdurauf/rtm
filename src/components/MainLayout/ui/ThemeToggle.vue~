@@ -35,7 +35,7 @@ const { isDark, toggleDarkMode } = useDarkMode();
     <!-- O‘tish tugmasi -->
     <span
         class="absolute top-1 left-1 w-5 h-5 bg-white dark:bg-gray-800 rounded-full shadow-md transform transition-all duration-300"
-        :class="isDark ? 'translate-x-7 bg-red-500 scale-[1.5]' : 'translate-x-0 bg-yellow-500 scale-[1.5]'"
+        :class="isDark ? 'translate-x-7 scale-[1.5] bg-red-700' : 'translate-x-0 bg-yellow-500 scale-[1.5]'"
     ></span>
 
     <!-- Oy (dark mode) -->
