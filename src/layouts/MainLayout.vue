@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-gray-100 w-full">
+  <div class="flex h-screen bg-gray-100 dark:bg-slate-900 text-gray-900 dark:text-gray-100 w-full">
     <Sidebar/>
     <div class="flex-1 flex flex-col">
       <Navbar />
@@ -11,12 +11,13 @@
   </div>
 </template>
 
+
 <script>
 import Sidebar from '@/components/MainLayout/Sidebar.vue';
 import Navbar from '@/components/MainLayout/Navbar.vue';
 import Loader from "@/components/MainLayout/ui/Loader.vue";
 import { useStore } from "vuex";
-import {computed} from "vue";
+import {computed, onMounted} from "vue";
 export default {
   components: {
     Sidebar,
@@ -26,6 +27,10 @@ export default {
   setup(){
     const store = useStore();
     const isLoading = computed(() =>store.getters.isLoading);
+
+    onMounted(()=> {
+      store.dispatch('auth/checkToken');
+    })
     return {
       isLoading
     }

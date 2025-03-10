@@ -60,7 +60,7 @@
         </button>
         <button
             @click="deleteUser(user.id)"
-            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 dark:bg-red-700 dark:hover:bg-gray-600"
+            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 dark:bg-gray-700 dark:hover:bg-gray-600"
         >
           <i class="bx bxs-trash-alt"></i>
         </button>

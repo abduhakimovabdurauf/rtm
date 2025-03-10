@@ -8,7 +8,7 @@
           type="text"
           id="name"
           @input="validateField('name')"
-          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-900 dark:text-white"
           :class="{ 'border-red-500': errors.name }"
       />
       <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>

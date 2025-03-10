@@ -54,7 +54,7 @@
       <i class="bx bx-cog text-xl sm:text-2xl text-gray-500 dark:text-gray-300 cursor-pointer"></i>
 
       <!-- User Profile -->
-      <router-link to="/profile" class="bg-white dark:bg-gray-800">
+      <router-link to="/profile" class="bg">
         <div class="flex items-center gap-2 p-2 bg-gray-100 dark:bg-gray-900 hover:bg-blue-100 dark:hover:bg-gray-700 rounded-md cursor-pointer transition-all duration-300">
           <img
               :src="user.image ? 'https:/api.mrtm.uz/storage/user/'+user.images[0] : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"

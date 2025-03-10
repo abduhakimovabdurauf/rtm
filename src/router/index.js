@@ -11,7 +11,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: ViewHome,
-    meta: { layout: 'home', auth: false, roles: ['all'] }
+    meta: { layout: 'home', auth: false }
   },
   {
     path: '/dashboard',
@@ -347,7 +347,7 @@ router.beforeEach((to, from, next) => {
   const requireAuth = to?.meta.auth;
   const user = JSON.parse(localStorage.getItem("user"));
   const userRoles = user?.roles?.map(r => r.name) || ['guest'];
-
+  console.log('auth: ', requireAuth)
   store.commit('closeSidebar');
 
   if (store.getters['auth/isAuthenticated'] && to?.path === '/login') {
@@ -360,7 +360,8 @@ router.beforeEach((to, from, next) => {
 
     if (hasAccess) {
       next();
-    } else {
+    }
+    else {
       toast.warning('Sizga bu sahifa ga kirish ruhsati berilmagan!');
       next('/profile');
     }
@@ -369,7 +370,12 @@ router.beforeEach((to, from, next) => {
 
   else if (requireAuth && !store.getters['auth/isAuthenticated']) {
     next('/login');
+    console.log('else: ', requireAuth)
   }
+
+  // else if (requireAuth===false) {
+  //   next('/');
+  // }
 
   else {
     next();

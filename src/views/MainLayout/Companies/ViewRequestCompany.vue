@@ -30,36 +30,38 @@
             @close="closeNotificationSidebar"
         />
       </actionSidebar>
-      
+
       <!--   Starting companies section   -->
-      <div class="w-1/3 overflow-x-auto bg-white shadow-md sm:rounded-lg p-4 mt-6">
+      <div class="w-1/3 overflow-x-auto bg-white dark:bg-gray-800 shadow-md sm:rounded-lg p-4 mt-6">
         <div v-if="data" class="space-y-2">
           <div class="flex justify-between">
-            <h1 class="text-lg">Kompaniya malumotlari</h1>
+            <h1 class="text-lg text-gray-900 dark:text-gray-200">Kompaniya ma'lumotlari</h1>
           </div>
 
-          <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 duration-300">
-            <span class="text-sm text-gray-500">Nomi:</span>
-            <span class="text-lg font-semibold text-gray-900">{{ data.name }}</span>
+          <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 dark:hover:bg-gray-700 duration-300">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Nomi:</span>
+            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ data.name }}</span>
           </div>
 
-          <div class="flex justify-between items-start border-b p-2 hover:bg-gray-200 duration-300">
-            <span class="text-sm text-gray-500">Tavsif:</span>
-            <span class="text-lg font-medium text-gray-700 max-w-md leading-relaxed">{{ data.description || 'Tafsif topilmadi' }}</span>
+          <div class="flex justify-between items-start border-b p-2 hover:bg-gray-200 dark:hover:bg-gray-700 duration-300">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Tavsif:</span>
+            <span class="text-lg font-medium text-gray-700 dark:text-gray-300 max-w-md leading-relaxed">
+        {{ data.description || 'Tafsif topilmadi' }}
+      </span>
           </div>
 
-          <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 duration-300">
-            <span class="text-sm text-gray-500">Telefon:</span>
-            <span class="text-lg font-semibold text-gray-900">{{ data.phone || 'Telefon topilmadi' }}</span>
+          <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 dark:hover:bg-gray-700 duration-300">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Telefon:</span>
+            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ data.phone || 'Telefon topilmadi' }}</span>
           </div>
 
-          <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 duration-300">
-            <span class="text-sm text-gray-500">Manzili:</span>
-            <span class="text-lg font-semibold text-gray-900">{{ data.address || 'Manzil topilmadi' }}</span>
+          <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 dark:hover:bg-gray-700 duration-300">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Manzili:</span>
+            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ data.address || 'Manzil topilmadi' }}</span>
           </div>
 
-          <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 duration-300">
-            <span class="text-sm text-gray-500">Status:</span>
+          <div class="flex justify-between items-center border-b p-2 hover:bg-gray-200 dark:hover:bg-gray-700 duration-300">
+            <span class="text-sm text-gray-500 dark:text-gray-400">Status:</span>
             <StatusBadge :status="data.status" />
           </div>
 
@@ -86,29 +88,30 @@
           </div>
         </div>
         <div v-else>
-          <p>Ma'lumot topilmadi yoki yuklashda xatolik yuz berdi.</p>
+          <p class="text-gray-900 dark:text-gray-200">Ma'lumot topilmadi yoki yuklashda xatolik yuz berdi.</p>
         </div>
       </div>
       <!--   Ending companies section   -->
-      
-      
-      
-      
+
+
+
+
+
       <!--  Starting branches section   -->
-      <div class="w-3/5 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <div class="w-3/5 bg-white dark:bg-gray-800 rounded-l mt-6 overflow-hidden overflow-y-scroll">
         <div class="w-full flex justify-between">
-          <h1 class="text-2xl text-bold m-2">Filial malumotlari</h1>
+          <h1 class="text-2xl text-bold m-2 text-gray-900 dark:text-gray-200">Filial ma'lumotlari</h1>
 
           <button
               @click="openBranchSidebar"
-              class="transition scale-75 p-2 text-white bg-green-500 hover:bg-green-600 rounded duration-200"
+              class="transition scale-75 p-2 text-white bg-green-500 hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800 rounded duration-200"
           >
             Filial qo'shish <i class='bx bx-git-branch'></i>
           </button>
         </div>
         <table class="w-full text-sm">
-          <thead class="h-10">
-          <tr class="bg-gray-700 text-white">
+          <thead class="h-10 bg-gray-700 dark:bg-gray-900 text-white">
+          <tr>
             <th class="px-6 py-4 text-left">№</th>
             <th class="px-6 py-4 text-left">Filial nomi</th>
             <th class="px-6 py-4 text-left">Telefon</th>
@@ -123,17 +126,17 @@
               :key="branch.id"
               class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
-            <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-            <td class="px-6 py-4 font-semibold">{{ branch.name }}</td>
-            <td class="px-6 py-4 font-semibold">{{ branch.phone }}</td>
-            <td class="px-6 py-4 font-semibold">{{ branch.address }}</td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ index + 1 }}</td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ branch.name }}</td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ branch.phone }}</td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ branch.address }}</td>
             <td class="px-6 py-4 font-semibold text-xs">
               <StatusBadge :status="branch.status"/>
             </td>
             <td class="px-6 py-4 font-semibold">
               <router-link
                   :to="{ name: 'WatchBranch', params: { id: branch.id } }"
-                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 p-3 py-2 rounded duration-200"
               >
                 <i class="bx bxs-show"></i>
               </router-link>
@@ -142,19 +145,18 @@
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="5" class="text-center py-4 text-gray-500">Filial ma'lumotlari mavjud emas.</td>
+            <td colspan="5" class="text-center py-4 text-gray-500 dark:text-gray-400">Filial ma'lumotlari mavjud emas.</td>
           </tr>
           </tbody>
-
         </table>
       </div>
       <!--  Ending branches section   -->
 
 
       <!--  Starting permission section   -->
-      <div class="w-1/2 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <div class="w-1/2 bg-white dark:bg-gray-800 rounded-l mt-6 overflow-hidden overflow-y-scroll">
         <div class="w-full flex justify-between">
-          <h1 class="text-2xl text-bold m-2">Huquq malumotlari</h1>
+          <h1 class="text-2xl text-bold m-2 text-gray-900 dark:text-gray-200">Huquq ma'lumotlari</h1>
 
           <button
               @click="openPermissionSidebar"
@@ -165,7 +167,7 @@
         </div>
         <table class="w-full text-sm">
           <thead class="h-10">
-          <tr class="bg-gray-700 text-white">
+          <tr class="bg-gray-700 dark:bg-gray-900 text-white">
             <th class="px-6 py-4 text-left">№</th>
             <th class="px-6 py-4 text-left">Huquq nomi</th>
             <th class="px-6 py-4 text-left">Holat</th>
@@ -178,15 +180,15 @@
               :key="permission.id"
               class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
-            <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-            <td class="px-6 py-4 font-semibold">{{ permission.name }}</td>
-            <td class="px-6 py-4 font-semibold text-xs">
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ index + 1 }}</td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ permission.name }}</td>
+            <td class="px-6 py-4 font-semibold text-xs text-gray-900 dark:text-gray-200">
               <StatusBadge :status="permission.status"/>
             </td>
             <td class="px-6 py-4 font-semibold">
               <router-link
                   :to="{ name: 'watchPermission', params: { id: permission.id } }"
-                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 p-3 py-2 rounded duration-200"
               >
                 <i class="bx bxs-show"></i>
               </router-link>
@@ -195,20 +197,20 @@
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="5" class="text-center py-4 text-gray-500">Huquq ma'lumotlari mavjud emas.</td>
+            <td colspan="5" class="text-center py-4 text-gray-500 dark:text-gray-400">Huquq ma'lumotlari mavjud emas.</td>
           </tr>
           </tbody>
-
         </table>
       </div>
-      <!--  Starting permission section   -->
+      <!--  Ending permission section   -->
+
 
 
 
       <!--  Starting notification section   -->
-      <div class="w-1/2 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <div class="w-1/2 bg-white dark:bg-gray-800 rounded-l mt-6 overflow-hidden overflow-y-scroll">
         <div class="w-full flex justify-between">
-          <h1 class="text-2xl text-bold m-2">Bildirishnoma malumotlari</h1>
+          <h1 class="text-2xl text-bold m-2 text-gray-900 dark:text-gray-200">Bildirishnoma ma'lumotlari</h1>
 
           <button
               @click="openNotificationSidebar"
@@ -219,7 +221,7 @@
         </div>
         <table class="w-full text-sm">
           <thead class="h-10">
-          <tr class="bg-gray-700 text-white">
+          <tr class="bg-gray-700 dark:bg-gray-900 text-white">
             <th class="px-6 py-4 text-left">№</th>
             <th class="px-6 py-4 text-left">Sarlavha</th>
             <th class="px-6 py-4 text-left">Holat</th>
@@ -232,15 +234,15 @@
               :key="notification.id"
               class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
-            <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-            <td class="px-6 py-4 font-semibold">{{ notification.title }}</td>
-            <td class="px-6 py-4 font-semibold text-xs">
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ index + 1 }}</td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ notification.title }}</td>
+            <td class="px-6 py-4 font-semibold text-xs text-gray-900 dark:text-gray-200">
               <StatusBadge :status="notification.status"/>
             </td>
             <td class="px-6 py-4 font-semibold">
               <router-link
                   :to="{ name: 'watchNotification', params: { id: notification.id } }"
-                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800 p-3 py-2 rounded duration-200"
               >
                 <i class="bx bxs-show"></i>
               </router-link>
@@ -249,18 +251,18 @@
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="5" class="text-center py-4 text-gray-500">Bildirishnoma ma'lumotlari mavjud emas.</td>
+            <td colspan="5" class="text-center py-4 text-gray-500 dark:text-gray-400">Bildirishnoma ma'lumotlari mavjud emas.</td>
           </tr>
           </tbody>
-
         </table>
       </div>
-      <!--  Starting notification section   -->
+      <!--  Ending notification section   -->
+
 
       <!--  Starting role section   -->
-      <div class="w-1/2 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <div class="w-1/2 bg-white dark:bg-gray-800 rounded-l mt-6 overflow-hidden overflow-y-scroll">
         <div class="w-full flex justify-between">
-          <h1 class="text-2xl text-bold m-2">Lavozim malumotlari</h1>
+          <h1 class="text-2xl text-bold m-2 text-gray-900 dark:text-gray-200">Lavozim ma'lumotlari</h1>
 
           <button
               @click="openRoleSidebar"
@@ -271,7 +273,7 @@
         </div>
         <table class="w-full text-sm">
           <thead class="h-10">
-          <tr class="bg-gray-700 text-white">
+          <tr class="bg-gray-700 dark:bg-gray-900 text-white">
             <th class="px-6 py-4 text-left">№</th>
             <th class="px-6 py-4 text-left">Nomi</th>
             <th class="px-6 py-4 text-left">Holat</th>
@@ -283,24 +285,24 @@
               :key="role.id"
               class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
-            <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-            <td class="px-6 py-4 font-semibold">{{ role.name }}</td>
-            <td class="px-6 py-4 font-semibold text-xs">
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ index + 1 }}</td>
+            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-gray-200">{{ role.name }}</td>
+            <td class="px-6 py-4 font-semibold text-xs text-gray-900 dark:text-gray-200">
               <StatusBadge :status="role.status"/>
             </td>
           </tr>
           </tbody>
           <tbody v-else>
           <tr>
-            <td colspan="5" class="text-center py-4 text-gray-500">Lavozim ma'lumotlari mavjud emas.</td>
+            <td colspan="5" class="text-center py-4 text-gray-500 dark:text-gray-400">Lavozim ma'lumotlari mavjud emas.</td>
           </tr>
           </tbody>
-
         </table>
       </div>
-      <!--  Starting role section   -->
-      
-      
+      <!--  Ending role section   -->
+
+
+
     </div>
 
   </template>

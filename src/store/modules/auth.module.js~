@@ -2,7 +2,6 @@ import axios from "../../axios/settings.js";
 import { useToast } from "vue-toastification";
 import router from "@/router/index.js";
 const toast = useToast();
-const router = useRouter();
 export default {
     namespaced: true,
     state() {
@@ -20,7 +19,7 @@ export default {
             state.token = null;
             localStorage.removeItem("jwt-token");
             localStorage.removeItem("user");
-            router.push("/login");
+            // router.push("/login");
         }
     },
     actions: {
