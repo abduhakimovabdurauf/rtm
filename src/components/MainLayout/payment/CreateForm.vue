@@ -27,41 +27,32 @@
 
     <div class="mb-4">
       <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh ID</label>
-      <select
-          id="group_id"
-          required
-          v-model.trim="newPayment.group_id"
+      <Multiselect
+          v-model="newPayment.group_id"
+          :options="groupsList"
+          label="full_name"
+          :searchable="true"
+          :close-on-select="true"
           v-if="groups && groups.data && groups.data.length > 0"
+          placeholder="Guruhni tanlang..."
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option
-            v-for="payment in groups.data"
-            :key="payment.id"
-            :value="payment.id"
-        >
-          {{ payment.name }}
-        </option>
-      </select>
-      <p v-else class="text-gray-500">No groups available</p>
+      />
+      <p v-else class="text-gray-500">Guruhlar mavhud emas :(</p>
     </div>
     <div class="mb-4">
       <label for="student_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Oquvchi ID</label>
-      <select
-          id="student_id"
-          required
+
+      <Multiselect
+          v-model="newPayment.student_id"
+          :options="studentsList"
+          label="full_name"
+          :searchable="true"
+          :close-on-select="true"
           v-if="students && students.data && students.data.length > 0"
-          v-model.trim="newPayment.student_id"
+          placeholder="O'quvchini tanlang..."
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option
-            v-for="student in students.data"
-            :key="student.id"
-            :value="student.id"
-        >
-          {{ student.full_name }}
-        </option>
-      </select>
-      <p v-else class="text-gray-500">O'quvchilar yo'q</p>
+      />
+      <p v-else class="text-gray-500">O'quvchilar mavhud emas :(</p>
     </div>
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
@@ -100,8 +91,12 @@
 <script>
 import { reactive, ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-
+import Multiselect from '@vueform/multiselect';
+import '@vueform/multiselect/themes/default.css';
 export default {
+  components: {
+    Multiselect,
+  },
   emits: ["close"],
   setup(_, { emit }) {
     const store = useStore();
@@ -130,7 +125,6 @@ export default {
         });
         students.value = await store.dispatch('student/getAllStudents', {
           page: 1,
-          perPage: 5,
           sortBy: 'id',
           orderBy: 'desc',
         });
@@ -144,7 +138,21 @@ export default {
         console.error("Xatolik yuz berdi:", error);
       }
     };
+    const studentsList = computed(() => {
+      if (!students.value || !students.value.data) return [];
+      return students.value.data.map(student => ({
+        value: student.id,
+        full_name: student.full_name,
+      }));
+    });
 
+    const groupsList = computed(() => {
+      if (!groups.value || !groups.value.data) return [];
+      return groups.value.data.map(group => ({
+        value: group.id,
+        name: group.name,
+      }));
+    });
     onMounted(fetchData);
 
     const isFormValid = computed(() => {
@@ -190,7 +198,9 @@ export default {
       isFormValid,
       groups,
       students,
-      isLoading
+      isLoading,
+      studentsList,
+      groupsList,
     };
   },
 };

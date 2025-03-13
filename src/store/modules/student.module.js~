@@ -44,7 +44,6 @@ export default {
                 return response.data.students;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Oquvchi malumotlarni olishda xatolik!");
-                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("SET_SORTLOADING", false, { root: true });

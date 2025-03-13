@@ -59,7 +59,7 @@
         </tr>
         </tbody>
       </table>
-      <div class="flex justify-center items-center mt-6 space-x-2" v-if="callLogs?.length > 0">
+      <div class="flex justify-center items-center mt-6 space-x-2" v-if="callLogs.length > 0">
         <button
             @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"

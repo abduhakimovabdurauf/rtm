@@ -43,16 +43,21 @@
       </select>
     </div>
 
-    <div class="mb-4" v-if="students && students.length > 0">
-      <label for="student_id">O'quvchilar</label>
-      <div v-for="student in students" :key="student.id">
-        <input
-            id="student_id"
-            type="checkbox"
-            :value="student.id"
-            v-model="newGroup.students"
-        />
-        {{ student.name }}
+    <div class="mb-4" v-if="students && students?.length > 0">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">O'quvchilar</label>
+      <div v-if="students?.length" class="flex flex-wrap gap-3">
+        <div v-for="student in students" :key="student.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <input
+              type="checkbox"
+              :id="'student_' + student.id"
+              :value="student.id"
+              v-model="newGroup.students"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label :for="'student_' + student.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+            {{ student.full_name }}
+          </label>
+        </div>
       </div>
     </div>
 
@@ -249,7 +254,7 @@ export default {
       try {
         const response = await store.dispatch('student/getStudentByCourseId', selectedCourse.value);
         console.log(response)
-        students.value = response.data;
+        students.value = response.students;
       } catch (error) {
         console.error("Error fetching students:", error);
       }

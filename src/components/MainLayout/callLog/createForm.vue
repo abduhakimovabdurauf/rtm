@@ -28,17 +28,17 @@
       <div v-if="students==null">
         <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
       </div>
-      <select
-          id="student_id"
-          required
-          v-else-if="students && students.data && students.data.length > 0"
+
+      <Multiselect
           v-model="newCourse.student_id"
+          :options="studentsList"
+          label="full_name"
+          :searchable="true"
+          :close-on-select="true"
+          v-else-if="students && students.data && students.data.length > 0"
+          placeholder="O'quvchini tanlang..."
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option v-for="student in students.data" :key="student.id" :value="student.id">
-          {{ student.name }}
-        </option>
-      </select>
+      />
 
       <div v-else>
         <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
@@ -52,8 +52,10 @@
           id="status"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
       >
-        <option value="active">Faol</option>
-        <option value="inactive">Faol emas</option>
+        <option value="answered">Javob berildi</option>
+        <option value="no_answer">Javob berilmadi</option>
+        <option value="busy">Band</option>
+        <option value="call_back">Javob berilmadi</option>
       </select>
     </div>
 
@@ -73,8 +75,13 @@
 <script>
 import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
+import Multiselect from '@vueform/multiselect';
+import '@vueform/multiselect/themes/default.css';
 
 export default {
+  components: {
+    Multiselect,
+  },
   setup() {
     const store = useStore();
     const activeUser = JSON.parse(localStorage.getItem("user"))
@@ -82,7 +89,7 @@ export default {
       branch_id: '',
       user_id: activeUser.id,
       student_id: '',
-      status: 'active',
+      status: 'answered',
     });
     const branches = ref(null);
     const students = ref(null)
@@ -90,7 +97,10 @@ export default {
       try {
         branches.value = await store.dispatch("branch/getAllBranches");
         newCourse.branch_id = branches.value.data[0].id;
-        students.value = await store.dispatch("student/getAllStudents");
+        students.value = await store.dispatch("student/getAllStudents", {
+          page: 1,
+        });
+        newCourse.student_id = students.value.data[0].id;
         // console.log(branches.value)
 
         newCourse.branch_id = branches.value.data[0].id;
@@ -98,6 +108,14 @@ export default {
         console.error("Xatolik yuz berdi:", error);
       }
     };
+
+    const studentsList = computed(() => {
+      if (!students.value || !students.value.data) return [];
+      return students.value.data.map(student => ({
+        value: student.id,
+        full_name: student.full_name,
+      }));
+    });
 
     onMounted(fetchData);
 
@@ -134,6 +152,7 @@ export default {
       isFormValid,
       branches,
       students,
+      studentsList,
     };
   },
 };
