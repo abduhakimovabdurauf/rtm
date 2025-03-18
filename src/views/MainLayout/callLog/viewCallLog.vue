@@ -37,13 +37,13 @@
             :key="callLog.id"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold">{{ callLog?.branch?.name }}</td>
-          <td class="px-6 py-4 font-semibold">{{ callLog?.branch?.full_name }}</td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-2 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold">{{ callLog?.branch?.name }}</td>
+          <td class="px-6 py-2 font-semibold">{{ callLog?.branch?.full_name }}</td>
+          <td class="px-6 py-2">
             <StatusBadge :status="callLog.status" />
           </td>
-          <td class="px-6 py-4 space-x-3 text-right">
+          <td class="px-6 py-2 space-x-3 text-right">
             <button
                 @click="deleteById(callLog.id)"
                 class="mr-0.5 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"

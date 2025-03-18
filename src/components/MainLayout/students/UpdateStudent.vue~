@@ -135,24 +135,6 @@
           <option value="woman">Ayol</option>
         </select>
       </div>
-
-      <div class="mb-4">
-        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs statusi</label>
-        <select
-            v-model="form.c_status"
-            id="status"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-        >
-          <option value="pending">Yozilish jarayonida</option>
-          <option value="enrolled">Kursga muvaffaqiyatli qabul qilindi</option>
-          <option value="studying">Hozirda o‘qiyapti</option>
-          <option value="completed">Kursni muvaffaqiyatli tugatdi</option>
-          <option value="dropped">Kursni tashlab ketdi</option>
-          <option value="on_hold">Vaqtincha to‘xtatilgan</option>
-          <option value="failed">Kursdan o‘ta olmadi</option>
-        </select>
-      </div>
-
       <div class="mb-4">
         <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
         <select
@@ -238,7 +220,6 @@ export default {
       description: '',
       branch_id: '',
       status: '',
-      c_status: '',
       image: null,
     });
 

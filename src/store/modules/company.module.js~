@@ -1,5 +1,6 @@
 import axios from "@/axios/settings.js";
 import { useToast } from "vue-toastification";
+import Vue from "vue";
 const toast = useToast();
 const API_URL = `${import.meta.env.VITE_API_URL}/companies`;
 
@@ -18,13 +19,11 @@ export default {
             state.companies.unshift(company);
         },
         UPDATE_COMPANY(state, updatedCompany) {
-            const index = state.companies.findIndex(c => c.id === updatedCompany.id);
+            const index = state.companies.findIndex((c) => c.id === updatedCompany.id);
             if (index !== -1) {
-                state.companies.splice(index, 1, updatedCompany);
-                state.companies = [...state.companies];
+                Vue.set(state.companies, index, updatedCompany);
             }
         },
-
         DELETE_COMPANY(state, companyId) {
             state.companies = state.companies.filter((company) => company.id !== companyId);
         },

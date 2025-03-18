@@ -46,22 +46,22 @@
             :key="index"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">
+          <td class="px-6 py-2 font-semibold text-gray-800 dark:text-white">
             {{ index + 1 }}
           </td>
-          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">
+          <td class="px-6 py-2 font-semibold text-gray-800 dark:text-white">
             {{ notification?.title || 'Noma’lum' }}
           </td>
-          <td class="px-6 py-4 font-semibold">
+          <td class="px-6 py-2 font-semibold">
             {{ notification?.text?.length > 20 ? notification?.text.slice(0, 20) + '...' : notification?.text || 'Noma’lum' }}
           </td>
-          <td class="px-6 py-4 font-semibold">
+          <td class="px-6 py-2 font-semibold">
             {{ notification?.type || 'Noma’lum' }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-2">
             <StatusBadge :status="notification?.status" />
           </td>
-          <td class="px-6 py-4 space-x-3 text-right">
+          <td class="px-6 py-2 space-x-3 text-right">
             <router-link
                 :to="{ name: 'watchNotification', params: { id: notification?.id } }"
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"

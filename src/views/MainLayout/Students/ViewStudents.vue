@@ -69,16 +69,16 @@
               :key="student.id"
               class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
-            <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
-            <td class="px-6 py-4 font-semibold">{{ student.full_name }}</td>
-            <td class="px-6 py-4 font-semibold">{{ student.phone }}</td>
-            <td class="px-6 py-4 font-semibold">{{ student.address }}</td>
-            <td class="px-6 py-4 font-semibold">{{ student.description }}</td>
-            <td class="px-6 py-4">
+            <td class="px-6 py-1 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
+            <td class="px-6 py-1 font-semibold">{{ student.full_name }}</td>
+            <td class="px-6 py-1 font-semibold">{{ student.phone }}</td>
+            <td class="px-6 py-1 font-semibold">{{ student.address }}</td>
+            <td class="px-6 py-1 font-semibold">{{ student.description }}</td>
+            <td class="px-6 py-1">
               <StatusBadge :status="student.status" />
             </td>
             <td
-                class="px-6 py-4 space-x-3 text-right"
+                class="px-6 py-2 space-x-3 text-right"
             >
               <button @click="openPayModal(student.id,student.groups)" class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200">
                 <i class='bx bxs-dollar-circle'></i>
@@ -173,7 +173,7 @@ export default {
     const isPaying = ref(false)
     const selectedStudentId = ref(null);
     const selectedGroupData = ref(null)
-    const perPage = ref(6);
+    const perPage = ref(15);
     const isSortLoading = computed(()=> store.getters['isSortLoading'])
     const keyWord = ref('')
     const sidebarTitle = computed(() => {

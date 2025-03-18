@@ -51,12 +51,12 @@
           >
             {{ payment?.student?.full_name }}
           </td>
-          <td class="px-6 py-4 font-semibold">{{ payment?.summa }} UZS</td>
-          <td class="px-6 py-4 font-semibold">{{ payment?.date }}</td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-2 font-semibold">{{ payment?.summa }} UZS</td>
+          <td class="px-6 py-2 font-semibold">{{ payment?.date }}</td>
+          <td class="px-6 py-2">
               <StatusBadge :status="payment?.status" />
           </td>
-          <td class="px-6 py-4 space-x-3 text-right">
+          <td class="px-6 py-2 space-x-3 text-right">
             <button
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
                 @click="openModal(payment?.id)"

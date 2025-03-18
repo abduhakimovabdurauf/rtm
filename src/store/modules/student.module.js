@@ -78,7 +78,7 @@ export default {
             } catch (e) {
                 toast.error(e.response?.data?.message || "Failed to fetch student!");
             } finally {
-                commit("SET_LOADING", false, { root: false });
+                commit("SET_LOADING", false, { root: true });
             }
         },
         async addStudent({ commit }, payload) {

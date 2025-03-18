@@ -46,17 +46,17 @@
             :key="group.id"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold"
+          <td class="px-6 py-2 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold"
             v-if="group && group.course"
           >
             {{ group.course.name }}
           </td>
-          <td class="px-6 py-4 font-semibold">{{ group.name }}</td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-2 font-semibold">{{ group.name }}</td>
+          <td class="px-6 py-2">
             <StatusBadge :status="group.status" />
           </td>
-          <td class="px-6 py-4 space-x-3 text-right">
+          <td class="px-6 py-2 space-x-3 text-right">
             <router-link
                 :to="{ name: 'WatchGroup', params: { id: group.id } }"
                 class="transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"

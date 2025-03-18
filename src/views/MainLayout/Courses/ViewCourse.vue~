@@ -32,6 +32,7 @@
         <thead>
         <tr class="bg-gray-700 text-white">
           <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Filial</th>
           <th class="px-6 py-4 text-left">Kurs nomi</th>
           <th class="px-6 py-4 text-left">Davomiyligi</th>
           <th class="px-6 py-4 text-left">Narxi</th>
@@ -46,6 +47,7 @@
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
           <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
+          <td class="px-6 py-4 font-semibold">{{ course?.branch?.name }}</td>
           <td class="px-6 py-4 font-semibold">{{ course.name }}</td>
           <td class="px-6 py-4 font-semibold">{{ course.duration }} oy</td>
           <td class="px-6 py-4 font-semibold">{{ course.price }} UZS</td>
