@@ -62,8 +62,8 @@
               class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600"
           />
           <div class="flex flex-col">
-            <span class="text-gray-800 dark:text-white font-medium text-base">{{ user.full_name }}</span>
-            <span class="text-gray-800 dark:text-gray-400 text-sm">{{ user?.roles[0].name }}</span>
+            <span class="text-gray-800 dark:text-white font-medium text-base">{{ user?.full_name }}</span>
+            <span class="text-gray-800 dark:text-gray-400 text-sm">{{ user?.roles[0]?.name }}</span>
           </div>
         </div>
       </router-link>

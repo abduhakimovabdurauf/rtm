@@ -9,43 +9,74 @@
           @change="fetchData"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
+        <option value="">Filialni tanlang!</option>
         <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
           {{ branch.name }}
         </option>
       </select>
+      <div v-else>Ma'lumotlar yuklanmoqda...</div>
     </div>
 
-    <div class="mb-4" v-if="courses && courses && courses.length > 0">
-      <label for="course_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs ID</label>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">O'qituvchi ID</label>
+      <div v-if="loadingCourses">O'qituvchilar ma'lumotlari yuklanmoqda...</div>
+      <div class="text-red-600" v-else-if="newGroup?.branch_id && teachers?.length === 0">O'qituvchi mavjud emas!</div>
+      <select
+          id="teacher_id"
+          v-else-if="newGroup.branch_id && teachers?.length > 0"
+          v-model="newGroup.teacher_id"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      >
+        <option value="">O'qituvchini tanlang!</option>
+        <option v-for="teacher in teachers" :key="teacher.id" :value="teacher.id">
+          {{ teacher.full_name }}
+        </option>
+      </select>
+      <div class="text-red-600" v-else>O'qituvchini tanlash uchun avval filialni tanlang!</div>
+    </div>
+    
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs ID</label>
+      <div v-if="loadingCourses">Kurslar ma'lumotlari yuklanmoqda...</div>
+      <div class="text-red-600" v-else-if="newGroup?.branch_id && courses?.length === 0">Kurs mavjud emas!</div>
       <select
           id="course_id"
+          v-else-if="newGroup.branch_id && courses?.length > 0"
           v-model="newGroup.course_id"
           @change="fetchStudents"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
+        <option value="">Kursni tanlang!</option>
         <option v-for="course in courses" :key="course.id" :value="course.id">
           {{ course.name }}
         </option>
       </select>
+      <div class="text-red-600" v-else>Kursni tanlash uchun avval filialni tanlang!</div>
     </div>
 
-
-    <div class="mb-4" v-if="rooms && rooms && rooms.length > 0">
-      <label for="room_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xona ID</label>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xona ID</label>
+      <div v-if="loadingRooms">Xonalar ma'lumotlari yuklanmoqda...</div>
+      <div class="text-red-600" v-else-if="newGroup.branch_id && rooms?.length === 0">Xona mavjud emas!</div>
       <select
           id="room_id"
+          v-else-if="newGroup.branch_id && rooms?.length > 0"
           v-model="newGroup.room_id"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
+        <option value="">Xonani tanlang!</option>
         <option v-for="room in rooms" :key="room.id" :value="room.id">
           {{ room.name }}
         </option>
       </select>
+      <div class="text-red-600" v-else>Xonani tanlash uchun avval filialni tanlang!</div>
     </div>
 
-    <div class="mb-4" v-if="students && students?.length > 0">
+    <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">O'quvchilar</label>
-      <div v-if="students?.length" class="flex flex-wrap gap-3">
+      <div v-if="loadingStudents">O'quvchilar ma'lumotlari yuklanmoqda...</div>
+      <div class="text-red-600" v-else-if="newGroup.course_id && students?.length === 0">O'quvchilar mavjud emas!</div>
+      <div v-else-if="newGroup.course_id && students?.length > 0" class="flex flex-wrap gap-3">
         <div v-for="student in students" :key="student.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
           <input
               type="checkbox"
@@ -59,7 +90,9 @@
           </label>
         </div>
       </div>
+      <div class="text-red-600" v-else>O'quvchini tanlash uchun avval kursni tanlang!</div>
     </div>
+
 
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh Nomi</label>
@@ -97,16 +130,16 @@
 
 
 
-    <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
-      <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
-      <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-      <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
-    </label>
+<!--    <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">-->
+<!--      <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">-->
+<!--      <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>-->
+<!--      <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>-->
+<!--    </label>-->
 
 
 
 
-    <div v-if="showOptionalFields">
+    <div>
       <div class="mb-4">
         <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Boshlanish Vaqti</label>
         <input
@@ -234,8 +267,10 @@ export default {
       part_of_time: "morning",
       lvl: "beginner",
       status: "active",
+      g_status: '',
       description: "",
       branch_id: "",
+      teacher_id: "",
       students: [],
     });
 
@@ -243,45 +278,55 @@ export default {
     const rooms = ref(null);
     const branches = ref(null);
     const students = ref(null);
+    const teachers = ref(null);
     const selectedCourse = ref(null);
     const selectedBranch = ref(null);
-
+    const loadingCourses = ref(false);
+    const loadingRooms = ref(false);
+    const loadingStudents = ref(false);
+    const selectedCourseData = ref(null)
     const fetchStudents = async () => {
       selectedCourse.value = newGroup.value.course_id
-      console.log(typeof selectedCourse.value)
+      loadingStudents.value = true;
       if (!selectedCourse.value) return;
 
       try {
         const response = await store.dispatch('student/getStudentByCourseId', selectedCourse.value);
         console.log(response)
+        console.log(selectedCourse.value)
         students.value = response.students;
+
+        // newGroup.value.end_date = courses.value[selectedCourse].duration + newGroup.value.start_date
+        console.log('sana: ',courses.value[selectedCourse])
       } catch (error) {
         console.error("Error fetching students:", error);
+      } finally {
+        loadingStudents.value = false;
       }
     };
 
 
     const fetchData = async () => {
       selectedBranch.value = newGroup.value.branch_id
+      loadingCourses.value = true;
+      loadingRooms.value = true;
       try {
         const response = await store.dispatch("branch/getBranchById", selectedBranch.value);
         courses.value = response?.courses;
         rooms.value = response?.rooms;
-        newGroup.value.course_id = courses?.value[0]?.id
-        newGroup.value.room_id = rooms?.value[0]?.id
+        teachers.value = response?.users;
+        newGroup.value.start_date = new Date().toISOString().split('T')[0]
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
+      } finally {
+        loadingCourses.value = false;
+        loadingRooms.value = false;
       }
     }
     
     const fetchBranch = async () => {
       try {
-
-
         branches.value = await store.dispatch("branch/getAllBranches");
-        if (branches.value.data.length > 0) {
-          newGroup.value.branch_id = branches.value.data[0].id;
-        }
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -335,11 +380,16 @@ export default {
       isFormValid,
       courses,
       rooms,
+      teachers,
       branches,
       students,
       showOptionalFields,
       fetchStudents,
       fetchData,
+      loadingCourses,
+      loadingRooms,
+      loadingStudents,
+      selectedCourseData,
     };
   },
 };

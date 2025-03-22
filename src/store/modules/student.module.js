@@ -14,7 +14,7 @@ export default {
             state.students = students;
         },
         ADD_STUDENT(state, payload) {
-            state.students.push(payload);
+            state.students.unshift(payload);
         },
         UPDATE_STUDENT(state, payload) {
             const index = state.students.findIndex((u) => u.id === payload.id);

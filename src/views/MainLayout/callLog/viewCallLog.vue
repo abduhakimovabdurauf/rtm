@@ -27,7 +27,8 @@
         <tr class="bg-gray-700 text-white">
           <th class="px-6 py-4 text-left">№</th>
           <th class="px-6 py-4 text-left">Filial</th>
-          <th class="px-6 py-4 text-left">O'quvchi</th>
+          <th class="px-6 py-4 text-left">Holat</th>
+<!--          <th class="px-6 py-4 text-left">O'quvchi</th>-->
           <th class="px-6 py-4 text-right">Amallar</th>
         </tr>
         </thead>
@@ -39,7 +40,7 @@
         >
           <td class="px-6 py-2 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
           <td class="px-6 py-2 font-semibold">{{ callLog?.branch?.name }}</td>
-          <td class="px-6 py-2 font-semibold">{{ callLog?.branch?.full_name }}</td>
+<!--          <td class="px-6 py-2 font-semibold">{{ callLog?.branch?.full_name }}</td>-->
           <td class="px-6 py-2">
             <StatusBadge :status="callLog.status" />
           </td>

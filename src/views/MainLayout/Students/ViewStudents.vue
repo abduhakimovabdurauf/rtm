@@ -225,7 +225,7 @@ export default {
 
     const deleteStudent = async (Id) => {
       try {
-        await store.dispatch("user/deleteUser", Id);
+        await store.dispatch("student/deleteStudent", Id);
         await fetchStudents();
       } catch (error) {
         console.error("Error deleting student:", error.message);

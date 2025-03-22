@@ -6,14 +6,21 @@
         <select
             id="branch_id"
             required
-            v-if="branches && branches.data && branches.data.length > 0"
             v-model="form.branch_id"
+            v-if="branches && branches.length > 0"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         >
-          <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
+          <option v-for="branch in branches" :key="branch.id" :value="branch.id">
             {{ branch.name }}
           </option>
         </select>
+        <p v-else-if="branches === null">
+          Ma'lumot yuklanmoqda...
+        </p>
+        <p v-else>
+          Filiallar ma'lumotlari bog'lanmagan!
+        </p>
+
       </div>
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Nomi</label>
@@ -95,7 +102,6 @@ export default {
   emits: ['close'],
   setup(props,{ emit }) {
     const store = useStore();
-
     const selectedRoom = computed(() =>
         store.state.room.rooms.find((room) => room.id === props.roomId)
     );
@@ -105,7 +111,10 @@ export default {
     const fetchData = async () => {
       try {
         user.value = await store.dispatch("user/getUserById",activeUser.id);
-        branches.value = user.value?.branches || [];
+        branches.value = user.value?.user.branches;
+
+        console.log(user.value)
+        console.log(branches.value)
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }
@@ -119,6 +128,7 @@ export default {
       number: '',
       description: '',
       id: props.roomId,
+      user: activeUser.id,
       status: '',
     });
 
@@ -136,16 +146,24 @@ export default {
     );
 
     const isFormChanged = computed(() => {
-      const { name, quantity, number, description } = form.value;
-      const { name: initName, quantity: initQuantity, number: initNumber, description: initDescription } = initialForm.value;
+      const { name, quantity, number, description, branch_id } = form.value;
+      const {
+        name: initName,
+        quantity: initQuantity,
+        number: initNumber,
+        description: initDescription,
+        branch_id: initBranchId,
+      } = initialForm.value;
 
       return (
           name !== initName ||
           quantity !== initQuantity ||
           number !== initNumber ||
-          description !== initDescription
+          description !== initDescription ||
+          branch_id !== initBranchId
       );
     });
+
 
     const handleSubmit = () => {
       const updatedRoom = {

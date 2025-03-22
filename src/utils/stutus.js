@@ -7,7 +7,11 @@ const statuses = {
     expelled: 'Haydalgan',
     failed: 'Muvaffaqiyatsiz',
     read: 'O`qildi',
-    unread: 'O`qilmadi'
+    unread: 'O`qilmadi',
+    answered: 'Javob berildi',
+    no_answer: 'Javob berilmadi',
+    busy: 'Band',
+    call_back: 'Qayta aloqa',
 };
 
 export function getStatus(status) {

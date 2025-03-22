@@ -74,6 +74,7 @@
             >
               <i class="bx bxs-trash-alt"></i>
             </button>
+
             <button
                 @click.prevent="openUpdateModal(branch.id)"
                 class="text-white bg-green-500 hover:bg-green-600 p-2 py-1 rounded transition"

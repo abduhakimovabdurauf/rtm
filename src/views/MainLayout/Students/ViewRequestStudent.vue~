@@ -9,11 +9,9 @@
       @close="closeUpdateSidebar"
     />
     <Pay
-      v-if="isPayment"
-      :studentId="studentId"
+      v-if="isPaying"
+      :studentId="selectedStudentId"
       :groupData="selectedGroupData"
-      @close="closePaymentSidebar"
-    />
   </actionSidebar>
 
   <div class="flex justify-evenly">

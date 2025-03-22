@@ -53,7 +53,6 @@
           v-model.trim="newRoom.description"
           type="text"
           id="description"
-          required
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       ></textarea>
     </div>
@@ -118,7 +117,6 @@ export default {
       return (
           newRoom.name.trim().length > 0 &&
           /^[1-9][0-9]*$/.test(newRoom.quantity) &&
-          newRoom.description.trim().length > 0 &&
           newRoom.status
       );
     });

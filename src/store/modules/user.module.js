@@ -49,19 +49,18 @@ export default {
             }
         },
         async getUserById({ commit }, userId) {
-            commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(`${API_URL}/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
+                console.log(response.data)
                 return response.data;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Xodim malumotlari olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
-                commit("closeSidebar", false, { root: true });
             }
         },
         async addUser({ commit }, user) {

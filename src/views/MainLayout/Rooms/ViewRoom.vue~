@@ -50,29 +50,29 @@
             :key="room.id"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-2 font-semibold text-gray-800 dark:text-white">{{ index+1 }}</td>
-          <td class="px-6 py-2 font-semibold text-gray-800 dark:text-white">{{ room.name }}</td>
-          <td class="px-6 py-2 font-semibold">{{ room.quantity }}</td>
-          <td class="px-6 py-2 font-semibold">{{ room.description }}</td>
-          <td class="px-6 py-2">
+          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ index+1 }}</td>
+          <td class="px-6 py-4 font-semibold text-gray-800 dark:text-white">{{ room.name }}</td>
+          <td class="px-6 py-4 font-semibold">{{ room.quantity }}</td>
+          <td class="px-6 py-4 font-semibold">{{ room.description }}</td>
+          <td class="px-6 py-4">
             <StatusBadge :status="room.status" />
           </td>
-          <td class="px-6 py-2 space-x-3 text-right">
+          <td class="px-6 py-4 space-x-3 text-right">
             <router-link
                 :to="{ name: 'WatchRoom', params: { id: room.id } }"
-                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 p-3 py-2 rounded duration-200"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
             >
               <i class="bx bxs-show"></i>
             </router-link>
             <button
                 @click="deleteById(room.id)"
-                class="mr-0.5 transition text-white bg-red-500 hover:bg-red-600  p-3 py-2 rounded duration-200"
+                class="mr-0.5 transition text-white bg-red-500 hover:bg-red-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
             >
               <i class="bx bxs-trash-alt"></i>
             </button>
             <button
                 @click.prevent="openUpdateModal(room.id)"
-                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600  p-3 py-2 rounded duration-200"
+                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
             >
               <i class="bx bxs-edit-alt"></i>
             </button>

@@ -332,7 +332,7 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: ()=> import('../views/MainLayout/Profile/ViewProfile.vue'),
-    meta: { layout: 'main', auth: true, roles: ['all'] }
+    meta: { layout: 'main', auth: false, roles: ['all'] }
   }
 
 ];

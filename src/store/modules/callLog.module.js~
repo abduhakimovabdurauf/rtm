@@ -17,12 +17,12 @@ export default {
             state.callLogs = callLogs;
         },
         ADD_CALLLOG(state, callLog) {
-            state.callLogs.unshift(callLog);
+            if (!Array.isArray(state.callLogs)) {
+                state.callLogs = [];
+            }
+            state.callLogs.push(callLog);
         },
-        UPDATE_CALLLOG(state, updatedcallLog) {
-            const index = state.callLogs.findIndex((r) => r.id === updatedcallLog.id);
-            if (index !== -1) state.callLogs.splice(index, 1, updatedcallLog);
-        },
+
         DELETE_CALLLOG(state, callLogId) {
             state.callLogs = state.callLogs.filter((callLog) => callLog.id !== callLogId);
         },
@@ -35,8 +35,9 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("SET_CALLLOGS", response.data.data);
-                return response.data;
+                console.log(response)
+                commit("SET_CALLLOGS", response?.data?.call_logs.data);
+                return response.data.call_logs;
             } catch (e) {
                 toast.error(e.response?.data?.message || "Qo'ngiroqlar jurnalilar ro‘yxatini olishda xatolik!");
             } finally {
@@ -54,10 +55,13 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("ADD_CALLLOG", response.data.data);
+                console.log(response)
+                commit("ADD_CALLLOG", response?.data?.call_log  );
                 toast.success(response.data.message);
+
             } catch (e) {
                 toast.error(e.response?.data?.message || "Qo'ngiroqlar jurnali qo‘shishda xatolik!");
+                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });

@@ -3,123 +3,124 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast();
 
-const API_URL = `${import.meta.env.VITE_API_URL}/rooms`;
+const API_URL = `${import.meta.env.VITE_API_URL}/courses`;
 
 export default {
     namespaced: true,
     state() {
         return {
-            rooms: [],
-            room: [],
+            courses: [],
+            course: [],
+            token: localStorage.getItem("jwt-token"),
         };
     },
     mutations: {
-        SET_ROOM(state, room) {
-            state.room = room;
+        SET_COURSES(state, courses) {
+            state.courses = courses;
         },
-        SET_ROOMS(state, rooms) {
-            state.rooms = rooms;
+        ADD_COURSE(state, course) {
+            state.courses.unshift(course);
         },
-        ADD_ROOM(state, room) {
-            if (!Array.isArray(state.rooms)) {
-                state.rooms = [];
-            }
-            state.rooms.unshift(room);
+        UPDATE_COURSE(state, updatedCourse) {
+            const index = state.courses.findIndex((c) => c.id === updatedCourse.id);
+            if (index !== -1) state.courses.splice(index, 1, updatedCourse);
         },
-        UPDATE_ROOM(state, updatedRoom) {
-            const index = state.rooms.findIndex((c) => c.id === updatedRoom.id);
-            if (index !== -1) state.rooms.splice(index, 1, updatedRoom);
-        },
-        DELETE_ROOM(state, roomId) {
-            state.rooms = state.rooms.filter((room) => room.id !== roomId);
+        DELETE_COURSE(state, courseId) {
+            state.courses = state.courses.filter((course) => course.id !== courseId);
         },
     },
     actions: {
-        async getAllRooms({ commit }) {
+        async getAllCourses({ commit }, payload) {
             // commit("SET_LOADING", true, { root: true });
             try {
                 const response = await axios.get(API_URL, {
+                    params: {
+                        page: payload?.page,
+                        per_page: payload?.perPage,
+                        sortBy: payload?.sortBy,
+                        orderBy: payload?.orderBy,
+                    },
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("SET_ROOMS", response.data.rooms.data);
-                return response.data.rooms
+                commit("SET_COURSES", response.data.data);
+                return response.data;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xonalarni olishda xatolik!");
+                toast.error(e.response?.data?.message || "Kurslarni olishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
             }
         },
 
-        async getRoomById({ commit }, roomId) {
+        async getCourseById({ commit }, courseId) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.get(`${API_URL}/${roomId}`, {
+                const response = await axios.get(`${API_URL}/${courseId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-
-                return response.data
+                return response.data;
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xonalarni olishda xatolik!");
+                toast.error(e.response?.data?.message || "Failed to fetch course!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
+                commit("closeSidebar", false, { root: true });
             }
         },
 
-        async addRoom({ commit }, room) {
+        async addCourse({ commit }, course) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(API_URL, room, {
+                const response = await axios.post(API_URL, course, {
                     headers: {
-                        "Content-Type": "application/json",
+                        "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("ADD_ROOM", response.data.room);
+                commit("ADD_COURSE", response.data.course);
                 toast.success(response.data.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xona qoshishda xatolik!");
+                toast.error(e.response?.data?.message || "Kurs qoshishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
             }
         },
 
-        async updateRoom({ commit }, updatedRoom) {
+        async updateCourse({ commit }, payload) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(`${API_URL}/${updatedRoom.id}`, updatedRoom, {
+                const response = await axios.post(`${API_URL}/${payload.id}`, payload, {
                     headers: {
-                        "Content-Type": "application/json",
+                        "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("UPDATE_ROOM", response.data.room);
+                commit("UPDATE_COURSE", response.data.course);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xonani ozgartirishda xatolik!");
+                toast.error(e.response?.data?.message || "Kursni o`zgartirishda xatolik!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
             }
         },
 
-        async deleteRoom({ commit }, roomId) {
-            if (!confirm("Siz rostdanxam bu xonani o'chirib yubormoqchimisiz??")) {
+        async deleteCourse({ commit }, courseId) {
+            if (!confirm("Siz rostdanxam bu kursni o'chirib yubormoqchimisiz??")) {
                 return;
             }
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.delete(`${API_URL}/${roomId}`, {
+                const response = await axios.delete(`${API_URL}/${courseId}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
                 });
-                commit("DELETE_ROOM", roomId);
+                commit("DELETE_COURSE", courseId);
                 toast.success(response?.data?.message);
             } catch (e) {
-                toast.error(e.response?.data?.message || "Xonani ochirishda xatolik!");
+                toast.error(e.response?.data?.message || "Failed to delete course!");
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
@@ -127,8 +128,8 @@ export default {
         },
     },
     getters: {
-        rooms(state) {
-            return state.rooms
+        courses(state) {
+            return state.courses
         }
     }
 };

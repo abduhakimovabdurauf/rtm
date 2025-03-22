@@ -30,7 +30,7 @@
       </div>
 
       <Multiselect
-          v-model="newCallLog.student_id"
+          v-model="newCourse.student_id"
           :options="studentsList"
           label="full_name"
           :searchable="true"
@@ -52,7 +52,7 @@
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
       <select
-          v-model="newCallLog.status"
+          v-model="newCourse.status"
           id="status"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
       >
@@ -89,7 +89,7 @@ export default {
     const activeUser = JSON.parse(localStorage.getItem("user"));
 
     const selectedBranchId = ref('');
-    const newCallLog = reactive({
+    const newCourse = reactive({
       branch_id: '',
       user_id: activeUser.id,
       student_id: '',
@@ -112,7 +112,6 @@ export default {
     };
 
     const fetchBranchStudents = async () => {
-      newCallLog.branch_id = selectedBranchId.value;
       try {
         if (!selectedBranchId.value) return;
         const response = await store.dispatch("branch/getBranchById", selectedBranchId.value);
@@ -132,27 +131,27 @@ export default {
     });
 
     const isFormValid = computed(() => {
-      return newCallLog.branch_id && newCallLog.status && newCallLog.student_id;
+      return newCourse.branch_id && newCourse.status && newCourse.student_id;
     });
 
 
     const handleSubmit = async () => {
         // if (!isFormValid.value) return;
-      console.log('branchId: ', newCallLog.branch_id);
+      console.log('branchId: ', newCourse.branch_id);
       const formData = new FormData();
-      formData.append("branch_id", newCallLog.branch_id);
-      formData.append("user_id", newCallLog.user_id);
-      formData.append("student_id", newCallLog.student_id);
-      formData.append("status", newCallLog.status);
+      formData.append("branch_id", newCourse.branch_id);
+      formData.append("user_id", newCourse.user_id);
+      formData.append("student_id", newCourse.student_id);
+      formData.append("status", newCourse.status);
 
       await store.dispatch('callLog/addCallLog', formData);
-        Object.keys(newCallLog).forEach((key) => {
-          newCallLog[key] = key === 'status' ? 'active' : '';
+        Object.keys(newCourse).forEach((key) => {
+          newCourse[key] = key === 'status' ? 'active' : '';
         });
     };
 
     return {
-      newCallLog,
+      newCourse,
       handleSubmit,
       isFormValid,
       branches,
