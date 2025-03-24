@@ -590,7 +590,7 @@ export default {
     const openUpdateCourseSidebar = (id) => {
       selectedCourseId.value = id
       isUpdateCourse.value = true;
-      console.log('isUpdataCourse', selectedCourseId.value)
+      console.log('isUpdateCourse', selectedCourseId.value)
       store.dispatch("toggleSidebar", true);
     }
 

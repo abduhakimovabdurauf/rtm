@@ -134,10 +134,13 @@ export default {
   setup(props,{ emit }) {
     const store = useStore();
 
-    const selectedCourse = computed(() =>
-        store.state.course.courses.find((course) => course.id === props.courseId)
-    );
+    const selectedCourse = ref(null)
+    onMounted(() => {
+      selectedCourse.value = store.state.course.courses.find((course) => course.id === props.courseId)
+    })
 
+    console.log('courseId: ', props.courseId)
+    console.log('selectedCourse: ', selectedCourse.value)
     const form = ref({
       name: '',
       duration: '',

@@ -131,6 +131,10 @@ export default {
     getters: {
         courses(state) {
             return state.courses
+        },
+        courseById: (state) => (id) => {
+            return state.courses.find(course => course.id === id);
         }
+
     }
 };
