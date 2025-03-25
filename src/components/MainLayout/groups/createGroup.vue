@@ -267,7 +267,6 @@ export default {
       part_of_time: "morning",
       lvl: "beginner",
       status: "active",
-      g_status: '',
       description: "",
       branch_id: "",
       teacher_id: "",
@@ -356,15 +355,34 @@ export default {
     const showOptionalFields = ref(false);
     const handleSubmit = async () => {
       try {
-        await store.dispatch("group/addGroup", { ...newGroup.value });
-        resetForm();
+        const formData = new FormData();
 
+        formData.append("user_id", newGroup.value.user_id);
+        formData.append("course_id", newGroup.value.course_id);
+        formData.append("room_id", newGroup.value.room_id);
+        formData.append("name", newGroup.value.name);
+        formData.append("start_time", newGroup.value.start_time);
+        formData.append("end_time", newGroup.value.end_time);
+        formData.append("start_date", newGroup.value.start_date);
+        formData.append("end_date", newGroup.value.end_date);
+        formData.append("part_of_day", newGroup.value.part_of_day);
+        formData.append("part_of_time", newGroup.value.part_of_time);
+        formData.append("lvl", newGroup.value.lvl);
+        formData.append("status", newGroup.value.status);
+        formData.append("description", newGroup.value.description);
+        formData.append("branch_id", newGroup.value.branch_id);
+        formData.append("teacher_id", newGroup.value.teacher_id);
+        formData.append("students", JSON.stringify(newGroup.value.students));
+
+        await store.dispatch("group/addGroup", formData);
+        resetForm();
         emit("close");
       } catch (error) {
         alert("Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.");
         console.error(error);
       }
     };
+
 
     const resetForm = () => {
       newGroup.value = {
