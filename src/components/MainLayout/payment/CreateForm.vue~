@@ -26,14 +26,14 @@
     </div>
 
     <div class="mb-4">
-      <label for="group_id" class="block text-sm font-medium text-gray-900 dark:text-gray-300">Guruh ID</label>
+      <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh ID</label>
       <Multiselect
           v-model="newPayment.group_id"
           :options="groupsList"
           label="full_name"
           :searchable="true"
           :close-on-select="true"
-          v-if="groups && groups?.data && groups?.data?.length > 0"
+          v-if="groups && groups.data && groups.data.length > 0"
           placeholder="Guruhni tanlang..."
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
@@ -123,7 +123,6 @@ export default {
           sortBy: 'id',
           orderBy: 'desc',
         });
-        console.log('guruhlar: ', groups.value)
         students.value = await store.dispatch('student/getAllStudents', {
           page: 1,
           sortBy: 'id',

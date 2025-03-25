@@ -26,12 +26,12 @@
     </div>
 
     <div class="mb-4">
-      <label for="group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh Id</label>
+      <label for="group_id" class="block text-sm font-medium text-gray-900 dark:text-gray-300">Guruh Id</label>
       <select
           id="group_id"
           required
           v-model.trim="newPayment.group_id"
-          v-if="groups && groups.length > 0"
+          v-if="groups && groups?.length > 0"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option
@@ -39,10 +39,10 @@
             :key="group.id"
             :value="group.id"
         >
-          {{ group.name }}
+          {{ group?.name }}
         </option>
       </select>
-      <p v-else class="text-gray-500">Guruhlar yoq</p>
+      <p v-else class="text-gray-900">Guruhlar yoq</p>
     </div>
     <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
@@ -119,9 +119,6 @@ export default {
           sortBy: 'id',
           orderBy: 'desc',
         });
-        if (groups && groups.length > 0) {
-          newPayment.group_id = groups[0].id;
-        }
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       }

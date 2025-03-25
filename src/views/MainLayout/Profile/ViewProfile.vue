@@ -86,7 +86,7 @@
           <td class="px-4 py-2 dark:text-white">{{ course.price }}</td>
           <td class="px-4 py-2 dark:text-white">{{ course.status }}</td>
           <td class="px-4 py-2 text-right">
-            <router-link :to="{ name: 'WatchCourse', params: { id: course.id } }" class="text-blue-500 dark:text-blue-400">
+            <router-link :to="{ name: 'WatchCourse', params: { id: course.id } }" class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 p-1.5 py-1 rounded duration-200">
               <i class="bx bxs-show"></i>
             </router-link>
           </td>

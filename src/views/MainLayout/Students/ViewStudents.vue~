@@ -80,13 +80,13 @@
             <td
                 class="px-6 py-2 space-x-3 text-right"
             >
-              <button @click="openPayModal(student.id,student.groups)" class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 p-3 py-2 rounded duration-200">
+              <button @click="openPayModal(student.id,student.groups)" class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200">
                 <i class='bx bxs-dollar-circle'></i>
                 To'lov
               </button>
               <router-link
                   :to="{ name: 'WatchStudent', params: { id: student.id } }"
-                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 p-3 py-2 rounded duration-200"
+                  class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
               >
                 <i class="bx bxs-show"></i>
               </router-link>
@@ -98,7 +98,7 @@
               </button>
               <button
                   @click="openUpdateModal(student.id)"
-                  class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"
+                  class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
               >
                 <i class="bx bxs-edit-alt"></i>
               </button>

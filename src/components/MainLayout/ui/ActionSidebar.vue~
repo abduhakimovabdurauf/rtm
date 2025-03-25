@@ -1,7 +1,7 @@
 <template>
   <div
       :class="[
-        'w-[70vh]', 'overflow-auto', 'h-[100vh]', 'fixed', 'right-0', 'z-[10]',
+        'w-[70vh]', 'overflow-auto', 'h-[100vh]', 'fixed', 'right-0', 'z-[100]',
         'transition-transform', 'duration-300', 'bg-white', 'dark:bg-gray-900', 'dark:text-gray-200',
         isSidebarOpen ? 'translate-x-0 shadow-[rgba(0,0,0,0.2)_-10px_0px_15px] dark:shadow-[rgba(255,255,255,0.3)_-10px_0px_20px]' : 'translate-x-full'
       ]"

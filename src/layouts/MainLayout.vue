@@ -30,6 +30,7 @@ export default {
 
     onMounted(()=> {
       store.dispatch('auth/checkToken');
+      store.commit('closeSidebar')
     })
     return {
       isLoading

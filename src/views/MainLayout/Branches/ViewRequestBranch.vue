@@ -36,29 +36,29 @@
       />
 
 
-      <updateCourse
-        v-if="isUpdateCourse"
-        :courseId="selectedCourseId"
-        @close="closeUpdateCourseSidebar"
-      />
-      
-      <updateDiscount
-        v-if="isUpdateDiscount"
-        :discountId="selectedDiscountId"
-        @close="closeUpdateDiscountSidebar"
-      />
-      
-      <updateRoom
-        v-if="isUpdateRoom"
-        :roomId="selectedRoomId"
-        @close="closeUpdateRoomSidebar"
-      />
-      
-      <updateUser
-        v-if="isUpdateUser"
-        :userId="selectedUserId"
-        @close="closeUpdateUserSidebar"
-      />
+<!--      <updateCourse-->
+<!--        v-if="isUpdateCourse"-->
+<!--        :courseId="selectedCourseId"-->
+<!--        @close="closeUpdateCourseSidebar"-->
+<!--      />-->
+<!--      -->
+<!--      <updateDiscount-->
+<!--        v-if="isUpdateDiscount"-->
+<!--        :discountId="selectedDiscountId"-->
+<!--        @close="closeUpdateDiscountSidebar"-->
+<!--      />-->
+<!--      -->
+<!--      <updateRoom-->
+<!--        v-if="isUpdateRoom"-->
+<!--        :roomId="selectedRoomId"-->
+<!--        @close="closeUpdateRoomSidebar"-->
+<!--      />-->
+<!--      -->
+<!--      <updateUser-->
+<!--        v-if="isUpdateUser"-->
+<!--        :userId="selectedUserId"-->
+<!--        @close="closeUpdateUserSidebar"-->
+<!--      />-->
       
     </actionSidebar>
     <div class="w-1/3 overflow-x-auto bg-white shadow-md sm:rounded-lg p-4 mt-6">
@@ -144,12 +144,12 @@
             :key="course.id"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold">{{ course.name }}</td>
-          <td class="px-6 py-4 font-semibold text-xs">
+          <td class="px-6 py-2 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold">{{ course.name }}</td>
+          <td class="px-6 py-2 font-semibold text-xs">
             <StatusBadge :status="course.status"/>
           </td>
-          <td class="px-6 py-4 font-semibold">
+          <td class="px-6 py-2 font-semibold">
             <router-link
                 :to="{ name: 'WatchCourse', params: { id: course.id } }"
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
@@ -273,12 +273,12 @@
             :key="discount.id"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold">{{ discount.name }}</td>
-          <td class="px-6 py-4 font-semibold text-xs">
+          <td class="px-6 py-2 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold">{{ discount.name }}</td>
+          <td class="px-6 py-2 font-semibold text-xs">
             <StatusBadge :status="discount.status"/>
           </td>
-          <td class="px-6 py-4 font-semibold">
+          <td class="px-6 py-2 font-semibold">
             <router-link
                 :to="{ name: 'WatchDiscount', params: { id: discount.id } }"
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
@@ -339,12 +339,12 @@
             :key="room.id"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold">{{ room.name }}</td>
-          <td class="px-6 py-4 font-semibold text-xs">
+          <td class="px-6 py-2 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold">{{ room.name }}</td>
+          <td class="px-6 py-2 font-semibold text-xs">
             <StatusBadge :status="room.status"/>
           </td>
-          <td class="px-6 py-4 font-semibold">
+          <td class="px-6 py-2 font-semibold">
             <router-link
                 :to="{ name: 'WatchRoom', params: { id: room.id } }"
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
@@ -407,12 +407,12 @@
             :key="user.id"
             class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
         >
-          <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-          <td class="px-6 py-4 font-semibold">{{ user.full_name }}</td>
-          <td class="px-6 py-4 font-semibold text-xs">
+          <td class="px-6 py-2 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold">{{ user.full_name }}</td>
+          <td class="px-6 py-2 font-semibold text-xs">
             <StatusBadge :status="user.status"/>
           </td>
-          <td class="px-6 py-4 font-semibold">
+          <td class="px-6 py-2 font-semibold">
             <router-link
                 :to="{ name: 'WatchUser', params: { id: user.id } }"
                 class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
@@ -466,10 +466,10 @@ import CreateRoom from "@/components/MainLayout/branch/CreateRoom.vue";
 import CreateUser from "@/components/MainLayout/branch/CreateUser.vue"
 
 
-import updateCourse from "@/components/MainLayout/course/updateCourse.vue";
-import updateDiscount from "@/components/MainLayout/discount/updateDiscount.vue";
-import updateRoom from "@/components/MainLayout/room/updateRoom.vue";
-import updateUser from "@/components/MainLayout/user/UpdateUser.vue";
+// import updateCourse from "@/components/MainLayout/course/updateCourse.vue";
+// import updateDiscount from "@/components/MainLayout/discount/updateDiscount.vue";
+// import updateRoom from "@/components/MainLayout/room/updateRoom.vue";
+// import updateUser from "@/components/MainLayout/user/UpdateUser.vue";
 export default {
   components: {
     CreateStudent,
@@ -481,10 +481,10 @@ export default {
     CreateRoom,
     CreateUser,
     
-    updateUser,
-    updateCourse,
-    updateDiscount,
-    updateRoom,
+    // updateUser,
+    // updateCourse,
+    // updateDiscount,
+    // updateRoom,
   },
   setup() {
     const route = useRoute();
@@ -498,15 +498,15 @@ export default {
     const isRooming = ref(false)
     const isUsering = ref(false)
 
-    const isUpdateCourse = ref(false)
-    const isUpdateDiscount = ref(false)
-    const isUpdateRoom = ref(false)
-    const isUpdateUser = ref(false)
-
-    const selectedCourseId = ref(null);
-    const selectedDiscountId = ref(null);
-    const selectedRoomId = ref(null);
-    const selectedUserId = ref(null);
+    // const isUpdateCourse = ref(false)
+    // const isUpdateDiscount = ref(false)
+    // const isUpdateRoom = ref(false)
+    // const isUpdateUser = ref(false)
+    //
+    // const selectedCourseId = ref(null);
+    // const selectedDiscountId = ref(null);
+    // const selectedRoomId = ref(null);
+    // const selectedUserId = ref(null);
     
     const sidebarTitle = computed(() => {
       if (isUpdating.value) return "O'zgartirish";
@@ -516,10 +516,10 @@ export default {
       if (isRooming.value) return "Xona qo'shish";
       if (isUsering.value) return "Xodim qo'shish";
 
-      if (isUpdateCourse.value) return "Kurs o'zgartirish";
-      if (isUpdateDiscount.value) return "Chegirma o'zgartirish";
-      if (isUpdateRoom.value) return "Xona malumotlarini o'zgartirish";
-      if (isUpdateUser.value) return "Xodim o'zgartirish";
+      // if (isUpdateCourse.value) return "Kurs o'zgartirish";
+      // if (isUpdateDiscount.value) return "Chegirma o'zgartirish";
+      // if (isUpdateRoom.value) return "Xona malumotlarini o'zgartirish";
+      // if (isUpdateUser.value) return "Xodim o'zgartirish";
       return "";
     });
 
@@ -587,50 +587,50 @@ export default {
 
 
 
-    const openUpdateCourseSidebar = (id) => {
-      selectedCourseId.value = id
-      isUpdateCourse.value = true;
-      console.log('isUpdateCourse', selectedCourseId.value)
-      store.dispatch("toggleSidebar", true);
-    }
-
-    const closeUpdateCourseSidebar = () => {
-      isUpdateCourse.value = false;
-      store.dispatch("toggleSidebar", false);
-    }
-
-    const openUpdateDiscountSidebar = (id) => {
-      selectedDiscountId.value = id
-      isUpdateDiscount.value = true;
-      store.dispatch("toggleSidebar", true);
-    }
-
-    const closeUpdateDiscountSidebar = () => {
-      isUpdateDiscount.value = false;
-      store.dispatch("toggleSidebar", false);
-    }
-
-    const openUpdateRoomSidebar = (id) => {
-      selectedRoomId.value = id
-      isUpdateRoom.value = true;
-      store.dispatch("toggleSidebar", true);
-    }
-
-    const closeUpdateRoomSidebar = () => {
-      isUpdateRoom.value = false;
-      store.dispatch("toggleSidebar", false);
-    }
-
-    const openUpdateUserSidebar = (id) => {
-      selectedUserId.value = id
-      isUpdateUser.value = true;
-      store.dispatch("toggleSidebar", true);
-    }
-
-    const closeUpdateUserSidebar = () => {
-      isUpdateUser.value = false;
-      store.dispatch("toggleSidebar", false);
-    }
+    // const openUpdateCourseSidebar = (id) => {
+    //   selectedCourseId.value = id
+    //   isUpdateCourse.value = true;
+    //   console.log('isUpdateCourse', selectedCourseId.value)
+    //   store.dispatch("toggleSidebar", true);
+    // }
+    //
+    // const closeUpdateCourseSidebar = () => {
+    //   isUpdateCourse.value = false;
+    //   store.dispatch("toggleSidebar", false);
+    // }
+    //
+    // const openUpdateDiscountSidebar = (id) => {
+    //   selectedDiscountId.value = id
+    //   isUpdateDiscount.value = true;
+    //   store.dispatch("toggleSidebar", true);
+    // }
+    //
+    // const closeUpdateDiscountSidebar = () => {
+    //   isUpdateDiscount.value = false;
+    //   store.dispatch("toggleSidebar", false);
+    // }
+    //
+    // const openUpdateRoomSidebar = (id) => {
+    //   selectedRoomId.value = id
+    //   isUpdateRoom.value = true;
+    //   store.dispatch("toggleSidebar", true);
+    // }
+    //
+    // const closeUpdateRoomSidebar = () => {
+    //   isUpdateRoom.value = false;
+    //   store.dispatch("toggleSidebar", false);
+    // }
+    //
+    // const openUpdateUserSidebar = (id) => {
+    //   selectedUserId.value = id
+    //   isUpdateUser.value = true;
+    //   store.dispatch("toggleSidebar", true);
+    // }
+    //
+    // const closeUpdateUserSidebar = () => {
+    //   isUpdateUser.value = false;
+    //   store.dispatch("toggleSidebar", false);
+    // }
 
     //  delete
 
@@ -689,10 +689,7 @@ export default {
       isStudenting,
       isRooming,
       isUsering,
-      isUpdateCourse,
-      isUpdateDiscount,
-      isUpdateRoom,
-      isUpdateUser,
+
       id,
       openUpdateSidebar,
       closeUpdateSidebar,
@@ -706,20 +703,23 @@ export default {
       closeRoomSidebar,
       openUserSidebar,
       closeUserSidebar,
-      
-      openUpdateCourseSidebar,
-      closeUpdateCourseSidebar,
-      openUpdateDiscountSidebar,
-      closeUpdateDiscountSidebar,
-      openUpdateRoomSidebar,
-      closeUpdateRoomSidebar,
-      openUpdateUserSidebar,
-      closeUpdateUserSidebar,
       sidebarTitle,
-      selectedCourseId,
-      selectedDiscountId,
-      selectedRoomId,
-      selectedUserId,
+      // isUpdateCourse,
+      // isUpdateDiscount,
+      // isUpdateRoom,
+      // isUpdateUser,
+      // openUpdateCourseSidebar,
+      // closeUpdateCourseSidebar,
+      // openUpdateDiscountSidebar,
+      // closeUpdateDiscountSidebar,
+      // openUpdateRoomSidebar,
+      // closeUpdateRoomSidebar,
+      // openUpdateUserSidebar,
+      // closeUpdateUserSidebar,
+      // selectedCourseId,
+      // selectedDiscountId,
+      // selectedRoomId,
+      // selectedUserId,
     };
   },
 };

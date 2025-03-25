@@ -318,13 +318,10 @@ export default {
         const startDate = new Date();
         newGroup.value.start_date = startDate.toISOString().split('T')[0];
         const selectedCourse = courses.value.find(course => course.id === newGroup.value.course_id);
-        if (selectedCourse && selectedCourse.duration) {
+        if (selectedCourse) {
           const endDate = new Date(startDate);
           endDate.setMonth(endDate.getMonth() + selectedCourse.duration);
           newGroup.value.end_date = endDate.toISOString().split('T')[0];
-          console.log("end_date:", newGroup.value.end_date);
-        } else {
-          console.warn("Kurs topilmadi yoki duration yo'q!");
         }
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
