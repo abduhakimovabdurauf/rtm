@@ -14,10 +14,15 @@
       :groupData="data.groups"
       @close="closePaymentSidebar"
     />
+    <CreateCall
+        :student-id="studentId"
+        :branch-id="data?.branch?.id"
+        v-if="isCallLog"
+        @close="closeCallLogSidebar"/>
   </actionSidebar>
 
-  <div class="flex justify-evenly">
-    <div v-if="data" class="w-1/3 p-6 bg-white rounded-xl mt-6">
+  <div class="flex justify-evenly flex-wrap">
+    <div v-if="data" class="w-1/4 p-6 bg-white rounded-xl mt-6">
       <h1 class="text-gray-900">O'quvchi malumotlari</h1>
       <div class="flex py-2">
         <img
@@ -74,9 +79,9 @@
     </div>
 
     <!--  starting payment section  -->
-    <div class="w-2/4 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+    <div class="w-2/3 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
       <div class="w-full flex justify-between">
-        <h1 class="text-2xl text-bold m-2 text-gray-900">To'lov malumotlari</h1>
+        <h1 class="text-2xl text-bold m-2 text-gray-900">To'lov malumotlari: {{data?.payments?.length}}ta</h1>
         <button
             @click="openPaymentSidebar"
             class="transition scale-75 p-2 text-white bg-green-500 hover:bg-green-600 rounded duration-200"
@@ -101,19 +106,25 @@
               :key="payment.id"
               class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
-            <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
-            <td class="px-6 py-4 font-semibold">{{ payment.summa }}</td>
-            <td class="px-6 py-4 font-semibold">{{ payment.payment_date }}</td>
-            <td class="px-6 py-4 font-semibold text-xs">
+            <td class="px-6 py-2 font-semibold">{{ index + 1 }}</td>
+            <td class="px-6 py-2 font-semibold">{{ payment.summa }}</td>
+            <td class="px-6 py-2 font-semibold">{{ payment.payment_date }}</td>
+            <td class="px-6 py-2 font-semibold text-xs">
               <StatusBadge :status="payment.status"/>
             </td>
-            <td class="px-6 py-4 font-semibold">
+            <td class="px-6 py-2 font-semibold">
               <router-link
                   :to="{ name: 'WatchPayment', params: { id: payment.id } }"
                   class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 p-3 py-2 rounded duration-200"
               >
                 <i class="bx bxs-show"></i>
               </router-link>
+              <button
+                  @click="deletePaymentById(payment.id)"
+                  class="transition ml-2 text-white bg-red-500 hover:bg-red-600 p-3 py-2 rounded duration-200"
+              >
+                <i class="bx bxs-trash-alt"></i>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -127,7 +138,160 @@
     </div>
     <!--  starting payment section  -->
 
+    <!--  starting group section  -->
+    <div class="w-1/3 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <div class="w-full flex justify-between">
+        <h1 class="text-2xl text-bold m-2 text-gray-900">Guruhlar: {{data?.groups?.length}}ta</h1>
+      </div>
 
+      <table class="w-full text-sm">
+        <thead class="h-10">
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Guruh nomi</th>
+          <th class="px-6 py-4 text-left">Status</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody v-if="data && data.groups && data.groups.length">
+        <tr
+            v-for="(group, index) in data.groups"
+            :key="group.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-2 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold">{{ group.name }}</td>
+          <td class="px-6 py-2 font-semibold text-xs">
+            <StatusBadge :status="group.status"/>
+          </td>
+          <td class="px-6 py-2 font-semibold">
+            <router-link
+                :to="{ name: 'WatchGroup', params: { id: group.id } }"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+            <button
+                @click="deleteGroupById(group.id)"
+                class="transition ml-2 text-white bg-red-500 hover:bg-red-600 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+        <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center py-4 text-gray-500">Guruh ma'lumotlari mavjud emas.</td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+    <!--  starting group section  -->
+
+    <!--  starting callLog section  -->
+    <div class="w-1/4 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <div class="w-full flex justify-between">
+        <h1 class="text-2xl text-bold m-2 text-gray-900">Qo'ng'iroqlar: {{data?.call_logs?.length ? data?.call_logs?.length : 0}}ta</h1>
+        <button
+            @click="openCallLogSidebar"
+            class="transition scale-75 p-2 text-white bg-green-500 hover:bg-green-600 rounded duration-200"
+        >
+          Qo'shish <i class='bx bx-git-course'></i>
+        </button>
+      </div>
+
+      <table class="w-full text-sm">
+        <thead class="h-10">
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Status</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody v-if="data && data.call_logs && data.call_logs.length">
+        <tr
+            v-for="(callLog, index) in data.call_logs"
+            :key="callLog.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-2 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold text-xs">
+            <StatusBadge :status="callLog.status"/>
+          </td>
+          <td class="px-6 py-2 font-semibold">
+            <button
+                @click="deleteCallLogById(callLog.id)"
+                class="transition ml-2 text-white bg-red-500 hover:bg-red-600 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+        <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center py-4 text-gray-500">Guruh ma'lumotlari mavjud emas.</td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+    <!--  starting callLog section  -->
+
+    <!--  starting course section  -->
+    <div class="w-1/3 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <div class="w-full flex justify-between">
+        <h1 class="text-2xl text-bold m-2 text-gray-900">Kurslar: {{data?.courses?.length}}ta</h1>
+      </div>
+
+      <table class="w-full text-sm">
+        <thead class="h-10">
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Kurs nomi</th>
+          <th class="px-6 py-4 text-left">Status</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody v-if="data && data.courses && data.courses.length">
+        <tr
+            v-for="(course, index) in data.courses"
+            :key="course.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-2 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-2 font-semibold">{{ course.name }}</td>
+          <td class="px-6 py-2 font-semibold text-xs">
+            <StatusBadge :status="course.status"/>
+          </td>
+          <td class="px-6 py-2 font-semibold">
+            <router-link
+                :to="{ name: 'WatchCourse', params: { id: course.id } }"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+            <button
+                @click="deleteCourseById(course.id)"
+                class="transition ml-2 text-white bg-red-500 hover:bg-red-600 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+        <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center py-4 text-gray-500">Guruh ma'lumotlari mavjud emas.</td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+    <!--  starting course section  -->
+    
   </div>
 </template>
 
@@ -139,21 +303,23 @@ import actionSidebar from '@/components/MainLayout/ui/ActionSidebar.vue';
 import updateStudent from '@/components/MainLayout/students/UpdateStudent.vue';
 import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 import Pay from "@/components/MainLayout/students/Pay.vue";
+import CreateCall from "@/components/MainLayout/students/CreateCall.vue";
 export default {
   components: {
     StatusBadge,
     actionSidebar,
     updateStudent,
     Pay,
+    CreateCall,
   },
   setup() {
     const route = useRoute();
     const store = useStore();
     const isUpdating = ref(false)
     const isPayment = ref(false)
+    const isCallLog = ref(false)
     const data = ref(null);
     const studentId = Number(route.params.id)
-    const selectedGroupData = ref(null)
     onMounted(async () => {
       try {
         const response = await store.dispatch('student/getStudentById', route.params.id);
@@ -172,6 +338,7 @@ export default {
     const sidebarTitle = computed(() => {
       if (isUpdating.value) return "O'zgartirish";
       if (isPayment.value) return "To'lov qilish";
+      if (isCallLog.value) return "Qo'ng'iroq qilish";
       return "";
     });
 
@@ -186,6 +353,11 @@ export default {
       store.dispatch("toggleSidebar", true);
     }
 
+    const openCallLogSidebar = () => {
+      isCallLog.value = true;
+      store.dispatch("toggleSidebar", true);
+    }
+
     const closeUpdateSidebar = ()=> {
       isUpdating.value = false;
       store.dispatch("toggleSidebar", false);
@@ -196,11 +368,34 @@ export default {
       store.dispatch("toggleSidebar", false);
     }
 
+    const closeCallLogSidebar = ()=> {
+      isCallLog.value = false;
+      store.dispatch("toggleSidebar", false);
+    }
+
+
+
 
     const deleteById = (id) => {
       if (!id) return console.error("Invalid company ID");
       store.dispatch("course/deleteCourse", id);
     };
+
+    const deletePaymentById = (id) => {
+      store.dispatch('payment/deletePayment',id)
+    }
+
+    const deleteGroupById = (id) => {
+      store.dispatch('group/deleteGroup',id)
+    }
+
+    const deleteCallLogById = (id) => {
+      store.dispatch('callLog/deleteCallLog',id)
+    }
+
+    const deleteCourseById = (id) => {
+      store.dispatch('course/getCourseById',id)
+    }
 
     const formatKey = (key) => {
       return key.replace('_', ' ').replace(/\b\w/g, char => char.toUpperCase());
@@ -224,11 +419,18 @@ export default {
       formatData,
       isUpdating,
       isPayment,
+      isCallLog,
       openPaymentSidebar,
       closePaymentSidebar,
       openUpdateSidebar,
       closeUpdateSidebar,
+      openCallLogSidebar,
+      closeCallLogSidebar,
       deleteById,
+      deletePaymentById,
+      deleteGroupById,
+      deleteCallLogById,
+      deleteCourseById,
     };
   },
 };

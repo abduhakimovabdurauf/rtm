@@ -18,7 +18,7 @@
   <div class="p-6 min-h-screen dark:bg-gray-900">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">
-        Filiallar ro'yxati: {{totalValue}}
+        Filiallar ro'yxati: {{totalValue}}ta
       </h1>
       <button
           @click="openCreateModal"
