@@ -16,7 +16,7 @@
   </actionSidebar>
   <div class="p-6 min-h-screen dark:bg-gray-900">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">O'quvchilar ro'yxati</h1>
+      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">O'quvchilar ro'yxati: {{totalValue}}</h1>
       <div>
         <input
             type="text"
@@ -214,6 +214,7 @@ export default {
       }
     };
 
+    const totalValue = ref(0);
 
     const fetchTenants = async () => {
       try {
@@ -223,6 +224,7 @@ export default {
           key: keyWord.value
         });
         totalPages.value = Math.ceil(total.total / perPage.value);
+        totalValue.value = total.total
       } catch (e) {
         console.error("Error fetching tenants:", e.message);
       } finally {
@@ -261,6 +263,7 @@ export default {
       fetchTenants,
       keyWord,
       updateKeyWord,
+      totalValue,
     };
   },
 };

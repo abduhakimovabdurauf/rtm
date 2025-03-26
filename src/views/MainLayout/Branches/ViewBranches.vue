@@ -18,7 +18,7 @@
   <div class="p-6 min-h-screen dark:bg-gray-900">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">
-        Filiallar ro'yxati
+        Filiallar ro'yxati: {{totalValue}}
       </h1>
       <button
           @click="openCreateModal"
@@ -173,7 +173,7 @@ export default {
       }
       fetchBranches()
     };
-
+    let totalValue = ref(0);
     const fetchBranches = async () => {
       try {
         store.commit("SET_LOADING", true, {root: true});
@@ -183,7 +183,9 @@ export default {
           sortBy: sortBy.value,
           orderBy: orderBy.value,
         });
+        console.log(branches.value)
         totalPages.value = Math.ceil(total.total / perPage.value);
+        totalValue.value = total.total
       } catch (e) {
         console.error("Error fetching branches:", e.message);
       }
@@ -212,6 +214,7 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedBranchId,
+      totalValue,
     };
   },
 };

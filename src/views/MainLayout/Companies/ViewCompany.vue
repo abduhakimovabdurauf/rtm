@@ -19,7 +19,7 @@
   <div class="p-6 min-h-screen">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">
-        Kompaniyalar ro'yxati
+        Kompaniyalar ro'yxati: {{totalValue}}
       </h1>
       <button
           @click="openCreateModal"
@@ -211,7 +211,7 @@ export default {
       }
       fetchCompanies();
     };
-
+    const totalValue = ref(0);
     const fetchCompanies = async () => {
       store.commit('SET_LOADING', true, { root: true });
       try {
@@ -225,6 +225,7 @@ export default {
 
         if (total && total.total) {
           totalPages.value = Math.ceil(total?.total / perPage.value);
+          totalValue.value = total.total
         } else {
           console.error("Error: Total value is missing.");
           totalPages.value = 1;
@@ -257,6 +258,7 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedCompanyId,
+      totalValue,
     };
   },
 };

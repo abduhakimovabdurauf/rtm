@@ -32,6 +32,7 @@
           required
           v-model.trim="newPayment.group_id"
           v-if="groups && groups?.length > 0"
+          placeholder="Guruhni tanlang!"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option selected disabled>Guruhni tanlang!</option>

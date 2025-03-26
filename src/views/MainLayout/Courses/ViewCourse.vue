@@ -18,7 +18,7 @@
 
   <div class="p-6 min-h-screen dark:bg-gray-900">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Kurslar ro'yxati</h1>
+      <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Kurslar ro'yxati: {{totalValue}}</h1>
       <button
           @click="openCreateModal"
           class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
@@ -197,7 +197,7 @@ export default {
       }
       fetchCourses()
     };
-
+    const totalValue = ref(0)
     const fetchCourses = async () => {
       try {
         store.commit("SET_LOADING", true, { root: true });
@@ -208,6 +208,7 @@ export default {
           orderBy: orderBy.value,
         });
         totalPages.value = Math.ceil(total.total / perPage.value);
+        totalValue.value = total.total
       } catch (e) {
         console.error("Error fetching courses:", e.message);
       }
@@ -236,6 +237,7 @@ export default {
       toggleSidebar,
       isModalOpen,
       selectedCourseId,
+      totalValue
     };
   },
 };

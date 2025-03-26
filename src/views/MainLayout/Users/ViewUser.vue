@@ -16,7 +16,7 @@
   </actionSidebar>
 
   <div class="flex justify-between mt-4">
-    <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Xodimlar ro'yxati</h1>
+    <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">Xodimlar ro'yxati: {{totalValue}}</h1>
 
     <button
         @click="openCreateModal"
@@ -175,7 +175,7 @@ export default {
       }
     };
 
-
+    const totalValue = ref(0)
     const fetchUsers = async () => {
       try {
         store.commit("SET_LOADING", true, { root: true });
@@ -184,6 +184,7 @@ export default {
           perPage: perPage.value,
         });
         totalPages.value = Math.ceil(total.total / perPage.value);
+        totalValue.value = total.total
       } catch (e) {
         console.error("Error fetching users:", e.message);
       }
@@ -206,6 +207,7 @@ export default {
       totalPages,
       changePage,
       toggleSidebar,
+      totalValue,
     };
   },
 };
