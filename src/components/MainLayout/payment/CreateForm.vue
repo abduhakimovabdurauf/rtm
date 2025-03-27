@@ -30,12 +30,12 @@
       <Multiselect
           v-model="newPayment.group_id"
           :options="groupsList"
-          label="full_name"
+          label="name"
           :searchable="true"
           :close-on-select="true"
           v-if="groups && groups?.data && groups?.data?.length > 0"
           placeholder="Guruhni tanlang..."
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          class="mt-1 block w-full text-gray-900 p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
       <p v-else class="text-gray-500">Guruhlar mavhud emas :(</p>
     </div>
@@ -137,6 +137,9 @@ export default {
         });
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
+      } finally {
+
+        console.log('aaaaaaaaa: ',groupsList.value)
       }
     };
     const studentsList = computed(() => {
@@ -154,6 +157,7 @@ export default {
         name: group.name,
       }));
     });
+
     onMounted(fetchData);
 
     const isFormValid = computed(() => {

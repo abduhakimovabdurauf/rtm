@@ -81,7 +81,7 @@
     <!--  starting payment section  -->
     <div class="w-2/3 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
       <div class="w-full flex justify-between">
-        <h1 class="text-2xl text-bold m-2 text-gray-900">To'lov malumotlari: {{data?.payments?.length}}ta</h1>
+        <h1 class="text-2xl text-bold m-2 text-gray-900">To'lov malumotlari: {{data?.payments?.length}} ta</h1>
         <button
             @click="openPaymentSidebar"
             class="transition scale-75 p-2 text-white bg-green-500 hover:bg-green-600 rounded duration-200"
@@ -141,7 +141,7 @@
     <!--  starting group section  -->
     <div class="w-1/3 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
       <div class="w-full flex justify-between">
-        <h1 class="text-2xl text-bold m-2 text-gray-900">Guruhlar: {{data?.groups?.length}}ta</h1>
+        <h1 class="text-2xl text-bold m-2 text-gray-900">Guruhlar: {{data?.groups?.length}} ta</h1>
       </div>
 
       <table class="w-full text-sm">
@@ -193,7 +193,7 @@
     <!--  starting callLog section  -->
     <div class="w-1/4 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
       <div class="w-full flex justify-between">
-        <h1 class="text-2xl text-bold m-2 text-gray-900">Qo'ng'iroqlar: {{data?.call_logs?.length ? data?.call_logs?.length : 0}}ta</h1>
+        <h1 class="text-2xl text-bold m-2 text-gray-900">Qo'ng'iroqlar: {{data?.call_logs?.length ? data?.call_logs?.length : 0}} ta</h1>
         <button
             @click="openCallLogSidebar"
             class="transition scale-75 p-2 text-white bg-green-500 hover:bg-green-600 rounded duration-200"
@@ -243,7 +243,7 @@
     <!--  starting course section  -->
     <div class="w-1/3 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
       <div class="w-full flex justify-between">
-        <h1 class="text-2xl text-bold m-2 text-gray-900">Kurslar: {{data?.courses?.length}}ta</h1>
+        <h1 class="text-2xl text-bold m-2 text-gray-900">Kurslar: {{data?.courses?.length}} ta</h1>
       </div>
 
       <table class="w-full text-sm">

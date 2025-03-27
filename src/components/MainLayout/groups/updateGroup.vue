@@ -8,7 +8,6 @@
             v-model="form.name"
             type="text"
             id="name"
-            required
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
@@ -19,7 +18,6 @@
             v-model="form.start_time"
             type="time"
             id="start_time"
-            required
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
@@ -30,7 +28,6 @@
             v-model="form.end_time"
             type="time"
             id="end_time"
-            required
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
@@ -41,7 +38,6 @@
             v-model="form.start_date"
             type="date"
             id="start_date"
-            required
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
@@ -52,7 +48,6 @@
             v-model="form.end_date"
             type="date"
             id="end_date"
-            required
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
@@ -62,7 +57,6 @@
         <select
             v-model="form.part_of_time"
             id="part_of_time"
-            required
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
           <option value="morning">Ertalab</option>
@@ -75,7 +69,6 @@
         <select
             v-model="form.lvl"
             id="lvl"
-            required
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
           <option value="beginner">Boshlovchi</option>
@@ -88,8 +81,7 @@
         <label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xodim ID</label>
         <select
             id="user_id"
-            required
-            v-if="users && users.data && users.data.length > 0"
+            v-if="users && users?.data && users?.data?.length > 0"
             v-model="form.user_id"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
@@ -103,8 +95,7 @@
         <label for="course_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs ID</label>
         <select
             id="course_id"
-            required
-            v-if="courses && courses.data && courses.data.length > 0"
+            v-if="courses && courses?.data && courses.data.length > 0"
             v-model="form.course_id"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
@@ -118,8 +109,7 @@
         <label for="room_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xona ID</label>
         <select
             id="room_id"
-            required
-            v-if="rooms && rooms.data && rooms.data.length > 0"
+            v-if="rooms && rooms?.data && rooms.data.length > 0"
             v-model="form.room_id"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
@@ -134,7 +124,6 @@
         <select
             v-model="form.status"
             id="status"
-            required
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
           <option value="active">Faol</option>
@@ -147,7 +136,6 @@
         <textarea
             v-model="form.description"
             id="description"
-            required
             rows="3"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         ></textarea>

@@ -19,7 +19,7 @@
   <div class="p-6 min-h-screen">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">
-        Kompaniyalar ro'yxati: {{totalValue}}ta
+        Kompaniyalar ro'yxati: {{totalValue}} ta
       </h1>
       <button
           @click="openCreateModal"
