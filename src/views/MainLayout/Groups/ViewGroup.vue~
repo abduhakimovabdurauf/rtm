@@ -220,6 +220,7 @@ export default {
           sortBy: sortBy.value,
           orderBy: orderBy.value,
         });
+        console.log(groups.value);
         totalPages.value = Math.ceil(total.total / perPage.value);
         totalValue.value = total.total
       } catch (e) {

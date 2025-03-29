@@ -151,7 +151,7 @@
                 @change="updateStudentStatus(student.id, $event.target.value)"
                 class="border rounded p-1"
             >
-              <option value="invited">Guruhga taklif qilingan</option>
+              <option value="invited" selected>Guruhga taklif qilingan</option>
               <option value="active">Ayni paytda guruhda o‘qiyotgan</option>
               <option value="on_hold">Vaqtincha tanaffusda</option>
               <option value="dropped">O‘qishni tashlab ketgan</option>

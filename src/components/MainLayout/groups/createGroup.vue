@@ -16,7 +16,6 @@
       </select>
       <div v-else>Ma'lumotlar yuklanmoqda...</div>
     </div>
-
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">O'qituvchi ID</label>
       <div v-if="loadingCourses">O'qituvchilar ma'lumotlari yuklanmoqda...</div>
@@ -34,7 +33,6 @@
       </select>
       <div class="text-red-600" v-else>O'qituvchini tanlash uchun avval filialni tanlang!</div>
     </div>
-    
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurs ID</label>
       <div v-if="loadingCourses">Kurslar ma'lumotlari yuklanmoqda...</div>
@@ -53,7 +51,6 @@
       </select>
       <div class="text-red-600" v-else>Kursni tanlash uchun avval filialni tanlang!</div>
     </div>
-
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xona ID</label>
       <div v-if="loadingRooms">Xonalar ma'lumotlari yuklanmoqda...</div>
@@ -71,7 +68,6 @@
       </select>
       <div class="text-red-600" v-else>Xonani tanlash uchun avval filialni tanlang!</div>
     </div>
-
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">O'quvchilar</label>
       <div v-if="loadingStudents">O'quvchilar ma'lumotlari yuklanmoqda...</div>
@@ -92,8 +88,6 @@
       </div>
       <div class="text-red-600" v-else>O'quvchini tanlash uchun avval kursni tanlang!</div>
     </div>
-
-
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh Nomi</label>
       <input
@@ -115,8 +109,6 @@
         <option value="inactive">Faol emas</option>
       </select>
     </div>
-
-
     <div class="mb-4">
       <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
       <textarea
@@ -127,18 +119,6 @@
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       ></textarea>
     </div>
-
-
-
-<!--    <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">-->
-<!--      <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">-->
-<!--      <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>-->
-<!--      <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>-->
-<!--    </label>-->
-
-
-
-
     <div>
       <div class="mb-4">
         <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Boshlanish Vaqti</label>
@@ -149,8 +129,6 @@
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
-
-
       <div class="mb-4">
         <label for="end_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tugash Vaqti</label>
         <input
@@ -160,8 +138,6 @@
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
-
-
       <div class="mb-4">
         <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Boshlanish Sanasi</label>
         <input
@@ -171,8 +147,6 @@
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
-
-
       <div class="mb-4">
         <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tugash Sanasi</label>
         <input
@@ -182,7 +156,6 @@
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
-
       <div class="mb-4">
         <label for="part_of_day" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hafta kuni</label>
         <select
@@ -194,8 +167,6 @@
           <option value="even">Juft kunlar</option>
         </select>
       </div>
-
-
       <div class="mb-4">
         <label for="part_of_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kun Qismi</label>
         <select
@@ -207,8 +178,6 @@
           <option value="afternoon">Tushdan Keyin</option>
         </select>
       </div>
-
-
       <div class="mb-4">
         <label for="lvl" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Daraja</label>
         <select
@@ -222,11 +191,6 @@
         </select>
       </div>
     </div>
-
-
-
-
-
     <div class="flex justify-end">
       <button
           type="submit"
@@ -240,15 +204,11 @@
         Qo'shish
       </button>
     </div>
-
-
   </form>
 </template>
-
 <script>
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-
 export default {
   emits: ["close"],
   setup(_, { emit }) {
@@ -272,7 +232,6 @@ export default {
       teacher_id: "",
       students: [],
     });
-
     const courses = ref(null);
     const rooms = ref(null);
     const branches = ref(null);
@@ -283,28 +242,19 @@ export default {
     const loadingCourses = ref(false);
     const loadingRooms = ref(false);
     const loadingStudents = ref(false);
-    const selectedCourseData = ref(null)
     const fetchStudents = async () => {
       selectedCourse.value = newGroup.value.course_id
       loadingStudents.value = true;
       if (!selectedCourse.value) return;
-
       try {
         const response = await store.dispatch('student/getStudentByCourseId', selectedCourse.value);
-        console.log(response)
-        console.log(selectedCourse.value)
         students.value = response.students;
-
-        // newGroup.value.end_date = courses.value[selectedCourse].duration + newGroup.value.start_date
-        console.log('sana: ',courses.value[selectedCourse])
       } catch (error) {
         console.error("Error fetching students:", error);
       } finally {
         loadingStudents.value = false;
       }
     };
-
-
     const fetchData = async () => {
       selectedBranch.value = newGroup.value.branch_id
       loadingCourses.value = true;
@@ -332,7 +282,6 @@ export default {
         loadingRooms.value = false;
       }
     }
-    
     const fetchBranch = async () => {
       try {
         branches.value = await store.dispatch("branch/getAllBranches");
@@ -340,13 +289,10 @@ export default {
         console.error("Xatolik yuz berdi:", error);
       }
     };
-
     onMounted(fetchBranch);
-
     const isFormValid = computed(() => {
       return (
           newGroup.value.name &&
-          newGroup.value.description &&
           newGroup.value.status &&
           newGroup.value.course_id &&
           newGroup.value.room_id
@@ -356,7 +302,6 @@ export default {
     const handleSubmit = async () => {
       try {
         const formData = new FormData();
-
         formData.append("user_id", newGroup.value.user_id);
         formData.append("course_id", newGroup.value.course_id);
         formData.append("room_id", newGroup.value.room_id);
@@ -373,7 +318,6 @@ export default {
         formData.append("branch_id", newGroup.value.branch_id);
         formData.append("teacher_id", newGroup.value.teacher_id);
         formData.append("students", JSON.stringify(newGroup.value.students));
-
         await store.dispatch("group/addGroup", formData);
         resetForm();
         emit("close");
@@ -382,8 +326,6 @@ export default {
         console.error(error);
       }
     };
-
-
     const resetForm = () => {
       newGroup.value = {
         user_id: "",
@@ -401,7 +343,6 @@ export default {
         description: "",
       };
     };
-
     return {
       newGroup,
       handleSubmit,
@@ -417,7 +358,6 @@ export default {
       loadingCourses,
       loadingRooms,
       loadingStudents,
-      selectedCourseData,
     };
   },
 };

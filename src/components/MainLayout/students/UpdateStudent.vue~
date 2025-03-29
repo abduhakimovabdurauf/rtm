@@ -221,7 +221,7 @@ export default {
         branches.value = await store.dispatch("branch/getAllBranches");
         courses.value = await store.dispatch("course/getAllCourses");
 
-        form.value.courses = courses.value.map((course) => ({
+        form.value.courses = courses.value?.map((course) => ({
           id: course.id,
           c_status: course?.c_status ? course?.c_status : "pending",
         }));
@@ -287,12 +287,42 @@ export default {
 
 
 
-    const handleSubmit = () => {
-      const updatedStudent = { ...form.value };
-      store.dispatch('student/updateStudent', updatedStudent);
-      initialForm.value = { ...form.value };
-      closeModal();
+    const handleSubmit = async () => {
+      const formData = new FormData();
+      console.log('id: ', form.value.id);
+      formData.append('full_name', form.value.full_name);
+      formData.append('email', form.value.email);
+      formData.append('address', form.value.address);
+      formData.append('links', form.value.links);
+      formData.append('birthday', form.value.birthday);
+      formData.append('work_start', form.value.work_start);
+      formData.append('id', form.value.id);
+      formData.append('description', form.value.description);
+      formData.append('branch_id', form.value.branch_id);
+      formData.append('status', form.value.status);
+
+      if (form.value.image instanceof File) {
+        formData.append('image', form.value.image);
+      }
+
+      if (form.courses && form.courses.length > 0) {
+        formData.append('courses', JSON.stringify(
+            form.courses.map(course => ({
+              id: course.id,
+              c_status: course.c_status || 'pending'
+            }))
+        ));
+      } 
+
+      try {
+        await store.dispatch('student/updateStudent', formData);
+        initialForm.value = { ...form.value };
+        closeModal();
+      } catch (error) {
+        console.error('Xatolik yuz berdi:', error);
+      }
     };
+
 
     const toggleCourse = (course) => {
       const index = form.value.courses.findIndex((r) => r.id === course.id);

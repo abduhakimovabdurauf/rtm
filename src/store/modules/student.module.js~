@@ -102,7 +102,7 @@ export default {
         },
         async updateStudent({ commit }, payload) {
             commit("SET_LOADING", true, { root: true });
-            console.log("payload.id: ", payload);
+            console.log("payload.id: ", payload.id);
             try {
                 const response = await axios.post(`${API_URL}/${payload.id}`, payload, {
                     headers: {
