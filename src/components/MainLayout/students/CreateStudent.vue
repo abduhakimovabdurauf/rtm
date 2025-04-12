@@ -14,6 +14,18 @@
         <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
         <input
             v-model="newStudent.phone"
+            type="tel"
+            id="phone"
+            pattern="[0-9]{2}-[0-9]{3}-[0-9]{2}-[0-9]{2}"
+            placeholder="xx-xxx-xx-xx"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ota-Ona telefoni</label>
+        <input
+            v-model="newStudent.parent_phone"
             type="text"
             id="phone"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -54,7 +66,11 @@
 
 
 
-
+      <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
+        <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
+        <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
+      </label>
 
 
       <div v-if="showOptionalFields">
@@ -149,11 +165,7 @@
 
 
 
-      <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
-        <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
-        <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
-      </label>
+
 
       <div class="flex justify-end mb-20">
         <button
@@ -188,6 +200,8 @@
         gender: 'man',
         from: 'tanish',
         status: 'active',
+        parent_phone: '',
+        crmdigital: '',
         description: '',
         images: [],
         courses: [],
@@ -228,6 +242,8 @@
           formData.append('branch_id', newStudent.branch_id);
           formData.append("courses", JSON.stringify(newStudent.courses));
           formData.append('full_name', newStudent.full_name);
+          formData.append('parent_phone', newStudent.parent_phone);
+          formData.append('crmdigital', newStudent.crmdigital);
           formData.append('email', newStudent.email);
           formData.append('phone', newStudent.phone);
           formData.append('description', newStudent.description);

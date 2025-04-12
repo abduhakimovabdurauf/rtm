@@ -65,6 +65,7 @@ export default {
         },
         async addUser({ commit }, user) {
             commit("SET_LOADING", true, { root: true });
+            console.log('taken data: ', user)
             try {
                 const response = await axios.post(API_URL, user, {
                     headers: {
@@ -84,6 +85,7 @@ export default {
         },
         async updateUser({ commit }, user) {
             commit("SET_LOADING", true, { root: true });
+            console.log('taken data: ', user)
             try {
                 const response = await axios.post(`${API_URL}/${user.id}`, user, {
                     headers: {
@@ -93,8 +95,10 @@ export default {
                 });
                 commit("UPDATE_USER", response.data.user);
                 toast.success(`Xodim muvaffaqiyatli o'zgartirildi!`);
+                return response
             } catch (e) {
                 toast.error(e.response?.data?.message || "Xodim yangilashda xatolik!");
+                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });

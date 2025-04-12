@@ -5,7 +5,7 @@
       <div class="mb-4">
         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Guruh Nomi</label>
         <input
-            v-model="form.name"
+                 v-model="form.name"
             type="text"
             id="name"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -319,30 +319,27 @@ export default {
       if (!isFormChanged.value) return closeModal();
 
       try {
-        const formData = new FormData();
-
-        formData.append("user_id", form.value.user_id);
-        formData.append("course_id", form.value.course_id);
-        formData.append("room_id", form.value.room_id);
-        formData.append("teacher_id", form.value.teacher_id);
-        formData.append("students", JSON.stringify(form.value.students));
-        formData.append("id", form.value.id);
-        formData.append("name", form.value.name);
-
         const formatTime = (time) => time.slice(0, 5);
 
-        formData.append("start_time", formatTime(form.value.start_time));
-        formData.append("end_time", formatTime(form.value.end_time));
-        console.log("start_time:", formatTime(form.value.start_time));
-        console.log("end_time:", formatTime(form.value.end_time));
-        formData.append("start_date", form.value.start_date);
-        formData.append("end_date", form.value.end_date);
-        formData.append("part_of_time", form.value.part_of_time);
-        formData.append("lvl", form.value.lvl);
-        formData.append("status", form.value.status);
-        formData.append("description", form.value.description);
+        const payload = {
+          user_id: form.value.user_id,
+          course_id: form.value.course_id,
+          room_id: form.value.room_id,
+          teacher_id: form.value.teacher_id,
+          students: JSON.stringify(form.value.students),
+          id: form.value.id,
+          name: form.value.name,
+          start_time: formatTime(form.value.start_time),
+          end_time: formatTime(form.value.end_time),
+          start_date: form.value.start_date,
+          end_date: form.value.end_date,
+          part_of_time: form.value.part_of_time,
+          lvl: form.value.lvl,
+          status: form.value.status,
+          description: form.value.description
+        };
 
-        await store.dispatch("group/updateGroup", formData);
+        await store.dispatch("group/updateGroup", payload);
 
         Object.assign(initialForm.value, form.value);
         closeModal();
@@ -350,6 +347,7 @@ export default {
         console.error("O'zgartirishda xatolik yuz berdi:", error);
       }
     };
+
 
 
 

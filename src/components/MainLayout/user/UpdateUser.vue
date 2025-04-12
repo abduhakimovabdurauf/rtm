@@ -227,6 +227,7 @@
 import { ref, watch, computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import isEqual from 'lodash/isEqual';
+import {root} from "postcss";
 
 export default {
   props: {
@@ -280,9 +281,7 @@ export default {
             imagePreview.value = user.image
                 ? `https://api.mrtm.uz/storage/${user.image}`
                 : null;
-          }
-        },
-        { immediate: true }
+          }}, { immediate: true }
     );
 
     const handleImageChange = (event) => {
@@ -320,8 +319,15 @@ export default {
 
 
     const handleSubmit = () => {
-      const updatedUser = { ...form.value };
+      const updatedUser = {
+        ...form.value,
+        branches: form.value.branches.map(branch => branch.id),
+      };
+
+      console.log('submitted data: ',updatedUser);
       store.dispatch('user/updateUser', updatedUser);
+      store.commit('SET_LOADING', true)
+      store.dispatch('user/getAllUsers')
       initialForm.value = { ...form.value };
       closeModal();
     };

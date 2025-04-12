@@ -277,46 +277,54 @@ export default {
     const showOptionalFields = ref(false);
     const handleSubmit = async () => {
       try {
-        const formData = new FormData();
-        formData.append('branches',JSON.stringify( newUser.branches));
-        formData.append('courses',JSON.stringify(newUser.courses));
-        formData.append('roles',JSON.stringify(newUser.roles));
-        formData.append('full_name', newUser.full_name);
-        formData.append('login', newUser.login);
-        formData.append('password', newUser.password);
-        formData.append('email', newUser.email);
-        formData.append('phone', newUser.phone);
-        formData.append('description', newUser.description);
-        formData.append('address', newUser.address);
-        formData.append('birthday', newUser.birthday);
-        formData.append('links', newUser.links);
-        formData.append('work_start', newUser.work_start);
-        formData.append('work_end', newUser.work_end);
-        formData.append('status', newUser.status);
-        if (newUser.images) formData.append('files', newUser.images);
-        if (newUser.files) formData.append('files', newUser.files);
-
-        await store.dispatch('user/addUser', formData);
+        const payload = {
+          branches: newUser.branches,
+          courses: newUser.courses,
+          roles: newUser.roles,
+          full_name: newUser.full_name,
+          login: newUser.login,
+          password: newUser.password,
+          email: newUser.email,
+          phone: newUser.phone,
+          description: newUser.description,
+          address: newUser.address,
+          birthday: newUser.birthday,
+          links: newUser.links,
+          work_start: newUser.work_start,
+          work_end: newUser.work_end,
+          status: newUser.status,
+          images: newUser.images,
+          files: newUser.files,
+        };
+        console.log('submitted data:', payload);
+        await store.dispatch('user/addUser', payload);
         closeModal();
 
-        newUser.full_name = '';
-        newUser.login = '';
-        newUser.password = '';
-        newUser.email = '';
-        newUser.phone = '';
-        newUser.address = '';
-        newUser.links = '';
-        newUser.birthday =  '';
-        newUser.work_start = '';
-        newUser.work_end = '';
-        newUser.status = 'active';
-        newUser.description = '';
-        newUser.images = null;
-        newUser.files = null;
+        // Tozalash
+        Object.assign(newUser, {
+          full_name: '',
+          login: '',
+          password: '',
+          email: '',
+          phone: '',
+          address: '',
+          links: '',
+          birthday: '',
+          work_start: '',
+          work_end: '',
+          status: 'active',
+          description: '',
+          images: null,
+          files: null,
+          branches: [],
+          courses: [],
+          roles: [],
+        });
       } catch (e) {
         console.error(e);
       }
     };
+
 
     const handleImageUpload = (event) => {
       newUser.images = event.target.files[0];

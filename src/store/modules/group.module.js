@@ -93,6 +93,7 @@ export default {
         },
 
         async updateGroup({ commit }, payload) {
+            console.log('updatedGroup: ', payload)
             try {
                 const response = await axios.post(`${API_URL}/${payload.id}`, payload, {
                     headers: {

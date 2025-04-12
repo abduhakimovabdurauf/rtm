@@ -14,7 +14,7 @@
       <div>
         <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
         <input
-            type="number"
+            type="text"
             id="phone"
             v-model="form.phone"
             class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:text-white"
