@@ -320,31 +320,14 @@ export default {
 
     const handleSubmit = () => {
       const updatedUser = {
-        id: form.value.id,
-        full_name: form.value.full_name,
-        login: form.value.login,
-        password: form.value.password,
-        email: form.value.email,
-        phone: form.value.phone,
-        address: form.value.address,
-        links: form.value.links,
-        birthday: form.value.birthday,
-        gender: form.value.gender,
-        from: form.value.from,
-        work_start: form.value.work_start,
-        work_end: form.value.work_end,
-        status: form.value.status,
-        description: form.value.description,
+        ...form.value,
         branches: form.value.branches.map(branch => branch.id),
-        my_courses: form.value.my_courses.map(course => course.id),
-        roles: form.value.roles.map(role => role.id),
-        images: form.value.image || null,
       };
 
-      console.log('submitted data: ', updatedUser);
+      console.log('submitted data: ',updatedUser);
       store.dispatch('user/updateUser', updatedUser);
-      store.commit('SET_LOADING', true);
-      store.dispatch('user/getAllUsers');
+      store.commit('SET_LOADING', true)
+      store.dispatch('user/getAllUsers')
       initialForm.value = { ...form.value };
       closeModal();
     };
