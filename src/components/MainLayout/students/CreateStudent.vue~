@@ -14,7 +14,7 @@
         <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
         <input
             v-model="newStudent.phone"
-            @input="newStudent.phone = formatPhone(newStudent.phone)"
+            @input="formatPhone"
             type="tel"
             id="phone"
             maxlength="14"
@@ -27,7 +27,6 @@
         <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ota-Ona telefoni</label>
         <input
             v-model="newStudent.parent_phone"
-            @input="newStudent.parent_phone = formatPhone(newStudent.parent_phone)"
             type="text"
             id="phone"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"

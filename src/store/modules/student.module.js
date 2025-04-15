@@ -83,7 +83,7 @@ export default {
         },
         async addStudent({ commit }, payload) {
             commit("SET_LOADING", true, { root: true });
-
+            console.log('taken data: ', payload)
             try {
                 const response = await axios.post(API_URL, payload, {
                     headers: {
@@ -95,6 +95,7 @@ export default {
                 toast.success(response.data.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "O'quvchi qo'shishda xatolik!");
+                console.log(e)
             } finally {
                 commit("SET_LOADING", false, { root: true });
                 commit("closeSidebar", false, { root: true });
