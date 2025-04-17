@@ -41,11 +41,8 @@
         >
           <td class="px-6 py-2 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
           <td class="px-6 py-2 font-semibold">{{ callLog?.branch?.name }}</td>
-          <td class="px-6 py-2 font-semibold max-w-[200px] truncate">
-            {{ callLog?.notes }}
-          </td>
-
-          <!--          <td class="px-6 py-2 font-semibold">{{ callLog?.branch?.full_name }}</td>-->
+          <td class="px-6 py-2 font-semibold">{{ callLog?.notes }}</td>
+<!--          <td class="px-6 py-2 font-semibold">{{ callLog?.branch?.full_name }}</td>-->
           <td class="px-6 py-2">
             <StatusBadge :status="callLog.status" />
           </td>

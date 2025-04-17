@@ -3,7 +3,7 @@
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ismi</label>
       <input
-          v-model="newStudent.full_name"
+          v-model="newUser.full_name"
           type="text"
           id="name"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -12,7 +12,7 @@
     <div class="mb-4">
       <label for="duration" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Login</label>
       <input
-          v-model="newStudent.login"
+          v-model="newUser.login"
           type="text"
           id="duration"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -21,35 +21,37 @@
     <div class="mb-4">
       <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parol</label>
       <input
-          v-model="newStudent.password"
+          v-model="newUser.password"
           type="text"
           id="password"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
+
+    <div class="mb-4">
+      <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
+      <input
+          v-model="newUser.phone"
+          @input="newUser.phone = formatPhone(newUser.phone)"
+          type="text"
+          id="phone"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      />
+    </div>
+
     <div class="mb-4">
       <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
       <input
-          v-model="newStudent.email"
+          v-model="newUser.email"
           type="email"
           id="email"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
     <div class="mb-4">
-      <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
-      <input
-          v-model="newStudent.phone"
-          @input="newStudent.phone = formatPhone(newStudent.phone)"
-          type="text"
-          id="phone"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
       <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Manzili</label>
       <input
-          v-model="newStudent.address"
+          v-model="newUser.address"
           type="text"
           id="address"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -58,92 +60,57 @@
     <div class="mb-4">
       <label for="links" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Havolalar</label>
       <input
-          v-model="newStudent.links"
+          v-model="newUser.links"
           type="text"
           id="links"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
     <div class="mb-4">
-      <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tug'ilgan sana</label>
+      <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tugilgan sana</label>
       <input
-          v-model="newStudent.birthday"
+          v-model="newUser.birthday"
           type="date"
           id="birthday"
-          @input="formatDate('birthday')"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
     <div class="mb-4">
       <label for="work_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish boshlagan vaqti</label>
       <input
-          v-model="newStudent.work_start"
+          v-model="newUser.work_start"
           type="date"
           id="work_start"
-          @input="formatDate('work_start')"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
     <div class="mb-4">
       <label for="work_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish tamomlagan vaqti</label>
       <input
-          v-model="newStudent.work_end"
+          v-model="newUser.work_end"
           type="date"
           id="work_end"
-          @input="formatDate('work_end')"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
-
     <div class="mb-4">
       <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
       <textarea
-          v-model="newStudent.description"
+          v-model="newUser.description"
           id="description"
           rows="3"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       ></textarea>
     </div>
     <div class="mb-4">
-      <label for="from" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Dan</label>
-      <select
-          v-model="newStudent.from"
-          id="gender"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option value="tanish">tanish</option>
-        <option value="maktab">maktab</option>
-        <option value="telegram">telegram</option>
-        <option value="instagram">instagram</option>
-        <option value="facebook">facebook</option>
-        <option value="ota-onam">ota-onam</option>
-        <option value="tashqi reklama">tashqi reklama</option>
-      </select>
-    </div>
-    <div class="mb-4">
-      <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jinsi</label>
-      <select
-          v-model="newStudent.gender"
-          id="gender"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option value="man">Erkak</option>
-        <option value="woman">Ayol</option>
-      </select>
-    </div>
-    <div class="mb-4">
       <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
       <select
-          v-model="newStudent.status"
+          v-model="newUser.status"
           id="status"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
-        <option value="pending">Jarayonda</option>
         <option value="active">Faol</option>
         <option value="inactive">Faol emas</option>
-        <option value="completed">Bajarilgan</option>
-        <option value="dropped">Bekor qilingan</option>
-        <option value="expelled">Haydalgan</option>
       </select>
     </div>
     <div class="mb-4">
@@ -151,9 +118,16 @@
       <input
           type="file"
           id="image"
-          multiple
-          ref="image"
           @change="handleImageUpload"
+          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fayl Yuklash</label>
+      <input
+          type="file"
+          id="file"
+          @change="handleFileUpload"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -171,23 +145,23 @@
 </template>
 
 <script>
-import {reactive, computed, ref, onMounted} from 'vue';
+import {reactive, computed} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
   props: {
     branchId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   emits: ['close'],
   setup(props, { emit }) {
     const store = useStore();
     const activeUser = JSON.parse(localStorage.getItem("user"))
-    const newStudent = reactive({
-      full_name: '',
+    const newUser = reactive({
       branch_id: props.branchId,
+      full_name: '',
       login: '',
       password: '',
       email: '',
@@ -195,82 +169,64 @@ export default {
       address: '',
       links: '',
       birthday: '',
-      gender: 'man',
-      from: 'tanish',
       work_start: '',
       work_end: '',
       status: 'active',
       description: '',
       images: null,
+      files: null,
       user_id: activeUser.id,
     });
 
     const isFormValid = computed(() => {
       return (
-          newStudent.full_name.trim() &&
-          newStudent.login.trim() &&
-          newStudent.password.trim() &&
-          newStudent.phone.trim()
+          newUser.full_name.trim() &&
+          newUser.login.trim() &&
+          newUser.password.trim() &&
+          newUser.phone.trim() &&
+          newUser.status.trim()
       );
     });
-
-    const formatDate = (field) => {
-      const value = this.newStudent[field];
-      if (value) {
-        const [year, month, day] = value.split('-');
-        this.newStudent[field] = `${year}-${month}-${day}`;
-      }
-    }
 
     const handleSubmit = async () => {
       try {
         const formData = new FormData();
-        formData.append('full_name', newStudent.full_name);
-        formData.append('login', newStudent.login);
-        formData.append('password', newStudent.password);
-        formData.append('email', newStudent.email);
-        formData.append('phone', newStudent.phone);
-        formData.append('description', newStudent.description);
-        formData.append('address', newStudent.address);
-        formData.append('birthday', newStudent.birthday);
-        formData.append('gender', newStudent.gender);
-        formData.append('from', newStudent.from);
-        formData.append('links', newStudent.links);
-        formData.append('work_start', newStudent.work_start);
-        formData.append('work_end', newStudent.work_end);
-        formData.append('status', newStudent.status);
-        if (newStudent.image) formData.append('image', newStudent.image);
+        formData.append('full_name', newUser.full_name);
+        formData.append('login', newUser.login);
+        formData.append('password', newUser.password);
+        formData.append('email', newUser.email);
+        formData.append('phone', newUser.phone);
+        formData.append('description', newUser.description);
+        formData.append('address', newUser.address);
+        formData.append('birthday', newUser.birthday);
+        formData.append('links', newUser.links);
+        formData.append('work_start', newUser.work_start);
+        formData.append('work_end', newUser.work_end);
+        formData.append('status', newUser.status);
+        if (newUser.images) formData.append('files', newUser.images);
+        if (newUser.files) formData.append('files', newUser.files);
 
-        await store.dispatch('student/addStudent', formData);
+        await store.dispatch('user/addUser', formData);
         closeModal();
 
-        newStudent.full_name = '';
-        newStudent.login = '';
-        newStudent.password = '';
-        newStudent.email = '';
-        newStudent.phone = '';
-        newStudent.address = '';
-        newStudent.links = '';
-        newStudent.birthday =  '';
-        newStudent.from = '';
-        newStudent.gender = '';
-        newStudent.work_start = '';
-        newStudent.work_end = '';
-        newStudent.status = 'active';
-        newStudent.description = '';
-        newStudent.images = null;
+        newUser.full_name = '';
+        newUser.login = '';
+        newUser.password = '';
+        newUser.email = '';
+        newUser.phone = '';
+        newUser.address = '';
+        newUser.links = '';
+        newUser.birthday =  '';
+        newUser.work_start = '';
+        newUser.work_end = '';
+        newUser.status = 'active';
+        newUser.description = '';
+        newUser.images = null;
+        newUser.files = null;
       } catch (e) {
         console.error(e);
       }
     };
-
-    const handleImageUpload = (event) => {
-      newStudent.image = event.target.files[0];
-    };
-
-    function closeModal() {
-      emit('close');
-    }
 
     const formatPhone = (value) => {
       let digits = value.replace(/\D/g, '');
@@ -283,12 +239,24 @@ export default {
           : `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}${match[4] ? '-' + match[4] : ''}`;
     };
 
+    const handleImageUpload = (event) => {
+      newUser.images = event.target.files[0];
+    };
+
+    const handleFileUpload = (event) => {
+      newUser.files = event.target.files[0];
+    };
+
+    function closeModal() {
+      emit('close');
+    }
+
     return {
-      newStudent,
+      newUser,
       handleSubmit,
       closeModal,
       handleImageUpload,
-      formatDate,
+      handleFileUpload,
       formatPhone,
       isFormValid,
     };

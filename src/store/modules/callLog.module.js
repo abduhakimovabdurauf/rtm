@@ -20,7 +20,7 @@ export default {
             if (!Array.isArray(state.callLogs)) {
                 state.callLogs = [];
             }
-            state.callLogs.push(callLog);
+            state.callLogs.unshift(callLog);
         },
 
         DELETE_CALLLOG(state, callLogId) {

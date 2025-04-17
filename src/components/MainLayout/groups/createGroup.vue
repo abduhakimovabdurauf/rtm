@@ -140,21 +140,11 @@
       </div>
       <div class="mb-4">
         <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Boshlanish Sanasi</label>
-        <input
-            v-model="newGroup.start_date"
-            type="date"
-            id="start_date"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-        />
+        <Datepicker v-model="newGroup.start_date" />
       </div>
       <div class="mb-4">
         <label for="end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tugash Sanasi</label>
-        <input
-            v-model="newGroup.end_date"
-            type="date"
-            id="end_date"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-        />
+        <Datepicker v-model="newGroup.end_date" />
       </div>
       <div class="mb-4">
         <label for="part_of_day" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hafta kuni</label>
@@ -209,8 +199,13 @@
 <script>
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 export default {
   emits: ["close"],
+  components: {
+    Datepicker
+  },
   setup(_, { emit }) {
     const store = useStore();
     const activeUser = JSON.parse(localStorage.getItem("user"));

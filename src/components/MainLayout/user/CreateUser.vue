@@ -33,8 +33,12 @@
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
       <input
           v-model="newUser.phone"
+          @input="newUser.phone = formatPhone(newUser.phone)"
           type="text"
           id="phone"
+          maxlength="14"
+          placeholder="00 000-00-00"
+          autocomplete="off"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
@@ -275,6 +279,18 @@ export default {
       );
     });
     const showOptionalFields = ref(false);
+
+    const formatPhone = (value) => {
+      let digits = value.replace(/\D/g, '');
+      let match = digits.match(/^(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})$/);
+
+      if (!match) return value;
+
+      return !match[2]
+          ? match[1]
+          : `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}${match[4] ? '-' + match[4] : ''}`;
+    };
+
     const handleSubmit = async () => {
       try {
         const payload = {
@@ -349,6 +365,7 @@ export default {
       courses,
       showOptionalFields,
       roles,
+      formatPhone,
     };
   },
 };

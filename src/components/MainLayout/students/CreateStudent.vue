@@ -30,9 +30,16 @@
             @input="newStudent.parent_phone = formatPhone(newStudent.parent_phone)"
             type="text"
             id="phone"
+            maxlength="14"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
+
+      <label for="crmdigital" class="inline-flex items-center cursor-pointer mb-2">
+        <input type="checkbox" id="crmdigital" v-model="newStudent.crmdigital" class="sr-only peer">
+        <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Tizimga kiritilganmi ?</span>
+      </label>
 
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial</label>
@@ -202,7 +209,7 @@
         from: 'tanish',
         status: 'active',
         parent_phone: '',
-        crmdigital: '',
+        crmdigital: true,
         description: '',
         images: [],
         courses: [],
@@ -260,6 +267,7 @@
             ? match[1]
             : `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}${match[4] ? '-' + match[4] : ''}`;
       };
+
 
 
       const handleSubmit = async () => {

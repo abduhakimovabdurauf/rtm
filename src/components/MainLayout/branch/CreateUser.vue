@@ -32,104 +32,178 @@
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
       <input
           v-model="newUser.phone"
+          @input="newUser.phone = formatPhone(newUser.phone)"
           type="text"
           id="phone"
+          maxlength="14"
+          placeholder="00 000-00-00"
+          autocomplete="off"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       />
     </div>
 
     <div class="mb-4">
-      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-      <input
-          v-model="newUser.email"
-          type="email"
-          id="email"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filiallar</label>
+      <div v-if="branches?.data?.length" class="flex flex-wrap gap-3">
+        <div v-for="branch in branches.data" :key="branch.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <input
+              type="checkbox"
+              :id="'branch_' + branch.id"
+              :value="branch.id"
+              v-model="newUser.branches"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label :for="'branch_' + branch.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+            {{ branch.name }}
+          </label>
+        </div>
+      </div>
     </div>
+
     <div class="mb-4">
-      <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Manzili</label>
-      <input
-          v-model="newUser.address"
-          type="text"
-          id="address"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurslar</label>
+      <div v-if="courses?.data?.length" class="flex flex-wrap gap-3">
+        <div v-for="course in courses.data" :key="course.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <input
+              type="checkbox"
+              :id="'course_' + course.id"
+              :value="course.id"
+              v-model="newUser.courses"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label :for="'course_' + course.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+            {{ course.name }}
+          </label>
+        </div>
+      </div>
     </div>
+
     <div class="mb-4">
-      <label for="links" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Havolalar</label>
-      <input
-          v-model="newUser.links"
-          type="text"
-          id="links"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lavozimlar</label>
+      <div v-if="roles?.data?.length" class="flex flex-wrap gap-3">
+        <div v-for="role in roles.data" :key="role.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <input
+              type="checkbox"
+              :id="'role_' + role.id"
+              :value="role.id"
+              v-model="newUser.roles"
+              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+          />
+          <label :for="'role_' + role.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
+            {{ role.name }}
+          </label>
+        </div>
+      </div>
     </div>
-    <div class="mb-4">
-      <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tugilgan sana</label>
-      <input
-          v-model="newUser.birthday"
-          type="date"
-          id="birthday"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
+    <!--    end required fields-->
+
+    <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
+      <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
+      <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+      <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
+    </label>
+
+    <!--  nullable qiymatlar   -->
+
+    <div v-if="showOptionalFields">
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+        <input
+            v-model="newUser.email"
+            type="email"
+            id="email"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Manzili</label>
+        <input
+            v-model="newUser.address"
+            type="text"
+            id="address"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="links" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Havolalar</label>
+        <input
+            v-model="newUser.links"
+            type="text"
+            id="links"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tugilgan sana</label>
+        <input
+            v-model="newUser.birthday"
+            type="date"
+            id="birthday"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="work_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish boshlagan vaqti</label>
+        <input
+            v-model="newUser.work_start"
+            type="date"
+            id="work_start"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="work_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish tamomlagan vaqti</label>
+        <input
+            v-model="newUser.work_end"
+            type="date"
+            id="work_end"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
+        <textarea
+            v-model="newUser.description"
+            id="description"
+            rows="3"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        ></textarea>
+      </div>
+      <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
+        <select
+            v-model="newUser.status"
+            id="status"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        >
+          <option value="active">Faol</option>
+          <option value="inactive">Faol emas</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rasm Yuklash</label>
+        <input
+            type="file"
+            id="image"
+            @change="handleImageUpload"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+      <div class="mb-4">
+        <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fayl Yuklash</label>
+        <input
+            type="file"
+            id="file"
+            @change="handleFileUpload"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+
     </div>
-    <div class="mb-4">
-      <label for="work_start" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish boshlagan vaqti</label>
-      <input
-          v-model="newUser.work_start"
-          type="date"
-          id="work_start"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
-      <label for="work_end" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ish tamomlagan vaqti</label>
-      <input
-          v-model="newUser.work_end"
-          type="date"
-          id="work_end"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
-      <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tavsif</label>
-      <textarea
-          v-model="newUser.description"
-          id="description"
-          rows="3"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      ></textarea>
-    </div>
-    <div class="mb-4">
-      <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Holat</label>
-      <select
-          v-model="newUser.status"
-          id="status"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <option value="active">Faol</option>
-        <option value="inactive">Faol emas</option>
-      </select>
-    </div>
-    <div class="mb-4">
-      <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rasm Yuklash</label>
-      <input
-          type="file"
-          id="image"
-          @change="handleImageUpload"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
-    <div class="mb-4">
-      <label for="file" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fayl Yuklash</label>
-      <input
-          type="file"
-          id="file"
-          @change="handleFileUpload"
-          class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      />
-    </div>
+
+    <!--    end nullable qiymatlar    -->
+
+
     <div class="flex justify-end mb-20">
       <button
           type="submit"
@@ -144,22 +218,22 @@
 </template>
 
 <script>
-import {reactive, computed} from 'vue';
+import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
 
 export default {
   props: {
-    branchId: {
-      type: Number,
+    isOpen: {
+      type: Boolean,
       required: true,
     },
   },
   emits: ['close'],
-  setup(props, { emit }) {
+  setup(_, {emit}) {
     const store = useStore();
     const activeUser = JSON.parse(localStorage.getItem("user"))
     const newUser = reactive({
-      branch_id: props.branchId,
+      branches: [],
       full_name: '',
       login: '',
       password: '',
@@ -175,7 +249,24 @@ export default {
       images: null,
       files: null,
       user_id: activeUser.id,
+      courses: [],
+      roles: []
     });
+
+    const courses = ref(null)
+    const roles = ref(null)
+    const branches = ref(null);
+    const fetchData = async () => {
+      try {
+        branches.value = await store.dispatch("branch/getAllBranches");
+        courses.value = await store.dispatch("course/getAllCourses");
+        roles.value = await store.dispatch("role/getAllRoles");
+      } catch (error) {
+        console.error("Xatolik yuz berdi:", error);
+      }
+    };
+
+    onMounted(fetchData);
 
     const isFormValid = computed(() => {
       return (
@@ -186,46 +277,69 @@ export default {
           newUser.status.trim()
       );
     });
+    const showOptionalFields = ref(false);
+
+    const formatPhone = (value) => {
+      let digits = value.replace(/\D/g, '');
+      let match = digits.match(/^(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})$/);
+
+      if (!match) return value;
+
+      return !match[2]
+          ? match[1]
+          : `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}${match[4] ? '-' + match[4] : ''}`;
+    };
 
     const handleSubmit = async () => {
       try {
-        const formData = new FormData();
-        formData.append('full_name', newUser.full_name);
-        formData.append('login', newUser.login);
-        formData.append('password', newUser.password);
-        formData.append('email', newUser.email);
-        formData.append('phone', newUser.phone);
-        formData.append('description', newUser.description);
-        formData.append('address', newUser.address);
-        formData.append('birthday', newUser.birthday);
-        formData.append('links', newUser.links);
-        formData.append('work_start', newUser.work_start);
-        formData.append('work_end', newUser.work_end);
-        formData.append('status', newUser.status);
-        if (newUser.images) formData.append('files', newUser.images);
-        if (newUser.files) formData.append('files', newUser.files);
-
-        await store.dispatch('user/addUser', formData);
+        const payload = {
+          branches: newUser.branches,
+          courses: newUser.courses,
+          roles: newUser.roles,
+          full_name: newUser.full_name,
+          login: newUser.login,
+          password: newUser.password,
+          email: newUser.email,
+          phone: newUser.phone,
+          description: newUser.description,
+          address: newUser.address,
+          birthday: newUser.birthday,
+          links: newUser.links,
+          work_start: newUser.work_start,
+          work_end: newUser.work_end,
+          status: newUser.status,
+          images: newUser.images,
+          files: newUser.files,
+        };
+        console.log('submitted data:', payload);
+        await store.dispatch('user/addUser', payload);
         closeModal();
 
-        newUser.full_name = '';
-        newUser.login = '';
-        newUser.password = '';
-        newUser.email = '';
-        newUser.phone = '';
-        newUser.address = '';
-        newUser.links = '';
-        newUser.birthday =  '';
-        newUser.work_start = '';
-        newUser.work_end = '';
-        newUser.status = 'active';
-        newUser.description = '';
-        newUser.images = null;
-        newUser.files = null;
+        // Tozalash
+        Object.assign(newUser, {
+          full_name: '',
+          login: '',
+          password: '',
+          email: '',
+          phone: '',
+          address: '',
+          links: '',
+          birthday: '',
+          work_start: '',
+          work_end: '',
+          status: 'active',
+          description: '',
+          images: null,
+          files: null,
+          branches: [],
+          courses: [],
+          roles: [],
+        });
       } catch (e) {
         console.error(e);
       }
     };
+
 
     const handleImageUpload = (event) => {
       newUser.images = event.target.files[0];
@@ -246,6 +360,11 @@ export default {
       handleImageUpload,
       handleFileUpload,
       isFormValid,
+      branches,
+      courses,
+      showOptionalFields,
+      roles,
+      formatPhone,
     };
   },
 };

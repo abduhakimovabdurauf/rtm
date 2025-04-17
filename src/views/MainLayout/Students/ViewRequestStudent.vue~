@@ -18,8 +18,7 @@
         :student-id="studentId"
         :branch-id="data?.branch?.id"
         v-if="isCallLog"
-        @close="closeCallLogSidebar"
-    />
+        @close="closeCallLogSidebar"/>
   </actionSidebar>
 
   <div class="flex justify-evenly flex-wrap">
@@ -351,15 +350,11 @@ export default {
 
     const openPaymentSidebar = () => {
       isPayment.value = true;
-      isUpdating.value = false;
-      isCallLog.value = false;
       store.dispatch("toggleSidebar", true);
     }
 
     const openCallLogSidebar = () => {
       isCallLog.value = true;
-      isPayment.value = false;
-      isUpdating.value = false;
       store.dispatch("toggleSidebar", true);
     }
 

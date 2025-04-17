@@ -34,7 +34,7 @@
           v-model="newBranch.phone"
           type="number"
           id="phone"
-          @input="validateField('phone')"
+          @input="newBranch.phone = formatPhone(newBranch.phone)"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
       />
     </div>
@@ -145,6 +145,17 @@ export default {
       }
     };
 
+    const formatPhone = (value) => {
+      let digits = value.replace(/\D/g, '');
+      let match = digits.match(/^(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})$/);
+
+      if (!match) return value;
+
+      return !match[2]
+          ? match[1]
+          : `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}${match[4] ? '-' + match[4] : ''}`;
+    };
+
     const handleSubmit = async () => {
       try {
         if (!isFormValid.value) return;
@@ -168,6 +179,7 @@ export default {
       handleSubmit,
       isFormValid,
       companies,
+      formatPhone,
     };
   },
 };

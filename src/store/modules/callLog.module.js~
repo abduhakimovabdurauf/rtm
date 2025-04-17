@@ -56,7 +56,7 @@ export default {
                     },
                 });
                 console.log(response)
-                commit("ADD_CALLLOG", response?.data?.call_log  );
+                commit("ADD_CALLLOG", response?.data?.call_log);
                 toast.success(response.data.message);
 
             } catch (e) {

@@ -163,12 +163,12 @@
               <i class="bx bxs-trash-alt"></i>
             </button>
 
-            <button
-                @click="openUpdateCourseSidebar(course.id)"
-                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"
-            >
-              <i class='bx bxs-edit-alt'></i>
-            </button>
+<!--            <button-->
+<!--                @click="openUpdateCourseSidebar(course.id)"-->
+<!--                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"-->
+<!--            >-->
+<!--              <i class='bx bxs-edit-alt'></i>-->
+<!--            </button>-->
           </td>
         </tr>
         </tbody>
@@ -293,12 +293,12 @@
               <i class="bx bxs-trash-alt"></i>
             </button>
 
-            <button
-                @click="openUpdateDiscountSidebar(discount.id)"
-                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"
-            >
-              <i class='bx bxs-edit-alt'></i>
-            </button>
+<!--            <button-->
+<!--                @click="openUpdateDiscountSidebar(discount.id)"-->
+<!--                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"-->
+<!--            >-->
+<!--              <i class='bx bxs-edit-alt'></i>-->
+<!--            </button>-->
           </td>
         </tr>
         </tbody>
@@ -360,12 +360,12 @@
             </button>
 
 
-            <button
-                @click="openUpdateRoomSidebar(room.id)"
-                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"
-            >
-              <i class='bx bxs-edit-alt'></i>
-            </button>
+<!--            <button-->
+<!--                @click="openUpdateRoomSidebar(room.id)"-->
+<!--                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"-->
+<!--            >-->
+<!--              <i class='bx bxs-edit-alt'></i>-->
+<!--            </button>-->
           </td>
         </tr>
         </tbody>
@@ -427,12 +427,12 @@
               <i class="bx bxs-trash-alt"></i>
             </button>
 
-            <button
-                @click="openUpdateUserSidebar(user.id)"
-                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"
-            >
-              <i class='bx bxs-edit-alt'></i>
-            </button>
+<!--            <button-->
+<!--                @click="openUpdateUserSidebar(user.id)"-->
+<!--                class="mr-0.5 transition text-white bg-green-500 hover:bg-green-600 p-3 py-2 rounded duration-200"-->
+<!--            >-->
+<!--              <i class='bx bxs-edit-alt'></i>-->
+<!--            </button>-->
           </td>
         </tr>
         </tbody>
@@ -535,6 +535,11 @@ export default {
 
     const openCourseSidebar = ()=> {
       isCoursing.value = true;
+      isUpdating.value = false;
+      isDiscounting.value = false;
+      isStudenting.value = false;
+      isRooming.value = false;
+      isUsering.value = false;
       store.dispatch("toggleSidebar", true);
     }
 
@@ -544,7 +549,12 @@ export default {
     }
 
     const openDiscountSidebar = () => {
+      isCoursing.value = false;
+      isUpdating.value = false;
       isDiscounting.value = true;
+      isStudenting.value = false;
+      isRooming.value = false;
+      isUsering.value = false;
       store.dispatch("toggleSidebar", true);
     }
 
@@ -554,7 +564,12 @@ export default {
     }
 
     const openStudentSidebar = () => {
+      isCoursing.value = false;
+      isUpdating.value = false;
+      isDiscounting.value = false;
       isStudenting.value = true;
+      isRooming.value = false;
+      isUsering.value = false;
       store.dispatch("toggleSidebar", true);
     }
 
@@ -564,7 +579,12 @@ export default {
     }
 
     const openRoomSidebar = ()=> {
+      isCoursing.value = false;
+      isUpdating.value = false;
+      isDiscounting.value = false;
+      isStudenting.value = false;
       isRooming.value = true;
+      isUsering.value = false;
       store.dispatch("toggleSidebar", true);
     }
 
@@ -574,6 +594,11 @@ export default {
     }
 
     const openUserSidebar = () => {
+      isCoursing.value = false;
+      isUpdating.value = false;
+      isDiscounting.value = false;
+      isStudenting.value = false;
+      isRooming.value = false;
       isUsering.value = true;
       store.dispatch("toggleSidebar", true);
     }

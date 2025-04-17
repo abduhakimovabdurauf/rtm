@@ -40,7 +40,6 @@
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
       <input
           v-model="newStudent.phone"
-          @input="newStudent.phone = formatPhone(newStudent.phone)"
           type="text"
           id="phone"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -272,24 +271,12 @@ export default {
       emit('close');
     }
 
-    const formatPhone = (value) => {
-      let digits = value.replace(/\D/g, '');
-      let match = digits.match(/^(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})$/);
-
-      if (!match) return value;
-
-      return !match[2]
-          ? match[1]
-          : `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}${match[4] ? '-' + match[4] : ''}`;
-    };
-
     return {
       newStudent,
       handleSubmit,
       closeModal,
       handleImageUpload,
       formatDate,
-      formatPhone,
       isFormValid,
     };
   },

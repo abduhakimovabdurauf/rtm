@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <!-- Kompaniya Nomi -->
     <div class="mb-4">
       <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya Nomi</label>
       <input
@@ -14,19 +13,19 @@
       <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
     </div>
 
-    <!-- Telefon Raqami -->
     <div class="mb-4">
       <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon Raqami</label>
       <input
           v-model="newCompany.phone"
           type="text"
           id="phone"
-          @input="validateField('phone')"
+          @input="newCompany.phone = formatPhone(newCompany.phone)"
+          placeholder="00 000-00-00"
+          maxlength="14"
           class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
       />
     </div>
 
-    <!-- Manzil -->
     <div class="mb-4">
       <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Manzili</label>
       <input
@@ -123,6 +122,18 @@ export default {
       }
     };
 
+    const formatPhone = (value) => {
+      let digits = value.replace(/\D/g, '');
+      let match = digits.match(/^(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})$/);
+
+      if (!match) return value;
+
+      return !match[2]
+          ? match[1]
+          : `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}${match[4] ? '-' + match[4] : ''}`;
+    };
+
+
     const handleImageUpload = (event) => {
       const file = event.target.files[0];
       if (file && !['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
@@ -147,6 +158,7 @@ export default {
           }
         });
 
+
         await store.dispatch("company/addCompany", formData);
 
         Object.keys(newCompany).forEach((key) => {
@@ -166,6 +178,7 @@ export default {
       handleSubmit,
       handleImageUpload,
       isFormValid,
+      formatPhone,
     };
   },
 };
