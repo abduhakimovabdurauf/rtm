@@ -27,8 +27,8 @@
         <tr class="bg-gray-700 text-white">
           <th class="px-6 py-4 text-left">№</th>
           <th class="px-6 py-4 text-left">Filial</th>
-          <th class="px-6 py-4 text-left">Holat</th>
           <th class="px-6 py-4 text-left">Eslatmalar</th>
+          <th class="px-6 py-4 text-left">Holat</th>
 <!--          <th class="px-6 py-4 text-left">O'quvchi</th>-->
           <th class="px-6 py-4 text-right">Amallar</th>
         </tr>
