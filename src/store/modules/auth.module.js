@@ -40,12 +40,12 @@ export default {
         },
         async logout({ commit }) {
             try {
-                // const url = `${import.meta.env.VITE_API_URL}/logout`;
-                // const response = await axios.post(url, {}, {
-                //     headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
-                // });
+                const url = `${import.meta.env.VITE_API_URL}/logout`;
+                const response = await axios.post(url, {}, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("jwt-token")}` },
+                });
                 commit("LOGOUT");
-                // toast.success(response.data.message);
+                toast.success(response.data.message);
             } catch (e) {
                 console.error(e.message);
                 toast.error(e.response?.data?.message || "Logout failed!");
@@ -54,13 +54,14 @@ export default {
         checkToken({ commit }) {
             const token = localStorage.getItem("jwt-token");
             const expiry = localStorage.getItem("jwt-token-expiry");
-
+            
             if (token && expiry) {
                 if (Date.now() > expiry) {
                     localStorage.removeItem("jwt-token");
                     localStorage.removeItem("jwt-token-expiry");
                     console.error("Token muddati tugagan!");
-                    commit('LOGOUT');
+                    // commit('LOGOUT');
+                    dispatch('logout')
                 } else {
                     commit('setToken', token);
                 }

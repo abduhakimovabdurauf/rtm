@@ -185,6 +185,10 @@
       <button
           type="submit"
           class="w-full px-4 py-2 rounded-lg mb-12"
+          :class="{
+            'bg-blue-600 text-white': isFormValid,
+            'bg-gray-400 text-gray-700 cursor-not-allowed': !isFormValid
+          }"
       >
         Qo'shish
       </button>

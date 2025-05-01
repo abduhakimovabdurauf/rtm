@@ -7,7 +7,7 @@
             v-model="newStudent.full_name"
             type="text"
             id="name"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
       <div class="mb-4">
@@ -19,7 +19,7 @@
             id="phone"
             maxlength="14"
             autocomplete="off"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
@@ -31,14 +31,22 @@
             type="text"
             id="phone"
             maxlength="14"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
-      <label for="crmdigital" class="inline-flex items-center cursor-pointer mb-2">
-        <input type="checkbox" id="crmdigital" v-model="newStudent.crmdigital" class="sr-only peer">
+      <label for="crmdigital" class="inline-flex items-center mb-2 cursor-pointer">
+        <input
+          type="checkbox"
+          :checked="newStudent.crmdigital === '1'"
+          id="crmdigital"
+          @change="newStudent.crmdigital = $event.target.checked ? '1' : '0'"
+          class="sr-only peer"
+        />
+        <p>Qiymat: {{ newStudent.crmdigital }}</p>
+
         <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Tizimga kiritilganmi ?</span>
+        <span class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">Tizimga kiritilganmi ?</span>
       </label>
 
       <div class="mb-4">
@@ -46,7 +54,7 @@
         <select
             v-if="branches?.data?.length"
             v-model="newStudent.branch_id"
-            class="w-full p-2 mt-1 border rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:ring focus:ring-blue-500"
+            class="w-full p-2 mt-1 text-gray-700 bg-gray-100 border rounded-md dark:bg-gray-800 dark:text-gray-300 focus:ring focus:ring-blue-500"
         >
           <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
             {{ branch.name }}
@@ -58,7 +66,7 @@
       <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurslar</label>
       <div v-if="courses?.data?.length" class="flex flex-wrap gap-3">
-        <div v-for="course in courses.data" :key="course.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+        <div v-for="course in courses.data" :key="course.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
           <input
               type="checkbox"
               :id="'course_' + course.id"
@@ -75,10 +83,10 @@
 
 
 
-      <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
+      <label for="showOptional" class="inline-flex items-center mb-2 cursor-pointer">
         <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
         <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
+        <span class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
       </label>
 
 
@@ -89,7 +97,7 @@
               v-model="newStudent.email"
               type="email"
               id="email"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -98,7 +106,7 @@
               v-model="newStudent.address"
               type="text"
               id="address"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -107,7 +115,7 @@
               v-model="newStudent.links"
               type="text"
               id="links"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -117,7 +125,7 @@
               type="date"
               id="birthday"
               @input="formatDate('birthday')"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
 
@@ -127,7 +135,7 @@
               v-model="newStudent.description"
               id="description"
               rows="3"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           ></textarea>
         </div>
         <div class="mb-4">
@@ -135,7 +143,7 @@
           <select
               v-model="newStudent.from"
               id="gender"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           >
             <option value="tanish">tanish</option>
             <option value="maktab">maktab</option>
@@ -151,7 +159,7 @@
           <select
               v-model="newStudent.gender"
               id="gender"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           >
             <option value="man">Erkak</option>
             <option value="woman">Ayol</option>
@@ -167,7 +175,7 @@
               ref="image"
               accept="image/*"
               @change="handleImageUpload"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
       </div>
@@ -180,7 +188,7 @@
         <button
             type="submit"
             :disabled="!isFormValid"
-            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg"
+            class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg"
             :class="{ 'opacity-50 cursor-not-allowed': !isFormValid }"
         >
           Qo'shish
@@ -189,7 +197,7 @@
     </form>
   </template>
   <script>
-  import {reactive, computed, ref, onMounted} from 'vue';
+  import {reactive, computed, onMounted, ref} from 'vue';
   import { useStore } from 'vuex';
 
   export default {
@@ -209,13 +217,13 @@
         from: 'tanish',
         status: 'active',
         parent_phone: '',
-        crmdigital: false,
+        crmdigital: '0',
         description: '',
         images: [],
         courses: [],
         user_id: activeUser.id,
       });
-
+      
       const branches = ref(null);
       const courses = ref(null)
       const fetchData = async () => {
@@ -283,7 +291,7 @@
             courses:JSON.stringify(newStudent.courses),
             full_name: newStudent.full_name,
             parent_phone: newStudent.parent_phone,
-            crmdigital:Boolean(newStudent.crmdigital),
+            crmdigital:newStudent.crmdigital,
             email: newStudent.email,
             phone: newStudent.phone,
             description: newStudent.description,
@@ -344,7 +352,7 @@
         isFormValid,
         branches,
         showOptionalFields,
-        courses
+        courses,
       };
     },
   };

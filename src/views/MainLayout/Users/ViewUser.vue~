@@ -43,7 +43,7 @@
         <p class="text-sm text-gray-600 dark:text-gray-300">{{ user?.branches?.map(branch => branch.name).join(', ') }}</p>
         <p class="text-sm text-gray-600 dark:text-gray-300">{{ user.phone }}</p>
       </div>
-      <div class="mt-3 gap-2 flex">
+      <div class="mt-3 gap-2">
         <router-link
             :to="{ name: 'WatchUser', params: { id: user.id } }"
             class="text-sm transition text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-gray-600 px-3 py-1.5 rounded duration-200"
