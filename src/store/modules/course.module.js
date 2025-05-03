@@ -90,16 +90,18 @@ export default {
             }
         },
 
-        async updateCourse({ commit }, payload) {
+        async updateCourse({ commit }, { apiPayload, localPayload }) {
             commit("SET_LOADING", true, { root: true });
             try {
-                const response = await axios.post(`${API_URL}/${payload.id}`, payload, {
+                const response = await axios.post(`${API_URL}/${apiPayload.id}`, apiPayload, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
-                commit("UPDATE_COURSE", response.data.course);
+                commit("UPDATE_COURSE", localPayload);
+                console.log('response: ', response.data.course);
+                
                 toast.success(response?.data?.message);
             } catch (e) {
                 toast.error(e.response?.data?.message || "Kursni o`zgartirishda xatolik!");

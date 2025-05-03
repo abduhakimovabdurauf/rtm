@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="handleSubmit" class="overflow-scroll pb-2">
+    <form @submit.prevent="handleSubmit" class="pb-2 overflow-scroll">
       <div>
         <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial ID</label>
         <select
@@ -8,7 +8,7 @@
             required
             v-if="branches && branches.data && branches.data.length > 0"
             v-model="form.branch_id"
-            class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full p-3 text-gray-900 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         >
           <option disabled selected>
             Filialni tanlang!
@@ -25,7 +25,7 @@
             type="text"
             id="name"
             v-model="form.name"
-            class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full p-3 text-gray-900 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
 
@@ -35,7 +35,7 @@
             type="number"
             id="duration"
             v-model="form.duration"
-            class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full p-3 text-gray-900 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
 
@@ -45,7 +45,7 @@
             type="number"
             id="price"
             v-model="form.price"
-            class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full p-3 text-gray-900 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
 
@@ -54,7 +54,7 @@
         <select
             id="status"
             v-model="form.status"
-            class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full p-3 text-gray-900 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         >
           <option value="active">Faol</option>
           <option value="inactive">Faol emas</option>
@@ -67,21 +67,21 @@
             id="description"
             v-model="form.description"
             rows="4"
-            class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full p-3 text-gray-900 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         ></textarea>
       </div>
 
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
         <div v-if="users?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="user in users.data" :key="user.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
             <input
                 type="checkbox"
                 :id="'user_' + user.id"
                 :value="user.id"
                 :checked="form.users.some(r => r.id === user.id)"
                 @change="toggleUser(user)"
-                class="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:bg-gray-700"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded dark:border-gray-600 focus:ring-blue-500 dark:bg-gray-700"
             />
             <label :for="'user_' + user.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
               {{ user.full_name }}
@@ -96,7 +96,7 @@
             type="file"
             id="image"
             @change="handleImageChange"
-            class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            class="w-full p-3 text-gray-900 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             accept="image/*"
         />
         <div v-if="imagePreview" class="mt-2">
@@ -104,10 +104,10 @@
         </div>
       </div>
 
-      <div class="flex justify-between items-center">
+      <div class="flex items-center justify-between">
         <button
             type="submit"
-            class="w-full px-6 py-2 bg-indigo-600 dark:bg-indigo-700 text-white font-semibold rounded-md hover:bg-indigo-700 dark:hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full px-6 py-2 mt-2 mb-6 font-semibold text-white bg-indigo-600 rounded-md dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Saqlash
         </button>
@@ -219,11 +219,17 @@ export default {
     };
     
     const handleSubmit = () => {
-      const updatedCourse = {
+
+      const apiPayload = {
         ...form.value,
         id: props.courseId,
       };
-      store.dispatch('course/updateCourse', updatedCourse);
+      const fullBranch = branches.value.data.find(b => b.id === form.value.branch_id);
+      const localPayload = {
+        ...form.value,
+        branch: fullBranch,
+      };
+      store.dispatch('course/updateCourse', { apiPayload, localPayload });
       closeModal();
     };
 
