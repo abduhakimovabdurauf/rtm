@@ -39,11 +39,11 @@
             alt="User Avatar"
         />
         <h2 class="mb-2 text-base font-semibold text-gray-800 dark:text-white">{{ user.full_name }}</h2>
-        <p class="text-sm text-gray-600 dark:text-gray-300" v-if="user?.roles.length!==0"><span class="font-semibold text-md">Lavozimi:</span> {{ user?.roles?.map(role => tarjimaLavozim(role.name)).join(', ') }}</p>
+        <p class="text-sm text-gray-600 dark:text-gray-300" v-if="user?.roles?.length!==0"><span class="font-semibold text-md">Lavozimi:</span> {{ user?.roles?.map(role => tarjimaLavozim(role.name)).join(', ') }}</p>
         <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-semibold text-md">Filial:</span> {{ user?.branches?.map(branch => branch.name).join(', ') }}</p>
-        <p class="text-sm text-gray-600 dark:text-gray-300" v-if="user?.my_courses.length!==0"><span class="font-semibold text-md">Kurslar:</span> {{ user?.my_courses?.map(course => course.name).join(', ') }}</p>
+        <p class="text-sm text-gray-600 dark:text-gray-300" v-if="user?.my_courses?.length!==0"><span class="font-semibold text-md">Kurslar:</span> {{ user?.my_courses?.map(course => course.name).join(', ') }}</p>
         <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-semibold text-md">Telefon:</span> {{ user.phone }}</p>
-      </div>
+      </div> 
       <div class="flex justify-center gap-2 mt-3">
         <router-link
             :to="{ name: 'WatchUser', params: { id: user.id } }"
