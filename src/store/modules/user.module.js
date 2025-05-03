@@ -93,6 +93,7 @@ export default {
                         Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
                     },
                 });
+                console.log('resonse: ', response);
                 commit("UPDATE_USER", response.data.user);
                 toast.success(`Xodim muvaffaqiyatli o'zgartirildi!`);
                 return response

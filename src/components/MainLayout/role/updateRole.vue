@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="handleSubmit" class="overflow-scroll pb-2">
+    <form @submit.prevent="handleSubmit" class="pb-2 overflow-scroll">
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Nomi</label>
         <input
@@ -14,7 +14,7 @@
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
         <div v-if="users?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="user in users?.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="user in users?.data" :key="user.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
             <input
                 type="checkbox"
                 :id="'user_' + user?.id"
@@ -33,7 +33,7 @@
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Huquqlar</label>
         <div v-if="permissions?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="permission in permissions?.data" :key="permission.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="permission in permissions?.data" :key="permission.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
             <input
                 type="checkbox"
                 :id="'permission_' + permission?.id"
@@ -52,10 +52,10 @@
         </div>
       </div>
 
-      <div class="flex justify-between items-center">
+      <div class="flex items-center justify-between">
         <button
             type="submit"
-            class="w-full px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full px-6 py-2 mt-2 mb-6 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Saqlash
         </button>
@@ -79,7 +79,7 @@ export default {
   emits: ['close'],
   setup(props,{ emit }) {
     const store = useStore();
-    
+    const activeUser = JSON.parse(localStorage.getItem("user"))
     const selectedRole = computed(() =>
         store.state.role.roles.find((course) => course.id === props.roleId)
     );
@@ -87,7 +87,6 @@ export default {
       name: '',
       users: [],
       permissions: [],
-      id: props.roleId,
     });
 
     const initialForm = ref({});
@@ -140,7 +139,11 @@ export default {
       const updatedRole = {
         ...form.value,
         id: props.roleId,
+        user_id: activeUser.id,
       };
+
+      console.log('submitted role: ', updatedRole);
+      
       store.dispatch('role/updateRole', updatedRole);
       closeModal();
     };

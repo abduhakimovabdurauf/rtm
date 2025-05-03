@@ -8,7 +8,7 @@
             v-model="form.full_name"
             type="text"
             id="name"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
       <div class="mb-4">
@@ -17,7 +17,7 @@
             v-model="form.login"
             type="text"
             id="duration"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
       <div class="mb-4">
@@ -26,7 +26,7 @@
             v-model="form.password"
             type="text"
             id="password"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
@@ -36,14 +36,14 @@
             v-model="form.phone"
             type="text"
             id="phone"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filiallar</label>
         <div v-if="branches?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="branch in branches.data" :key="branch.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="branch in branches.data" :key="branch.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
             <input
                 type="checkbox"
                 :id="'branch_' + branch.id"
@@ -63,12 +63,12 @@
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurslar</label>
         <div v-if="courses?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="course in courses.data" :key="course.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="course in courses.data" :key="course.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
             <input
                 type="checkbox"
                 :id="'course_' + course.id"
                 :value="course.id"
-                :checked="form.my_courses.some(c => c.id === course.id)"
+                :checked="form.my_courses?.some(c => c.id === course.id)"
                 @change="toggleCourse(course)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />
@@ -81,12 +81,12 @@
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lavozimlar</label>
         <div v-if="roles?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="role in roles.data" :key="role.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="role in roles.data" :key="role.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
             <input
                 type="checkbox"
                 :id="'role_' + role.id"
                 :value="role.id"
-                :checked="form.roles.some(r => r.id === role.id)"
+                :checked="form.roles?.some(r => r.id === role.id)"
                 @change="toggleRole(role)"
                 class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
             />
@@ -103,7 +103,7 @@
         <select
             v-model="form.status"
             id="status"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
           <option value="active">Faol</option>
           <option value="inactive">Faol emas</option>
@@ -111,10 +111,10 @@
       </div>
       <!--    end required fields-->
 
-      <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
+      <label for="showOptional" class="inline-flex items-center mb-2 cursor-pointer">
         <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
         <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
+        <span class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
       </label>
 
       <!--  nullable qiymatlar   -->
@@ -126,7 +126,7 @@
               v-model="form.email"
               type="email"
               id="email"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -135,7 +135,7 @@
               v-model="form.address"
               type="text"
               id="address"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -144,7 +144,7 @@
               v-model="form.links"
               type="text"
               id="links"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -153,7 +153,7 @@
               v-model="form.birthday"
               type="date"
               id="birthday"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -162,7 +162,7 @@
               v-model="form.work_start"
               type="date"
               id="work_start"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -171,7 +171,7 @@
               v-model="form.work_end"
               type="date"
               id="work_end"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -180,7 +180,7 @@
               v-model="form.description"
               id="description"
               rows="3"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           ></textarea>
         </div>
 <!--        <div class="mb-4">-->
@@ -189,7 +189,7 @@
 <!--              type="file"-->
 <!--              id="image"-->
 <!--              @change="handleImageUpload"-->
-<!--              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"-->
+<!--              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"-->
 <!--          />-->
 <!--        </div>-->
 <!--        <div class="mb-4">-->
@@ -198,7 +198,7 @@
 <!--              type="file"-->
 <!--              id="file"-->
 <!--              @change="handleFileUpload"-->
-<!--              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"-->
+<!--              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"-->
 <!--          />-->
 <!--        </div>-->
 
@@ -211,7 +211,7 @@
         <button
             type="submit"
             :disabled="!isFormChanged"
-            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg"
+            class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg"
             :class="{ 'opacity-50 cursor-not-allowed': !isFormChanged }"
         >
           O'zgartirish
