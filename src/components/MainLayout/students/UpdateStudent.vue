@@ -22,23 +22,37 @@
             type="text"
             id="name"
             required
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
       <div class="mb-4">
         <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Telefon</label>
         <input
             v-model="form.phone"
+            @input="form.phone = formatPhone(form.phone)"
             type="text"
             id="phone"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            maxlength="14"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="parent_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ota-ona telefoni</label>
+        <input
+            v-model="form.parent_phone"
+            type="text"
+            @input="form.parent_phone = formatPhone(form.parent_phone)"
+            id="parent_phone"
+            maxlength="14"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
       </div>
 
       <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurslar</label>
         <div v-if="courses?.data?.length" class="flex flex-wrap gap-3">
-          <div v-for="course in courses.data" :key="course.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
+          <div v-for="course in courses.data" :key="course.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
             <input
                 type="checkbox"
                 :id="'course_' + course.id"
@@ -54,7 +68,7 @@
                 v-if="form.courses.some((r) => r.id === course.id)"
                 :value="form.courses.find((r) => r.id === course.id)?.c_status"
                 @change="updateCourseStatus(course.id, $event.target.value)"
-                class="border rounded p-1"
+                class="p-1 border rounded"
             >
               <option selected disabled>Kursga qo'shilish holati</option>
               <option value="pending">Yozilish jarayonida</option>
@@ -70,10 +84,10 @@
       </div>
 
 
-      <label for="showOptional" class="inline-flex items-center cursor-pointer mb-2">
+      <label for="showOptional" class="inline-flex items-center mb-2 cursor-pointer">
         <input type="checkbox" id="showOptional" v-model="showOptionalFields" class="sr-only peer">
         <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
+        <span class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">Qo‘shimcha ma’lumotlar</span>
       </label>
 
 
@@ -84,7 +98,7 @@
               v-model="form.email"
               type="email"
               id="email"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -93,7 +107,7 @@
               v-model="form.address"
               type="text"
               id="address"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -102,7 +116,7 @@
               v-model="form.links"
               type="text"
               id="links"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
         <div class="mb-4">
@@ -111,7 +125,7 @@
               v-model="form.birthday"
               type="date"
               id="birthday"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
 
@@ -121,7 +135,7 @@
               v-model="form.description"
               id="description"
               rows="3"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           ></textarea>
         </div>
         <div class="mb-4">
@@ -129,7 +143,7 @@
           <select
               v-model="form.from"
               id="gender"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           >
             <option value="tanish">tanish</option>
             <option value="maktab">maktab</option>
@@ -146,7 +160,7 @@
               v-model="form.gender"
               id="gender"
               required
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           >
             <option value="man">Erkak</option>
             <option value="woman">Ayol</option>
@@ -159,7 +173,7 @@
               v-model="form.status"
               id="status"
               required
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           >
             <option value="pending">Jarayonda</option>
             <option value="active">Faol</option>
@@ -177,7 +191,7 @@
               multiple
               ref="image"
               @change="handleImageChange"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           />
         </div>
       </div>
@@ -188,7 +202,7 @@
         <button
             type="submit"
             :disabled="!isFormChanged"
-            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg"
+            class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg"
             :class="{ 'opacity-50 cursor-not-allowed': !isFormChanged }"
         >
           O`zgartirish
@@ -234,11 +248,25 @@ export default {
     const selectedStudent = computed(() =>
         store.state.student.students.find((student) => student.id === props.studentId)
     );
+
+    const formatPhone = (value) => {
+        let digits = value.replace(/\D/g, '');
+        let match = digits.match(/^(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})$/);
+
+        if (!match) return value;
+
+        return !match[2]
+            ? match[1]
+            : `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}${match[4] ? '-' + match[4] : ''}`;
+      };
+
     const form = ref({
       full_name: '',
       email: '',
       address: '',
       links: '',
+      phone: '',
+      parent_phone: '',
       birthday: '',
       work_start: '',
       id: props.studentId,
@@ -323,6 +351,7 @@ export default {
       showOptionalFields,
       toggleCourse,
       updateCourseStatus,
+      formatPhone,
     };
   },
 };

@@ -18,6 +18,7 @@ export default {
         LOGOUT(state) {
             state.token = null;
             localStorage.removeItem("jwt-token");
+            localStorage.removeItem("jwt-token-expiry");
             localStorage.removeItem("user");
             router.push("/login");
         }

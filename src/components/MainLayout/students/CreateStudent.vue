@@ -43,7 +43,6 @@
           @change="newStudent.crmdigital = $event.target.checked ? '1' : '0'"
           class="sr-only peer"
         />
-        <p>Qiymat: {{ newStudent.crmdigital }}</p>
 
         <div class="relative w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
         <span class="text-sm font-medium text-gray-900 ms-3 dark:text-gray-300">Tizimga kiritilganmi ?</span>
@@ -120,13 +119,7 @@
         </div>
         <div class="mb-4">
           <label for="birthday" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tug'ilgan sana</label>
-          <input
-              v-model="newStudent.birthday"
-              type="date"
-              id="birthday"
-              @input="formatDate('birthday')"
-              class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          />
+          <Datepicker v-model="newStudent.birthday" />
         </div>
 
         <div class="mb-4">
@@ -199,9 +192,13 @@
   <script>
   import {reactive, computed, onMounted, ref} from 'vue';
   import { useStore } from 'vuex';
-
+  import Datepicker from '@vuepic/vue-datepicker'
+  import '@vuepic/vue-datepicker/dist/main.css'
   export default {
     emits: ['close'],
+    components: {
+      Datepicker
+    },
     setup(_, { emit }) {
       const store = useStore();
       const activeUser = JSON.parse(localStorage.getItem("user"))

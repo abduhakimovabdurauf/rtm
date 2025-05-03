@@ -20,35 +20,36 @@
 
     <button
         @click="openCreateModal"
-        class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
+        class="flex items-center gap-2 px-5 py-2 font-medium text-white transition rounded-full shadow-lg bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
     >
-      <i class="bx bx-plus-circle text-xl"></i> <span>Xodim qo'shish</span>
+      <i class="text-xl bx bx-plus-circle"></i> <span>Xodim qo'shish</span>
     </button>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 mt-6">
+  <div class="grid grid-cols-1 gap-4 mt-6 text-center sm:grid-cols-2 md:grid-cols-5">
     <div
         v-for="user in users"
         :key="user.id"
-        class="bg-white dark:bg-gray-800 shadow-md dark:shadow-lg rounded-lg p-3"
+        class="p-2 bg-white rounded-lg shadow-md dark:bg-gray-800 dark:shadow-lg"
     >
       <div class="flex flex-col">
         <img
-            class="w-16 h-16 rounded-full border dark:border-gray-500 mx-auto"
+            class="w-16 h-16 mx-auto border rounded-full dark:border-gray-500"
             :src="user.image ? `http://192.168.11.71:8000/storage/${user.images[0]}` : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'"
             alt="User Avatar"
         />
-        <h2 class="text-base font-semibold text-gray-800 dark:text-white">{{ user.full_name }}</h2>
-        <p class="text-sm text-gray-600 dark:text-gray-300">{{ user?.roles?.map(role => role.name).join(', ') }}</p>
-        <p class="text-sm text-gray-600 dark:text-gray-300">{{ user?.branches?.map(branch => branch.name).join(', ') }}</p>
-        <p class="text-sm text-gray-600 dark:text-gray-300">{{ user.phone }}</p>
+        <h2 class="mb-2 text-base font-semibold text-gray-800 dark:text-white">{{ user.full_name }}</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-300" v-if="user?.roles.length!==0"><span class="font-semibold text-md">Lavozimi:</span> {{ user?.roles?.map(role => tarjimaLavozim(role.name)).join(', ') }}</p>
+        <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-semibold text-md">Filial:</span> {{ user?.branches?.map(branch => branch.name).join(', ') }}</p>
+        <p class="text-sm text-gray-600 dark:text-gray-300" v-if="user?.my_courses.length!==0"><span class="font-semibold text-md">Kurslar:</span> {{ user?.my_courses?.map(course => course.name).join(', ') }}</p>
+        <p class="text-sm text-gray-600 dark:text-gray-300"><span class="font-semibold text-md">Telefon:</span> {{ user.phone }}</p>
       </div>
-      <div class="mt-3 gap-2 flex">
+      <div class="flex justify-center gap-2 mt-3">
         <router-link
             :to="{ name: 'WatchUser', params: { id: user.id } }"
             class="text-sm transition text-white bg-blue-500 hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-gray-600 px-3 py-1.5 rounded duration-200"
         >
-          Ko'rish
+          <i class="bx bxs-show"></i>
         </router-link>
         <button
             @click="openUpdateModal(user.id)"
@@ -67,11 +68,11 @@
   </div>
 
 
-  <div class="flex justify-center items-center mt-6" v-if="users && users.length >0">
+  <div class="flex items-center justify-center mt-6" v-if="users && users.length >0">
     <button
         @click="changePage(currentPage - 1)"
         :disabled="currentPage === 1"
-          class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 dark:bg-gray-700 dark:hover:bg-gray-600"
+          class="px-4 py-2 text-white bg-blue-500 rounded disabled:opacity-50 dark:bg-gray-700 dark:hover:bg-gray-600"
     >
       <i class="bx bx-chevron-left"></i>
     </button>
@@ -83,14 +84,14 @@
           'bg-blue-500 text-white': currentPage === page,
           'bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-300': currentPage !== page
         }"
-        class="px-4 py-2 rounded-md font-semibold"
+        class="px-4 py-2 font-semibold rounded-md"
     >
       {{ page }}
     </button>
     <button
         @click="changePage(currentPage + 1)"
         :disabled="currentPage === totalPages"
-        class="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50 dark:bg-gray-700 dark:hover:bg-gray-600"
+        class="px-4 py-2 text-white bg-blue-500 rounded disabled:opacity-50 dark:bg-gray-700 dark:hover:bg-gray-600"
     >
       <i class="bx bx-chevron-right"></i>
     </button>
@@ -104,7 +105,7 @@ import { useStore } from "vuex";
 import CreateUserForm from "@/components/MainLayout/user/CreateUser.vue";
 import UpdateUserForm from "@/components/MainLayout/user/UpdateUser.vue";
 import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
-
+import {  positionTranslations  } from "@/utils/positionTranslations.js"
 export default {
   components: {
     CreateUserForm,
@@ -119,7 +120,7 @@ export default {
     const isCreating = ref(false);
     const isUpdating = ref(false);
     const selectedUserId = ref(null);
-    const perPage = ref(9);
+    const perPage = ref(15);
     const loading = computed(store.getters.isLoading)
     const sidebarTitle = computed(() => {
       if (isCreating.value) return "Xodim qo'shish";
@@ -160,6 +161,18 @@ export default {
       }
     };
 
+    function tarjimaLavozim(engNomi) {
+
+      if (!positionTranslations[engNomi]) {
+    console.warn(`Tarjimasi topilmadi: ${engNomi}`);
+  }   
+
+      if(!engNomi) {
+        return "Nomalum"
+      }
+      return positionTranslations[engNomi] || engNomi;
+    }
+
     const toggleSidebar = () => {
       isCreating.value = false;
       isUpdating.value = false;
@@ -182,6 +195,10 @@ export default {
           page: currentPage.value,
           perPage: perPage.value,
         });
+
+
+        console.log(users.value);
+        
         totalPages.value = Math.ceil(total.total / perPage.value);
         totalValue.value = total.total
       } catch (e) {
@@ -207,6 +224,7 @@ export default {
       changePage,
       toggleSidebar,
       totalValue,
+      tarjimaLavozim
     };
   },
 };

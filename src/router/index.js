@@ -368,7 +368,7 @@ router.beforeEach((to, from, next) => {
 
 
   else if (requireAuth && !store.getters['auth/isAuthenticated']) {
-    store.commit('LOGOUT')
+    store.dispatch('login')
     next('/login');
   }
 

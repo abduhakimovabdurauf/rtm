@@ -21,8 +21,8 @@
       @close="closePayModal"
     />
   </actionSidebar>
-    <div class="p-6 min-h-screen dark:bg-gray-900">
-      <div class="flex justify-between items-center mb-6">
+    <div class="min-h-screen p-6 dark:bg-gray-900">
+      <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-extrabold text-gray-800 dark:text-white">O'quvchilar ro'yxati: {{totalValue}} ta</h1>
         <div>
           <input
@@ -35,22 +35,21 @@
         </div>
         <button
             @click="openCreateModal"
-            class="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-medium rounded-full shadow-lg hover:from-blue-700 hover:to-blue-500 transition"
+            class="flex items-center gap-2 px-5 py-2 font-medium text-white transition rounded-full shadow-lg bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500"
         >
-          <i class="bx bx-plus-circle text-xl"></i> <span>Oquvchi qo'shish</span>
+          <i class="text-xl bx bx-plus-circle"></i> <span>Oquvchi qo'shish</span>
         </button>
 
       </div>
-      <div class="overflow-x-auto shadow-xl rounded-lg">
+      <div class="overflow-x-auto rounded-lg shadow-xl">
 
-        <table class="w-full bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
+        <table class="w-full text-sm text-gray-700 bg-white dark:bg-gray-800 dark:text-gray-300">
           <thead>
-          <tr class="bg-gray-700 text-white w-full">
+          <tr class="w-full text-white bg-gray-700">
             <th class="px-6 py-4 text-left">№</th>
             <th class="px-6 py-4 text-left">Ism</th>
             <th class="px-6 py-4 text-left">Telefon</th>
-            <th class="px-6 py-4 text-left">Manzil</th>
-            <th class="px-6 py-4 text-left">Tavsif</th>
+            <th class="px-6 py-4 text-left">Ota-ona telefoni</th>
             <th class="px-6 py-4 text-left">Holati</th>
             <th class="px-6 py-4 text-right">
               Amallar
@@ -58,7 +57,7 @@
           </tr>
           </thead>
           <tr v-if="isSortLoading">
-            <td colspan="7" class="text-center py-6">
+            <td colspan="7" class="py-6 text-center">
               <loader></loader>
             </td>
           </tr>
@@ -67,13 +66,12 @@
           <tr
               v-for="(student,index) in students"
               :key="student.id"
-              class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+              class="transition border-b hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <td class="px-6 py-1 font-semibold text-gray-800 dark:text-white">{{ index + 1 }}</td>
             <td class="px-6 py-1 font-semibold">{{ student.full_name }}</td>
             <td class="px-6 py-1 font-semibold">{{ student.phone }}</td>
-            <td class="px-6 py-1 font-semibold">{{ student.address }}</td>
-            <td class="px-6 py-1 font-semibold">{{ student.description }}</td>
+            <td class="px-6 py-1 font-semibold">{{ student.parent_phone }}</td>
             <td class="px-6 py-1">
               <StatusBadge :status="student.status" />
             </td>
@@ -106,16 +104,16 @@
           </tr>
           </tbody>
           <tbody class="w-full h-10" v-if="!students.length>0">
-          <tr class="w-full text-center text-lg">
+          <tr class="w-full text-lg text-center">
             Malumot mavjud emas!
           </tr>
           </tbody>
         </table>
-        <div class="flex justify-center items-center mt-6 space-x-2" v-if="students && students.length > 0">
+        <div class="flex items-center justify-center mt-6 space-x-2" v-if="students && students.length > 0">
           <button
               @click="changePage(currentPage - 1)"
               :disabled="currentPage === 1"
-              class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
+              class="px-4 py-2 text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 disabled:opacity-50"
           >
             <i class="bx bx-chevron-left"></i>
           </button>
@@ -127,14 +125,14 @@
             'bg-blue-600 text-white': currentPage === page,
             'bg-gray-300': currentPage !== page,
           }"
-              class="px-3 py-1 rounded-md font-medium transition duration-150"
+              class="px-3 py-1 font-medium transition duration-150 rounded-md"
           >
             {{ page }}
           </button>
           <button
               @click="changePage(currentPage + 1)"
               :disabled="currentPage === totalPages"
-              class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-700 disabled:opacity-50"
+              class="px-4 py-2 text-gray-700 bg-gray-300 rounded-md hover:bg-gray-400 disabled:opacity-50"
           >
             <i class="bx bx-chevron-right"></i>
           </button>
