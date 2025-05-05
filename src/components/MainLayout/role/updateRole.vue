@@ -1,6 +1,28 @@
 <template>
   <div>
     <form @submit.prevent="handleSubmit" class="pb-2 overflow-scroll">
+
+      <div class="mb-4" v-if="activeUser?.roles?.map(role => role.name).includes('admin')">
+        <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya</label>
+        <div v-if="companies==null">
+          <span class="text-gray-600">Malumotlar yuklanmoqda...</span>
+        </div>
+        <select
+            id="company_id"
+            required
+            v-else-if="companies && companies?.data && companies.data?.length > 0"
+            v-model="form.company_id"
+            class="block w-full p-2 mt-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        >
+          <option v-for="company in companies.data" :key="company.id" :value="company.id">
+            {{ company.name }}
+          </option>
+        </select>
+
+        <div v-else>
+          <span class="text-gray-600">Malumotlar mavjud emas! :(</span>
+        </div>
+      </div>
       <div>
         <label for="name" class="block text-sm font-medium text-gray-700">Nomi</label>
         <input
@@ -30,7 +52,7 @@
         </div>
       </div>
 
-      <div class="mb-4">
+      <!-- <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Huquqlar</label>
         <div v-if="permissions?.data?.length" class="flex flex-wrap gap-3">
           <div v-for="permission in permissions?.data" :key="permission.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
@@ -50,7 +72,7 @@
         <div v-else>
           Huquq malumotlari mavjud emas! :(
         </div>
-      </div>
+      </div> -->
 
       <div class="flex items-center justify-between">
         <button
@@ -86,22 +108,27 @@ export default {
     const form = ref({
       name: '',
       users: [],
+      company_id: activeUser.company_id,
       permissions: [],
     });
 
     const initialForm = ref({});
     const users = ref(null)
-    const permissions = ref(null)
+    // const permissions = ref(null)
+    const companies = ref(null)
     const fetchData = async () => {
       console.info(selectedRole.value)
       try {
+        if (activeUser?.roles?.map(role => role.name).includes("admin")) {
+          companies.value = await store.dispatch('company/getAllCompanies')
+        }
         users.value = await store.dispatch('user/getAllUsers')
-        permissions.value = await store.dispatch('permission/getAllPermissions')
+        // permissions.value = await store.dispatch('permission/getAllPermissions')
       } catch (error) {
         console.error(error);
       }
     }
-
+    
     onMounted(fetchData)
     watch(
         selectedRole,
@@ -177,9 +204,11 @@ export default {
       handleSubmit,
       isFormChanged,
       users,
-      permissions,
+      // permissions,
+      companies,
       toggleUser,
       togglePermission,
+      activeUser,
     };
   },
 };
