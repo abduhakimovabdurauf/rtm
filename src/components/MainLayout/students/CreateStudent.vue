@@ -1,6 +1,5 @@
   <template>
     <form @submit.prevent="handleSubmit">
-
       <div class="mb-4">
         <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ismi</label>
         <input
@@ -53,6 +52,7 @@
         <select
             v-if="branches?.data?.length"
             v-model="newStudent.branch_id"
+            @change="handleBranchChange"
             class="w-full p-2 mt-1 text-gray-700 bg-gray-100 border rounded-md dark:bg-gray-800 dark:text-gray-300 focus:ring focus:ring-blue-500"
         >
           <option v-for="branch in branches.data" :key="branch.id" :value="branch.id">
@@ -64,8 +64,11 @@
 
       <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kurslar</label>
-      <div v-if="courses?.data?.length" class="flex flex-wrap gap-3">
-        <div v-for="course in courses.data" :key="course.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
+      <div v-if="!courses?.length">
+        Kurslar mavjud emas!
+      </div>
+      <div v-if="courses?.length" class="flex flex-wrap gap-3">
+        <div v-for="course in courses" :key="course.id" class="flex items-center p-2 space-x-2 bg-gray-100 rounded-md shadow-sm dark:bg-gray-800">
           <input
               type="checkbox"
               :id="'course_' + course.id"
@@ -227,11 +230,18 @@
         try {
           branches.value = await store.dispatch("branch/getAllBranches");
           newStudent.branch_id = branches?.value?.data[0].id
-          courses.value = await store.dispatch("course/getAllCourses");
+          console.log('filiallar: ', branches.value)
+          courses.value = branches?.value?.data[newStudent.branch_id]?.courses
         } catch (error) {
           console.error("Xatolik yuz berdi:", error);
         }
       };
+
+      function handleBranchChange() {
+        courses.value = branches.value.data.find((branch) => branch.id === newStudent.branch_id).courses
+        console.log('Selected Branch ID:', newStudent.branch_id)
+        console.log('kurslar: ', courses.value)
+      }
 
       onMounted(fetchData);
       const isFormValid = computed(() => {
@@ -350,6 +360,7 @@
         branches,
         showOptionalFields,
         courses,
+        handleBranchChange,
       };
     },
   };
