@@ -239,7 +239,7 @@ export default {
         const response = await store.dispatch("branch/getBranchById", selectedBranch.value);
         courses.value = response?.courses;
         rooms.value = response?.rooms;
-        teachers.value = response?.users;
+        teachers.value = await store.dispatch("user/getBranchTeachers", selectedBranch.value);
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       } finally {

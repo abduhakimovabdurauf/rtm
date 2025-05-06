@@ -48,6 +48,22 @@ export default {
                 commit("SET_LOADING", false, { root: true });
             }
         },
+        async getBranchTeachers({},branchId) {
+            console.log('id: ', branchId);
+            
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/branches/${branchId}/teachers`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("jwt-token")}`,
+                    },
+                });
+                console.log('teachers: ',response.data)
+                return response.data.teachers;
+                
+            } catch (e) {
+                console.log(e);
+            }
+        },
         async getUserById({ commit }, userId) {
             try {
                 const response = await axios.get(`${API_URL}/${userId}`, {

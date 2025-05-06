@@ -40,25 +40,25 @@
 
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hodimlar</label>
-      <div v-if="users==null">
-        Malumotlar yuklanmoqda...
+
+      <div v-if="users == null">
+        Ma'lumotlar yuklanmoqda...
       </div>
-      <div v-else-if="users?.data?.length" class="flex flex-wrap gap-3">
-        <div v-for="user in users.data" :key="user.id" class="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-md shadow-sm">
-          <input
-              type="checkbox"
-              :id="'user_' + user.id"
-              :value="user.id"
-              v-model="newRole.users"
-              class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
-          />
-          <label :for="'user_' + user.id" class="cursor-pointer text-sm text-gray-700 dark:text-gray-300 truncate max-w-[150px]">
-            {{ user.full_name }}
-          </label>
-        </div>
+
+      <div v-else-if="users?.data?.length">
+        <Multiselect
+          v-model="newRole.users"
+          :options="users.data"
+          :multiple="true"
+          :searchable="true"
+          label="full_name"
+          track-by="id"
+          placeholder="Hodimlarni tanlang"
+        />
       </div>
+
       <div v-else>
-        Hodimlar malumotlari mavjud emas! :(
+        Hodimlar ma'lumotlari mavjud emas! :(
       </div>
     </div>
 
@@ -103,9 +103,13 @@
 <script>
 import {reactive, computed, ref, onMounted} from 'vue';
 import { useStore } from 'vuex';
-
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 export default {
   emits: ['close'],
+  components: {
+    Multiselect,
+  },
   setup(_,{ emit }) {
     const store = useStore();
     const newRole = reactive({
@@ -127,6 +131,8 @@ export default {
       try {
         companies.value = await store.dispatch("company/getAllCompanies");
         users.value = await store.dispatch('user/getAllUsers')
+        console.log('userRoles: ', users.value);
+        
         permissions.value = await store.dispatch('permission/getAllPermissions')
         newRole.company_id = companies.value.data[0].id;
         console.log("company_id : ", typeof newRole.company_id);

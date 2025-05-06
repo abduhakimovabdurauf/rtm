@@ -251,9 +251,10 @@ export default {
       loadingRooms.value = true;
       try {
         const response = await store.dispatch("branch/getBranchById", selectedBranch.value);
+        teachers.value = await store.dispatch("user/getBranchTeachers", selectedBranch.value)
         courses.value = response?.courses;
         rooms.value = response?.rooms;
-        teachers.value = response?.users;
+        // teachers.value = response?.users;
         const startDate = new Date();
         newGroup.value.start_date = startDate.toISOString().split('T')[0];
         const selectedCourse = courses.value.find(course => course.id === newGroup.value.course_id);
