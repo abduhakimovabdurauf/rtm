@@ -145,13 +145,14 @@ export default {
     const handleSubmit = async () => {
       console.log()
       try {
-        const formData = new FormData();
-        formData.append('name', newRole.name);
-        formData.append('company_id', newRole.company_id);
-        formData.append('users', newRole.users);
-        formData.append('permissions', newRole.permissions);
-        formData.append('status', newRole.status);
 
+        const formData = {
+          ...newRole,
+          users: newRole.users.map(user => user.id),
+          permissions: JSON.stringify(newRole.permissions)
+        };
+        console.log('hodimlar: ', formData);
+        
         await store.dispatch('role/addRole', formData);
         closeModal();
         newRole.name = '';
