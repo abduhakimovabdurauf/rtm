@@ -368,8 +368,8 @@ router.beforeEach((to, from, next) => {
 
 
   else if (requireAuth && !store.getters['auth/isAuthenticated']) {
-    store.dispatch('login')
-    next('/login');
+    store.dispatch('auth/logout')
+    // next('/login');
   }
 
   // else if (requireAuth===false) {

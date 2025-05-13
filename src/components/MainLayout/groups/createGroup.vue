@@ -24,6 +24,7 @@
           id="teacher_id"
           v-else-if="newGroup.branch_id && teachers?.length > 0"
           v-model="newGroup.teacher_id"
+          @change="courses = teachers.find(t => t.id === +newGroup.teacher_id)?.my_courses || []"
           class="mt-1 block w-full p-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
       >
         <option value="">O'qituvchini tanlang!</option>
@@ -49,7 +50,7 @@
           {{ course.name }}
         </option>
       </select>
-      <div class="text-red-600" v-else>Kursni tanlash uchun avval filialni tanlang!</div>
+      <div class="text-red-600" v-else>Kursni tanlash uchun avval filialni va o'qituvchini tanlang!</div>
     </div>
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Xona ID</label>
@@ -184,7 +185,7 @@
     <div class="flex justify-end">
       <button
           type="submit"
-          class="w-full px-4 py-2 rounded-lg mb-12"
+          class="w-full px-4 py-2 bg-blue-700 text-white rounded-lg mb-12"
       >
         Qo'shish
       </button>
@@ -252,20 +253,9 @@ export default {
       try {
         const response = await store.dispatch("branch/getBranchById", selectedBranch.value);
         teachers.value = await store.dispatch("user/getBranchTeachers", selectedBranch.value)
-        courses.value = response?.courses;
         rooms.value = response?.rooms;
-        // teachers.value = response?.users;
         const startDate = new Date();
         newGroup.value.start_date = startDate.toISOString().split('T')[0];
-        const selectedCourse = courses.value.find(course => course.id === newGroup.value.course_id);
-        if (selectedCourse && selectedCourse.duration) {
-          const endDate = new Date(startDate);
-          endDate.setMonth(endDate.getMonth() + selectedCourse.duration);
-          newGroup.value.end_date = endDate.toISOString().split('T')[0];
-          console.log("end_date:", newGroup.value.end_date);
-        } else {
-          console.warn("Kurs topilmadi yoki duration yo'q!");
-        }
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
       } finally {
@@ -292,31 +282,34 @@ export default {
     const showOptionalFields = ref(false);
     const handleSubmit = async () => {
       try {
-        const formData = new FormData();
-        formData.append("user_id", newGroup.value.user_id);
-        formData.append("course_id", newGroup.value.course_id);
-        formData.append("room_id", newGroup.value.room_id);
-        formData.append("name", newGroup.value.name);
-        formData.append("start_time", newGroup.value.start_time);
-        formData.append("end_time", newGroup.value.end_time);
-        formData.append("start_date", newGroup.value.start_date);
-        formData.append("end_date", newGroup.value.end_date);
-        formData.append("part_of_day", newGroup.value.part_of_day);
-        formData.append("part_of_time", newGroup.value.part_of_time);
-        formData.append("lvl", newGroup.value.lvl);
-        formData.append("status", newGroup.value.status);
-        formData.append("description", newGroup.value.description);
-        formData.append("branch_id", newGroup.value.branch_id);
-        formData.append("teacher_id", newGroup.value.teacher_id);
-        formData.append("students", JSON.stringify(newGroup.value.students));
-        await store.dispatch("group/addGroup", formData);
+        const payload = {
+          user_id: newGroup.value.user_id,
+          course_id: newGroup.value.course_id,
+          room_id: newGroup.value.room_id,
+          name: newGroup.value.name,
+          start_time: newGroup.value.start_time,
+          end_time: newGroup.value.end_time,
+          start_date: newGroup.value.start_date,
+          end_date: newGroup.value.end_date,
+          part_of_day: newGroup.value.part_of_day,
+          part_of_time: newGroup.value.part_of_time,
+          lvl: newGroup.value.lvl,
+          status: newGroup.value.status,
+          description: newGroup.value.description,
+          branch_id: newGroup.value.branch_id,
+          teacher_id: newGroup.value.teacher_id,
+          students: newGroup.value.students,
+        };
+        console.log('guruh: ', payload);
+        
+        await store.dispatch("group/addGroup", payload);
         resetForm();
         emit("close");
       } catch (error) {
-        alert("Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.");
         console.error(error);
       }
     };
+
     const resetForm = () => {
       newGroup.value = {
         user_id: "",

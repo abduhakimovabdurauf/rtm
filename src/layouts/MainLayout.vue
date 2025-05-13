@@ -29,7 +29,7 @@ export default {
     const isLoading = computed(() =>store.getters.isLoading);
 
     onMounted(()=> {
-      // store.dispatch('auth/checkToken');
+      store.dispatch('auth/checkToken');
       store.commit('closeSidebar')
     })
     return {

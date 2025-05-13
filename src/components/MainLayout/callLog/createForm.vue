@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <div class="mb-4">
+    <div class="mb-4" v-if="activeUser?.roles?.map(role => role.name).includes('admin')">
       <label for="branch_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Filial</label>
       <div v-if="branches == null">
         <span class="text-gray-600">Ma'lumotlar yuklanmoqda...</span>
@@ -102,8 +102,7 @@ export default {
 
     const selectedBranchId = ref('');
     const newCallLog = reactive({
-      branch_id: '',
-      user_id: activeUser.id,
+      branch_id: activeUser.branches[0]?.id,
       student_id: '',
       notes: '',
       status: 'answered',
@@ -171,6 +170,7 @@ export default {
       isFormValid,
       branches,
       students,
+      activeUser,
       studentsList,
       selectedBranchId,
       fetchBranchStudents,

@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="handleSubmit">
-    <div class="mb-4">
+    <div class="mb-4" v-if="activeUser?.roles?.map(role => role.name).includes('admin')">
       <label for="company_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kompaniya ID</label>
       <span v-if="companies==null" class="text-gray-600 dark:text-gray-400">Malumotlar yuklanmoqda...</span>
       <select
@@ -62,7 +62,7 @@
       </div>
     </div>
 
-    <div class="mb-4">
+    <!-- <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Huquqlar</label>
 
       <div v-if="permissions==null">
@@ -85,13 +85,13 @@
       <div v-else>
         Huquq malumotlari mavjud emas! :(
       </div>
-    </div>
+    </div> -->
 
     <div class="flex justify-end">
       <button
           type="submit"
           :disabled="!isFormValid"
-          class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg"
+          class="w-full bg-blue-600 text-white px-4 py-2 mb-16 rounded-lg"
           :class="{ 'opacity-50 cursor-not-allowed': !isFormValid }"
       >
         Qo'shish
@@ -112,13 +112,16 @@ export default {
   },
   setup(_,{ emit }) {
     const store = useStore();
+    const activeUser = JSON.parse(localStorage.getItem("user"))
     const newRole = reactive({
       name: '',
-      company_id: '',
+      company_id: activeUser.companies[0].id,
       users: [],
-      permissions: [],
+      // permissions: [],
       status: 'active',
     });
+
+
 
     const isFormValid = computed(() => {
       return newRole.name.length > 0;
@@ -126,14 +129,14 @@ export default {
     
     const companies = ref(null)
     const users = ref(null)
-    const permissions = ref(null)
+    // const permissions = ref(null)
     const fetchData = async () => {
       try {
         companies.value = await store.dispatch("company/getAllCompanies");
         users.value = await store.dispatch('user/getAllUsers')
         console.log('userRoles: ', users.value);
         
-        permissions.value = await store.dispatch('permission/getAllPermissions')
+        // permissions.value = await store.dispatch('permission/getAllPermissions')
         newRole.company_id = companies.value.data[0].id;
         console.log("company_id : ", typeof newRole.company_id);
       } catch (error) {
@@ -143,13 +146,12 @@ export default {
     
     onMounted(fetchData)
     const handleSubmit = async () => {
-      console.log()
       try {
 
         const formData = {
           ...newRole,
-          users: newRole.users.map(user => user.id),
-          permissions: JSON.stringify(newRole.permissions)
+          users: newRole.users,
+          // permissions: JSON.stringify(newRole.permissions)
         };
         console.log('hodimlar: ', formData);
         
@@ -166,13 +168,14 @@ export default {
     }
 
     return {
+      activeUser,
       newRole,
       handleSubmit,
       closeModal,
       isFormValid,
       companies,
       users,
-      permissions
+      // permissions
     };
   },
 };

@@ -14,6 +14,17 @@
       </select>
     </div>
 
+    <div class="mb-4">
+      <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Eslatmalar</label>
+      <textarea
+          v-model="newCallLog.notes"
+          id="notes"
+          rows="3"
+          class="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white"
+      >
+
+      </textarea>
+    </div>
     <div class="flex justify-end">
       <button
           type="submit"
@@ -53,6 +64,7 @@ export default {
       branch_id: props.branchId,
       user_id: activeUser.id,
       student_id: props.studentId,
+      notes: "",
       status: 'answered',
     });
 

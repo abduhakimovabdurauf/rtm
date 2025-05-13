@@ -103,19 +103,18 @@ export default {
     const store = useStore();
     const activeUser = JSON.parse(localStorage.getItem("user"))
     const selectedRole = computed(() =>
-        store.state.role.roles.find((course) => course.id === props.roleId)
+      store.state.role.roles.find((course) => course.id === props.roleId)
     );
     const form = ref({
       name: '',
       users: [],
-      company_id: activeUser.company_id,
+      company_id: activeUser.companies[0].id,
       permissions: [],
     });
 
     
     const initialForm = ref({});
     const users = ref(null)
-    // const permissions = ref(null)
     const companies = ref(null)
     const fetchData = async () => {
       console.info(selectedRole.value)
@@ -129,6 +128,7 @@ export default {
         console.error(error);
       }
     }
+
     
     onMounted(fetchData)
     watch(
