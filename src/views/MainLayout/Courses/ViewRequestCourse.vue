@@ -14,6 +14,12 @@
         :courseId="courseId"
         :branchId="branchId"
     />
+    <CreateStudent
+        v-if="isStudenting"
+        @close="closeStudentSidebar"
+        :course_id="courseId"
+        :branchId="branchId"
+    />
 
   </actionSidebar>
 
@@ -70,6 +76,59 @@
         </div>
       </div>
     </div>
+
+    <!--  Starting student section   -->
+    <div class="w-3/5 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
+      <div class="w-full flex justify-between">
+        <h1 class="text-xl text-bold m-2">O'quvchilar</h1>
+
+        <button
+            @click="openStudentSidebar"
+            class="transition scale-75 p-2 text-white bg-green-500 hover:bg-green-600 rounded duration-200"
+        >
+          O'quvchi qo'shish <i class='bx bx-git-group'></i>
+        </button>
+      </div>
+      <table class="w-full text-sm">
+        <thead class="h-10">
+        <tr class="bg-gray-700 text-white">
+          <th class="px-6 py-4 text-left">№</th>
+          <th class="px-6 py-4 text-left">Ismi</th>
+          <th class="px-6 py-4 text-left">Holat</th>
+          <th class="px-6 py-4 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody v-if="data && data.students && data.students.length">
+        <tr
+            v-for="(student, index) in data.students"
+            :key="student.id"
+            class="border-b hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        >
+          <td class="px-6 py-4 font-semibold">{{ index + 1 }}</td>
+          <td class="px-6 py-4 font-semibold">{{ student.full_name }}</td>
+          <td class="px-6 py-4 font-semibold text-xs">
+            <StatusBadge :status="student.status"/>
+          </td>
+          <td class="px-6 py-4 font-semibold">
+            <router-link
+                :to="{ name: 'WatchStudent', params: { id: student.id } }"
+                class="mr-0.5 transition text-white bg-blue-500 hover:bg-blue-600 dark:text-gray-400 p-3 py-2 rounded duration-200"
+            >
+              <i class="bx bxs-show"></i>
+            </router-link>
+          </td>
+        </tr>
+        </tbody>
+        <tbody v-else>
+        <tr>
+          <td colspan="5" class="text-center py-4 text-gray-500">Chegirma ma'lumotlari mavjud emas.</td>
+        </tr>
+        </tbody>
+
+      </table>
+    </div>
+    <!--  ending student section   -->
+
 
     <!--  Starting group section   -->
     <div class="w-3/5 bg-white rounded-l mt-6 overflow-hidden overflow-y-scroll">
@@ -137,12 +196,14 @@ import actionSidebar from "@/components/MainLayout/ui/ActionSidebar.vue";
 import UpdateCourse from "@/components/MainLayout/course/updateCourse.vue";
 import StatusBadge from "@/components/MainLayout/ui/StatusBadge.vue";
 import CreateGroup from "@/components/MainLayout/course/CreateGroup.vue";
+import CreateStudent from "@/components/MainLayout/course/CreateStudent.vue";
 export default {
   components: {
     StatusBadge,
     actionSidebar,
     UpdateCourse,
-    CreateGroup
+    CreateGroup,
+    CreateStudent,
   },
   setup() {
     const route = useRoute();
@@ -150,11 +211,13 @@ export default {
     const data = ref(null);
     const isUpdating = ref(false)
     const isGrouping = ref(false)
+    const isStudenting = ref(false)
     const courseId = ref(null)
     const branchId = ref(null)
     const sidebarTitle = computed(() => {
       if (isUpdating.value) return "O'zgartirish";
       if (isGrouping.value) return "Guruh qo'shish";
+      if (isStudenting.value) return "O'quvchi qo'shish";
       return "";
     });
 
@@ -178,6 +241,16 @@ export default {
 
     const closeGroupSidebar = () => {
       isGrouping.value = false;
+      store.dispatch("toggleSidebar", false);
+    }
+
+    const openStudentSidebar = () => {
+      isStudenting.value = true;
+      store.dispatch("toggleSidebar", true);
+    }
+
+    const closeStudentSidebar = () => {
+      isStudenting.value = false;
       store.dispatch("toggleSidebar", false);
     }
 
@@ -216,11 +289,14 @@ export default {
       formatPrice,
       isUpdating,
       isGrouping,
+      isStudenting,
       sidebarTitle,
       openUpdateSidebar,
       closeUpdateSidebar,
       openGroupSidebar,
       closeGroupSidebar,
+      openStudentSidebar,
+      closeStudentSidebar,
       deleteById,
       courseId,
       branchId,
