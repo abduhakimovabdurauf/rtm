@@ -25,9 +25,9 @@ export default {
   setup() {
     const goBack = () => {
       if (window.history.length > 1) {
-        window.history.back(); // Brauzer tarixidagi oldingi sahifaga qaytadi
+        window.history.back();
       } else {
-        window.location.href = '/'; // Tarix bo'sh bo'lsa bosh sahifaga qaytadi
+        window.location.href = '/';
       }
     };
 

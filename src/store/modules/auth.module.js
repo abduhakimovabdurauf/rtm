@@ -16,6 +16,8 @@ export default {
             localStorage.setItem("jwt-token-expiry", Date.now() + 8 * 60 * 60 * 1000);
         },
         LOGOUT(state) {
+            console.log('logut ishladi!');
+            
             state.token = null;
             localStorage.removeItem("jwt-token");
             localStorage.removeItem("jwt-token-expiry");

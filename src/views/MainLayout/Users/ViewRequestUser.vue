@@ -25,6 +25,11 @@
         <span class="text-lg font-semibold text-gray-900 dark:text-white">{{ data.full_name }}</span>
       </div>
 
+      <div class="flex justify-between items-center border-b p-2 duration-300 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300">
+        <span class="text-sm text-gray-500 dark:text-gray-400">Login:</span>
+        <span class="text-lg font-semibold text-gray-900 dark:text-white">{{ data.login }}</span>
+      </div>
+
       <div class="flex justify-between items-start border-b p-2 duration-300 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300">
         <span class="text-sm text-gray-500 dark:text-gray-400">Email:</span>
         <span class="text-lg font-medium text-gray-700 dark:text-gray-200 max-w-md leading-relaxed">{{ data.email }}</span>

@@ -7,7 +7,11 @@ const settingsAxios = axios.create({
 
 settingsAxios.interceptors.response.use( null, error =>{
     if(error.response.status === 401 ){
-        router.push('/login?message=auth')
+        console.log('status=401');
+        router.push('/login')
+        // store.dispatch('auth/logout')
+        
+        // store.commit("auth/LOGOUT")
     }
     return Promise.reject(error)
 });
