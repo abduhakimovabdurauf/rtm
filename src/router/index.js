@@ -349,9 +349,9 @@ router.beforeEach((to, from, next) => {
   const userRoles = user?.roles?.map(r => r.name) || ['guest'];
   store.commit('closeSidebar');
 
-  // if (store.getters['auth/isAuthenticated'] && to?.path === '/login') {
-  //   next('/dashboard');
-  // }
+  if (store.getters['auth/isAuthenticated'] && to?.path === '/login') {
+    next('/dashboard');
+  }
 
   if (requireAuth===true && store.getters['auth/isAuthenticated']) {
     const allowedRoles = to?.meta?.roles;
